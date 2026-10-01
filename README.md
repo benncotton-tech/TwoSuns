@@ -37,8 +37,25 @@ Placeholder reels are graded 8-second loops. They are not the finished pictures.
 
 - **Home** — large wordmark over the showreel, mute, click-to-watch
 - **Work** — the full slate
+- **News** — now, coming up, and notes from the house
 - **About** — two founders, Stockholm
 - **Contact** — a letter to Stockholm (no email backend)
+
+## Posting news
+
+There is no CMS. Add a post at the top of `src/lib/news.ts` in the `posts` array:
+
+```ts
+{
+  slug: "short-url-name",
+  title: "The headline.",
+  date: "2026-10-01", // ISO
+  kind: "now", // "now" | "coming-up" | "news"
+  dek: "One or two sentences for the board.",
+  body: ["First paragraph.", "Second paragraph."],
+  film: "salt-light", // optional work slug
+}
+```
 
 ## Stack
 
