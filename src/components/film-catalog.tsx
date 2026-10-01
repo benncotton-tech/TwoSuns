@@ -4,7 +4,6 @@ import { useMemo, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { filmLanes, filterFilms, type FilmLane } from "@/lib/films"
-import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
 export function FilmCatalog() {
@@ -13,24 +12,26 @@ export function FilmCatalog() {
 
   return (
     <div>
-      <div className="flex flex-wrap gap-2" role="tablist" aria-label="Slate filter">
-        {filmLanes.map((item) => (
-          <Button
-            key={item.id}
-            type="button"
-            variant="ghost"
-            onClick={() => setLane(item.id)}
-            aria-pressed={lane === item.id}
-            className={cn(
-              "h-9 rounded-none border px-3 text-[0.65rem] uppercase tracking-[0.22em]",
-              lane === item.id
-                ? "border-gold bg-gold/10 text-gold"
-                : "border-cream/15 text-silver hover:border-cream/30 hover:text-cream"
-            )}
-          >
-            {item.label}
-          </Button>
-        ))}
+      <div className="flex flex-wrap gap-2" role="group" aria-label="Slate filter">
+        {filmLanes.map((item) => {
+          const active = lane === item.id
+          return (
+            <button
+              key={item.id}
+              type="button"
+              onClick={() => setLane(item.id)}
+              aria-pressed={active}
+              className={cn(
+                "inline-flex h-9 items-center border px-3 text-[0.65rem] uppercase tracking-[0.22em] transition-colors",
+                active
+                  ? "border-gold bg-gold/10 text-gold"
+                  : "border-cream/15 text-silver hover:border-cream/30 hover:text-cream"
+              )}
+            >
+              {item.label}
+            </button>
+          )
+        })}
       </div>
 
       {visible.length === 0 ? (
@@ -45,12 +46,12 @@ export function FilmCatalog() {
             TwoSuns keeps a short slate of features, documentaries, and shorts.
             If you have a picture — not a product — write to the desk.
           </p>
-          <Button
-            render={<Link href="/contact" />}
-            className="mt-8 h-11 rounded-none bg-gold px-6 text-[0.7rem] uppercase tracking-[0.28em] text-ink hover:bg-gold/85"
+          <Link
+            href="/contact"
+            className="mt-8 inline-flex h-11 items-center bg-gold px-6 text-[0.7rem] uppercase tracking-[0.28em] text-ink hover:bg-gold/85"
           >
             Start a conversation
-          </Button>
+          </Link>
         </div>
       ) : (
         <ol className="mt-12 divide-y divide-cream/10 border-y border-cream/10">

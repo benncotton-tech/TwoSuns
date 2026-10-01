@@ -1,18 +1,11 @@
 "use client"
 
 import { useState } from "react"
-import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { inquiryLanes } from "@/lib/site"
+import { cn } from "@/lib/utils"
 
 type Status = "idle" | "submitting" | "success" | "error"
 
@@ -49,6 +42,7 @@ export function ContactForm() {
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    event.stopPropagation()
     const nextErrors = validate()
     setErrors(nextErrors)
     setServerMessage("")
@@ -84,6 +78,7 @@ export function ContactForm() {
       setCompany("")
       setInquiry("")
       setMessage("")
+      setErrors({})
     } catch {
       setStatus("error")
       setServerMessage("The line dropped. Try again in a moment.")
@@ -105,35 +100,41 @@ export function ContactForm() {
           Someone at the desk that should read it will write back. If it is
           urgent, use hello@twosuns.se and put the city in the subject.
         </p>
-        <Button
+        <button
           type="button"
-          variant="outline"
-          className="mt-8 h-11 rounded-none border-cream/30 px-6 text-[0.7rem] uppercase tracking-[0.28em] text-cream"
+          className="mt-8 inline-flex h-11 items-center border border-cream/30 px-6 text-[0.7rem] uppercase tracking-[0.28em] text-cream"
           onClick={() => setStatus("idle")}
         >
           Send another
-        </Button>
+        </button>
       </div>
     )
   }
 
+  const hasFieldErrors = Object.keys(errors).length > 0
+
   return (
-    <form onSubmit={onSubmit} className="space-y-6" noValidate>
+    <form method="post" action="/contact" onSubmit={onSubmit} className="space-y-6" noValidate>
       {status === "error" ? (
         <div
-          className="border border-destructive/50 bg-destructive/10 px-4 py-3 text-sm text-destructive"
+          className="border border-destructive bg-destructive/15 px-4 py-3 text-sm text-cream"
           role="alert"
         >
           {serverMessage || "Something went wrong on the way in."}
         </div>
       ) : null}
 
-      <div className="grid gap-6 sm:grid-cols-2">
-        <Field
-          id="name"
-          label="Name"
-          error={errors.name}
+      {hasFieldErrors ? (
+        <div
+          className="border border-gold/50 bg-gold/10 px-4 py-3 text-sm text-cream"
+          role="alert"
         >
+          The letter is incomplete. Check the notes under the fields.
+        </div>
+      ) : null}
+
+      <div className="grid gap-6 sm:grid-cols-2">
+        <Field id="name" label="Name" error={errors.name}>
           <Input
             id="name"
             name="name"
@@ -173,42 +174,30 @@ export function ContactForm() {
         />
       </Field>
 
-      <div className="space-y-2">
-        <Label htmlFor="inquiry" className="text-[0.7rem] uppercase tracking-[0.22em] text-silver">
-          Lane
-        </Label>
-        <Select
-          value={inquiry || null}
-          onValueChange={(value) => {
-            setInquiry(value ?? "")
+      <Field id="inquiry" label="Lane" error={errors.inquiry}>
+        <select
+          id="inquiry"
+          name="inquiry"
+          value={inquiry}
+          onChange={(event) => {
+            setInquiry(event.target.value)
             setErrors((current) => ({ ...current, inquiry: undefined }))
           }}
+          aria-invalid={Boolean(errors.inquiry)}
+          aria-describedby={errors.inquiry ? "inquiry-error" : undefined}
+          className={cn(
+            "h-11 w-full rounded-none border border-cream/20 bg-ink px-2.5 text-sm text-cream outline-none",
+            "focus-visible:border-gold focus-visible:ring-3 focus-visible:ring-gold/40"
+          )}
         >
-          <SelectTrigger
-            id="inquiry"
-            className="h-11 w-full rounded-none border-cream/20 bg-transparent text-cream"
-            aria-invalid={Boolean(errors.inquiry)}
-          >
-            <SelectValue placeholder="What is this about?" />
-          </SelectTrigger>
-          <SelectContent className="rounded-none border-cream/15 bg-ink text-cream">
-            {inquiryLanes.map((lane) => (
-              <SelectItem
-                key={lane.value}
-                value={lane.value}
-                className="rounded-none focus:bg-gold/15 focus:text-cream"
-              >
-                {lane.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        {errors.inquiry ? (
-          <p id="inquiry-error" className="text-xs text-destructive">
-            {errors.inquiry}
-          </p>
-        ) : null}
-      </div>
+          <option value="">What is this about?</option>
+          {inquiryLanes.map((lane) => (
+            <option key={lane.value} value={lane.value}>
+              {lane.label}
+            </option>
+          ))}
+        </select>
+      </Field>
 
       <Field id="message" label="Letter" error={errors.message}>
         <Textarea
@@ -227,13 +216,13 @@ export function ContactForm() {
         <p className="text-xs text-silver">
           No mailing list. A person reads this.
         </p>
-        <Button
+        <button
           type="submit"
           disabled={status === "submitting"}
-          className="h-12 rounded-none bg-gold px-8 text-[0.7rem] uppercase tracking-[0.28em] text-ink hover:bg-gold/85"
+          className="inline-flex h-12 items-center justify-center bg-gold px-8 text-[0.7rem] uppercase tracking-[0.28em] text-ink hover:bg-gold/85 disabled:opacity-50"
         >
           {status === "submitting" ? "Sending…" : "Send to the desk"}
-        </Button>
+        </button>
       </div>
     </form>
   )
@@ -261,11 +250,15 @@ function Field({
         >
           {label}
         </Label>
-        {hint ? <span className="text-[0.65rem] uppercase tracking-[0.18em] text-silver/60">{hint}</span> : null}
+        {hint ? (
+          <span className="text-[0.65rem] uppercase tracking-[0.18em] text-silver/60">
+            {hint}
+          </span>
+        ) : null}
       </div>
       {children}
       {error ? (
-        <p id={`${id}-error`} className="text-xs text-destructive">
+        <p id={`${id}-error`} className="text-sm text-gold">
           {error}
         </p>
       ) : null}
