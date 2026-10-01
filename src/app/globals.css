@@ -146,7 +146,7 @@ html.landing-lock body {
   pointer-events: none;
   position: absolute;
   inset: 0;
-  z-index: 25;
+  z-index: 8;
   background: #050505;
   animation: landing-lift 1.15s ease 0.12s forwards;
 }
@@ -156,6 +156,7 @@ html.landing-lock body {
 }
 
 .landing-logo {
+  z-index: 10;
   animation: landing-burn 1.9s ease 0.8s both;
 }
 
