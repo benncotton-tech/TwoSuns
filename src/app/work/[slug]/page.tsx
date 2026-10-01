@@ -10,6 +10,8 @@ type Props = {
   params: Promise<{ slug: string }>
 }
 
+export const dynamicParams = false
+
 export function generateStaticParams() {
   return films.map((film) => ({ slug: film.slug }))
 }
@@ -17,7 +19,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
   const film = getFilm(slug)
-  if (!film) return { title: "Missing reel" }
+  if (!film) notFound()
   return {
     title: film.title,
     description: film.logline,
