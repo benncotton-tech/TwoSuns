@@ -5,6 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Volume2Icon, VolumeXIcon, XIcon } from "lucide-react"
 import { DeskBurnIn } from "@/components/landing/desk-burn-in"
+import { Wordmark } from "@/components/wordmark"
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion"
 import { showreelFilms, type Film } from "@/lib/films"
 import { cn } from "@/lib/utils"
@@ -96,11 +97,11 @@ export function CinematicLanding() {
       </div>
 
       <div
-        className="pointer-events-none absolute inset-0 bg-ink/55"
+        className="pointer-events-none absolute inset-0 bg-ink/30"
         aria-hidden
       />
       <div
-        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-ink via-ink/40 to-ink"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-ink/80 via-ink/10 to-ink/88"
         aria-hidden
       />
 
@@ -109,15 +110,8 @@ export function CinematicLanding() {
           <p className="text-[0.7rem] uppercase tracking-[0.42em] text-gold">
             Boutique film production
           </p>
-          <div className="mt-8 w-[min(92vw,40rem)]">
-            <Image
-              src="/twosuns-logo.png"
-              alt="TwoSuns"
-              width={941}
-              height={420}
-              priority
-              className="h-auto w-full"
-            />
+          <div className="mt-8 w-[min(94vw,42rem)] sm:w-[min(88vw,40rem)]">
+            <Wordmark priority inFrame />
           </div>
           {current ? (
             <p className="mt-8 max-w-md text-sm leading-relaxed text-silver">
