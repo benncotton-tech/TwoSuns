@@ -1,8 +1,8 @@
 import Image from "next/image"
 
 const SRC = "/twosuns-wordmark.png"
-const WIDTH = 900
-const HEIGHT = 366
+const WIDTH = 2859
+const HEIGHT = 1181
 
 export function Wordmark({
   className = "h-auto w-full",
