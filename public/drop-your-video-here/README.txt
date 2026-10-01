@@ -1,11 +1,7 @@
-The live landing reel is:
+The live landing picture is the Vimeo showreel:
 
-  public/landing/reel.mp4
+  https://vimeo.com/1232004117/19df93e39f
 
-To replace it, drop a new file in THIS folder named exactly:
+IDs live in src/lib/reel.ts.
 
-  reel.mp4
-
-Then send a message here that it is in.
-
-This is not a page on the website. It is a folder in the project.
+This folder is only if we need a local file again. It is not a page on the website.

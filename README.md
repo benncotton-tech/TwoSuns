@@ -22,9 +22,9 @@ Then open [http://127.0.0.1:4317](http://127.0.0.1:4317).
 
 ## Landing video (showreel)
 
-The home page plays `public/landing/reel.mp4` behind the official wordmark. Mute stays on until you ask for sound; click **Showreel** to watch it full.
+The home page plays Benjamin’s Vimeo cut (`Demoreel two suns_v3`) behind the official wordmark. Mute stays on until you ask for sound; click **Showreel** to watch it with controls.
 
-To replace the reel, overwrite that file (keep the name), or drop a new `reel.mp4` in `public/drop-your-video-here` and say so in chat. Chat attachments often flatten a video to a black still.
+The embed is `https://vimeo.com/1232004117/19df93e39f`. If the picture is blank on a new domain, allow that domain under the video’s Vimeo embed settings.
 
 ## Dropping in real films
 
