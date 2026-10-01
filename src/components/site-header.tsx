@@ -16,18 +16,40 @@ import { nav } from "@/lib/site"
 import { cn } from "@/lib/utils"
 import { useState } from "react"
 
-export function SiteHeader() {
+export function SiteHeader({ ghost = false }: { ghost?: boolean }) {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
 
   return (
-    <header className="sticky top-0 z-40 border-b border-cream/10 bg-ink/80 backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:h-[4.25rem] sm:px-6 lg:px-8">
-        <Link href="/" className="relative z-10 flex items-center" aria-label="TwoSuns home">
-          <Wordmark className="h-8 w-auto sm:h-9" priority />
-        </Link>
+    <header
+      className={cn(
+        "z-40",
+        ghost
+          ? "landing-ui pointer-events-none absolute inset-x-0 top-0 border-0 bg-transparent"
+          : "sticky top-0 border-b border-cream/10 bg-ink/80 backdrop-blur-md"
+      )}
+    >
+      <div
+        className={cn(
+          "mx-auto flex h-16 items-center justify-between px-4 sm:h-[4.25rem] sm:px-6 lg:px-8",
+          ghost ? "max-w-none" : "max-w-6xl"
+        )}
+      >
+        {ghost ? (
+          <span className="sr-only">TwoSuns</span>
+        ) : (
+          <Link href="/" className="relative z-10 flex items-center" aria-label="TwoSuns home">
+            <Wordmark className="h-8 w-auto sm:h-9" priority />
+          </Link>
+        )}
 
-        <nav className="hidden items-center gap-10 md:flex" aria-label="Primary">
+        <nav
+          className={cn(
+            "hidden items-center gap-10 md:flex",
+            ghost && "pointer-events-auto ml-auto"
+          )}
+          aria-label="Primary"
+        >
           {nav.map((item) => {
             const active =
               pathname === item.href || pathname.startsWith(`${item.href}/`)
@@ -52,7 +74,10 @@ export function SiteHeader() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="rounded-none text-cream md:hidden"
+                className={cn(
+                  "rounded-none text-cream md:hidden",
+                  ghost && "pointer-events-auto ml-auto"
+                )}
                 aria-label="Open menu"
               />
             }

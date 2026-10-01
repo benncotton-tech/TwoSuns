@@ -40,7 +40,7 @@ export default async function FilmPage({ params }: Props) {
         </Link>
         <span className="text-silver"> / {film.format}</span>
       </p>
-      <div className="mt-6 grid items-start gap-12 lg:grid-cols-[1fr_18rem]">
+      <div className="mt-6 grid items-start gap-12 lg:grid-cols-[1fr_minmax(18rem,28rem)]">
         <div>
           <h1 className="font-heading text-5xl leading-[0.95] text-cream sm:text-6xl lg:text-7xl">
             {film.title}
@@ -62,7 +62,18 @@ export default async function FilmPage({ params }: Props) {
             {film.location}
           </p>
         </div>
-        <div className="relative mx-auto aspect-[3/4] w-full max-w-xs overflow-hidden border border-cream/15 lg:max-w-none">
+        <div className="space-y-4">
+          {film.reel ? (
+            <video
+              src={film.reel}
+              poster={film.poster}
+              controls
+              playsInline
+              preload="metadata"
+              className="aspect-video w-full border border-cream/15 bg-black object-cover"
+            />
+          ) : null}
+          <div className="relative mx-auto aspect-[3/4] w-full max-w-xs overflow-hidden border border-cream/15 lg:max-w-none">
           <Image
             src={film.poster}
             alt={`${film.title} still`}
@@ -71,6 +82,7 @@ export default async function FilmPage({ params }: Props) {
             sizes="(max-width: 1024px) 320px, 288px"
             className="object-cover"
           />
+          </div>
         </div>
       </div>
       <div className="mt-20 flex flex-col gap-4 border-t border-cream/10 pt-8 sm:flex-row sm:items-center sm:justify-between">

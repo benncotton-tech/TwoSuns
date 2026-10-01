@@ -1,8 +1,8 @@
 # TwoSuns
 
-Marketing site for **TwoSuns**, a boutique film production company working from Los Angeles, Stockholm, and Melbourne. Domain: [twosuns.se](https://twosuns.se).
+Cinematic site for **TwoSuns**, a boutique film production company working from Los Angeles, Stockholm, and Melbourne. Domain: [twosuns.se](https://twosuns.se).
 
-The overlapping gold and silver circles in the wordmark are the point of the company: three principals, two hemispheres, one slate.
+The landing is a dual-projector showreel: the last four shorts play in overlapping gold and silver frames behind the official wordmark. Work, About, and Contact stay secondary.
 
 ## Local development
 
@@ -20,14 +20,25 @@ Then open [http://127.0.0.1:4317](http://127.0.0.1:4317).
 | `npm run start` | Serve the production build |
 | `npm run lint` | ESLint |
 
+## Dropping in real films
+
+Each picture lives in its own folder. Replace the placeholder reel when the finished file exists; keep the filename.
+
+```
+public/films/<slug>/poster.jpg
+public/films/<slug>/reel.mp4
+```
+
+Showreel shorts (most recent first): `salt-light`, `northern-inventory`, `harbour-hours`, `after-the-bell`.
+
+Placeholder reels are graded 8-second loops. They are not the finished pictures.
+
 ## What’s on the site
 
-- **Home** — wordmark, live light in three timezones, featured pictures
-- **Work** — the slate, including an empty lane for work we do not take
-- **About** — USA / Sweden / Australia desks
-- **Contact** — a letter to the desk (validation, loading, success, and error states)
-
-The contact form posts to a local API route. It does not send email and does not use a database.
+- **Home** — projector landing, mute/unmute, reduced-motion stills, four identifiable shorts
+- **Work** — the full slate
+- **About** — the three desks
+- **Contact** — a letter to the desk (no email backend)
 
 ## Stack
 

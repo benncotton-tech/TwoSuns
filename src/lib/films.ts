@@ -17,7 +17,14 @@ export type Film = {
   desk: "Los Angeles" | "Stockholm" | "Melbourne"
   logline: string
   synopsis: string
+  /** Still: public/films/<slug>/poster.jpg */
   poster: string
+  /**
+   * Picture: public/films/<slug>/reel.mp4
+   * Drop the finished film in that path when it exists. Placeholders are graded
+   * 8-second loops so the landing can run before the real files arrive.
+   */
+  reel?: string
   featured?: boolean
 }
 
@@ -32,7 +39,8 @@ export const films: Film[] = [
     location: "Skåne, Sweden",
     desk: "Stockholm",
     featured: true,
-    poster: "/films/salt-light.jpg",
+    poster: "/films/salt-light/poster.jpg",
+    reel: "/films/salt-light/reel.mp4",
     logline:
       "A salvage diver spends one winter raising a wreck that should have stayed down. Her daughter keeps a camera rolling after the batteries should be dead.",
     synopsis:
@@ -48,7 +56,7 @@ export const films: Film[] = [
     location: "Western Australia",
     desk: "Melbourne",
     featured: true,
-    poster: "/films/the-dry-line.jpg",
+    poster: "/films/the-dry-line/poster.jpg",
     logline:
       "A surveyor is hired to map a river that no longer reaches the sea. The client wants a line on a document. The land wants the line erased.",
     synopsis:
@@ -64,7 +72,7 @@ export const films: Film[] = [
     location: "Los Angeles / Stockholm",
     desk: "Los Angeles",
     featured: true,
-    poster: "/films/split-horizon.jpg",
+    poster: "/films/split-horizon/poster.jpg",
     logline:
       "Two sisters — one in Los Angeles, one in Stockholm — inherit an unfinished film their father shot on both coasts in 1998. Neither wants the footage. Both start cutting.",
     synopsis:
@@ -79,7 +87,8 @@ export const films: Film[] = [
     runtime: "86 min",
     location: "Port of Melbourne",
     desk: "Melbourne",
-    poster: "/films/harbour-hours.jpg",
+    poster: "/films/harbour-hours/poster.jpg",
+    reel: "/films/harbour-hours/reel.mp4",
     logline:
       "Eighteen months on the Melbourne night shift: crane operators, quarantine dogs, a chaplain, and the ships that never arrive when they say they will.",
     synopsis:
@@ -94,7 +103,8 @@ export const films: Film[] = [
     runtime: "79 min",
     location: "Stockholm",
     desk: "Stockholm",
-    poster: "/films/northern-inventory.jpg",
+    poster: "/films/northern-inventory/poster.jpg",
+    reel: "/films/northern-inventory/reel.mp4",
     logline:
       "A Stockholm archivist catalogs unclaimed rushes from collapsed productions. The pictures start to form a film nobody commissioned.",
     synopsis:
@@ -109,7 +119,8 @@ export const films: Film[] = [
     runtime: "18 min",
     location: "Ohio, United States",
     desk: "Los Angeles",
-    poster: "/films/after-the-bell.jpg",
+    poster: "/films/after-the-bell/poster.jpg",
+    reel: "/films/after-the-bell/reel.mp4",
     logline:
       "A night porter in a closed Midwestern hotel keeps the lights on for one guest who may not be staying.",
     synopsis:
@@ -124,7 +135,7 @@ export const films: Film[] = [
     runtime: "TBC",
     location: "Nullarbor, Australia",
     desk: "Melbourne",
-    poster: "/films/two-hours-east.jpg",
+    poster: "/films/two-hours-east/poster.jpg",
     logline:
       "A driver is paid to take a sealed case across the Nullarbor and not ask what is in it. She asks.",
     synopsis:
@@ -139,13 +150,21 @@ export const films: Film[] = [
     runtime: "TBC",
     location: "Norrland, Sweden",
     desk: "Stockholm",
-    poster: "/films/the-second-sun.jpg",
+    poster: "/films/the-second-sun/poster.jpg",
     logline:
       "A cinematographer who can no longer shoot in daylight follows a crew into a Nordic winter. Working title of the company, once. Now a picture.",
     synopsis:
       "The name we almost kept as a film instead of a company. In development from Stockholm. It is not a making-of, and it is not autobiography. It is about what happens to seeing when one of the two suns goes out.",
   },
 ]
+
+/** Last four shorts / showreel cuts, most recent first. */
+export const showreelSlugs = [
+  "salt-light",
+  "northern-inventory",
+  "harbour-hours",
+  "after-the-bell",
+] as const
 
 export const filmLanes = [
   { id: "all", label: "All" },
@@ -160,6 +179,12 @@ export type FilmLane = (typeof filmLanes)[number]["id"]
 
 export function getFilm(slug: string) {
   return films.find((film) => film.slug === slug)
+}
+
+export function showreelFilms() {
+  return showreelSlugs
+    .map((slug) => getFilm(slug))
+    .filter((film): film is Film & { reel: string } => Boolean(film?.reel))
 }
 
 export function filterFilms(lane: FilmLane) {
