@@ -18,45 +18,32 @@ export function CinematicLanding() {
   const [muted, setMuted] = useState(true)
   const [watching, setWatching] = useState<Short | null>(null)
   const nodes = useRef<(HTMLVideoElement | null)[]>([])
-
-  const gold = shorts[index]
-  const silver = shorts[(index + 1) % Math.max(shorts.length, 1)]
+  const current = shorts[index]
 
   useEffect(() => {
-    if (reduceMotion) return
+    if (reduceMotion || watching) return
     const id = window.setInterval(() => {
-      setIndex((current) => (current + 1) % shorts.length)
-    }, 8000)
+      setIndex((value) => (value + 1) % shorts.length)
+    }, 11000)
     return () => window.clearInterval(id)
-  }, [reduceMotion, shorts.length])
+  }, [reduceMotion, watching, shorts.length])
 
   useEffect(() => {
     nodes.current.forEach((video, i) => {
       if (!video) return
-      const on = i === index || i === (index + 1) % shorts.length
       video.muted = muted
-      try {
-        video.volume =
-          i === index && !muted
-            ? 0.85
-            : i === (index + 1) % shorts.length && !muted
-              ? 0.28
-              : 0
-      } catch {
-        /* iOS ignores volume */
-      }
       if (reduceMotion || watching) {
         video.pause()
         return
       }
-      if (on) {
+      if (i === index) {
         const play = video.play()
         if (play) play.catch(() => undefined)
       } else {
         video.pause()
       }
     })
-  }, [index, muted, reduceMotion, shorts.length, watching])
+  }, [index, muted, reduceMotion, watching])
 
   useEffect(() => {
     if (!watching) return
@@ -69,22 +56,15 @@ export function CinematicLanding() {
 
   return (
     <section className="relative h-[100dvh] min-h-[100dvh] overflow-hidden bg-ink">
-      <div className="landing-blackout" aria-hidden />
-      <div className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(ellipse_at_center,rgba(187,169,123,0.16),transparent_55%)] landing-lamp" />
-
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0">
         {shorts.map((film, i) => {
-          const isGold = film.slug === gold?.slug
-          const isSilver = film.slug === silver?.slug
-          const visible = isGold || isSilver
+          const on = i === index
           return (
             <div
               key={film.slug}
               className={cn(
-                "projector-frame",
-                isGold && "projector-gold",
-                isSilver && "projector-silver",
-                !visible && "pointer-events-none opacity-0"
+                "absolute inset-0 transition-opacity duration-1000",
+                on ? "opacity-100" : "opacity-0"
               )}
             >
               {reduceMotion ? (
@@ -92,9 +72,9 @@ export function CinematicLanding() {
                   src={film.poster}
                   alt=""
                   fill
-                  priority={visible}
+                  priority={on}
                   className="object-cover"
-                  sizes="80vw"
+                  sizes="100vw"
                 />
               ) : (
                 <video
@@ -106,65 +86,69 @@ export function CinematicLanding() {
                   playsInline
                   loop
                   muted
-                  preload="auto"
+                  preload={on ? "auto" : "metadata"}
                   className="h-full w-full object-cover"
                 />
               )}
-              <span className="sr-only">{film.title}</span>
             </div>
           )
         })}
       </div>
 
-      <div className="landing-logo pointer-events-none absolute inset-0 z-10 flex items-center justify-center px-4">
-        <div
-          className={cn(
-            "w-[min(92vw,48rem)] drop-shadow-[0_12px_40px_rgba(0,0,0,0.85)]",
-            !muted && !reduceMotion && "landing-sound-glow"
-          )}
-        >
-          <Image
-            src="/twosuns-logo.png"
-            alt="TwoSuns"
-            width={941}
-            height={420}
-            priority
-            className="h-auto w-full"
-          />
+      <div
+        className="pointer-events-none absolute inset-0 bg-ink/55"
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-ink via-ink/40 to-ink"
+        aria-hidden
+      />
+
+      <div className="relative z-10 flex h-full flex-col">
+        <div className="flex flex-1 flex-col items-center justify-center px-6 text-center">
+          <p className="text-[0.7rem] uppercase tracking-[0.42em] text-gold">
+            Boutique film production
+          </p>
+          <div className="mt-8 w-[min(92vw,40rem)]">
+            <Image
+              src="/twosuns-logo.png"
+              alt="TwoSuns"
+              width={941}
+              height={420}
+              priority
+              className="h-auto w-full"
+            />
+          </div>
+          {current ? (
+            <p className="mt-8 max-w-md text-sm leading-relaxed text-silver">
+              Los Angeles · Stockholm · Melbourne
+            </p>
+          ) : null}
         </div>
-      </div>
 
-      <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-10 bg-ink sm:h-12" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-10 bg-ink sm:h-12" />
-
-      <div className="landing-ui pointer-events-none absolute inset-0 z-20 flex flex-col justify-between px-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-20 sm:px-6 lg:px-8">
-        <p className="pointer-events-none text-center text-[0.65rem] uppercase tracking-[0.42em] text-gold/80">
-          Four shorts · Two hemispheres
-        </p>
-
-        <div className="pointer-events-auto flex flex-col gap-4">
-          <div className="flex items-end justify-between gap-4">
+        <div className="px-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] sm:px-6 lg:px-8">
+          <div className="mx-auto flex max-w-6xl flex-col gap-4 border-t border-cream/10 pt-4 sm:flex-row sm:items-end sm:justify-between">
             <button
               type="button"
               onClick={() => setMuted((value) => !value)}
-              className={cn(
-                "inline-flex h-11 items-center gap-2 px-3 text-[0.65rem] uppercase tracking-[0.22em] text-cream hover:bg-cream/10",
-                reduceMotion && "opacity-50"
-              )}
               disabled={reduceMotion}
               aria-pressed={!muted}
               aria-label={muted ? "Unmute showreel" : "Mute showreel"}
+              className={cn(
+                "inline-flex h-9 items-center gap-2 text-[0.65rem] uppercase tracking-[0.22em] text-silver hover:text-cream",
+                reduceMotion && "opacity-40"
+              )}
             >
-              {muted ? <VolumeXIcon className="size-4" /> : <Volume2Icon className="size-4" />}
-              <span className="hidden sm:inline">{muted ? "Sound up" : "Sound down"}</span>
+              {muted ? (
+                <VolumeXIcon className="size-3.5" />
+              ) : (
+                <Volume2Icon className="size-3.5" />
+              )}
+              {muted ? "Sound" : "Mute"}
             </button>
-            <DeskBurnIn className="flex flex-col items-end gap-1 text-[0.6rem] uppercase tracking-[0.18em] sm:flex-row sm:gap-5" />
-          </div>
 
-          <ol className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-            {shorts.map((film, i) => {
-              const active = film.slug === gold?.slug || film.slug === silver?.slug
-              return (
+            <ul className="flex flex-wrap gap-x-5 gap-y-2">
+              {shorts.map((film, i) => (
                 <li key={film.slug}>
                   <button
                     type="button"
@@ -173,31 +157,18 @@ export function CinematicLanding() {
                       setWatching(film)
                     }}
                     className={cn(
-                      "group flex w-full items-stretch gap-2 border px-2 py-2 text-left transition sm:px-3",
-                      active
-                        ? "border-gold/70 bg-gold/10"
-                        : "border-cream/15 bg-ink/50 hover:border-cream/35"
+                      "text-left text-[0.7rem] uppercase tracking-[0.2em] transition-colors",
+                      i === index ? "text-cream" : "text-silver/70 hover:text-cream"
                     )}
                   >
-                    <span className="relative hidden aspect-[3/4] w-8 shrink-0 overflow-hidden sm:block">
-                      <Image src={film.poster} alt="" fill className="object-cover" sizes="32px" />
-                    </span>
-                    <span>
-                      <span className="block font-mono text-[0.6rem] text-gold">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                      <span className="block font-heading text-sm text-cream group-hover:text-gold sm:text-base">
-                        {film.title}
-                      </span>
-                      <span className="block text-[0.6rem] uppercase tracking-[0.16em] text-silver">
-                        {film.year} · {film.desk}
-                      </span>
-                    </span>
+                    {film.title}
                   </button>
                 </li>
-              )
-            })}
-          </ol>
+              ))}
+            </ul>
+
+            <DeskBurnIn className="hidden gap-4 text-[0.6rem] uppercase tracking-[0.16em] text-silver lg:flex" />
+          </div>
         </div>
       </div>
 
@@ -205,7 +176,7 @@ export function CinematicLanding() {
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
           <button
             type="button"
-            className="absolute inset-0 bg-black/85"
+            className="absolute inset-0 bg-black/88"
             aria-label="Close film"
             onClick={() => setWatching(null)}
           />
@@ -213,7 +184,7 @@ export function CinematicLanding() {
             role="dialog"
             aria-modal="true"
             aria-labelledby="watch-title"
-            className="relative z-[1] w-[min(100%,56rem)] border border-cream/20 bg-ink"
+            className="relative z-[1] w-[min(100%,52rem)] bg-ink"
           >
             <button
               type="button"
@@ -246,7 +217,7 @@ export function CinematicLanding() {
               </p>
               <Link
                 href={`/work/${watching.slug}`}
-                className="mt-4 inline-flex h-10 items-center bg-gold px-5 text-[0.65rem] uppercase tracking-[0.22em] text-ink"
+                className="mt-5 inline-block text-[0.7rem] uppercase tracking-[0.22em] text-gold hover:text-cream"
               >
                 On the slate
               </Link>

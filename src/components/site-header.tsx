@@ -30,7 +30,7 @@ export function SiteHeader({ ghost = false }: { ghost?: boolean }) {
       className={cn(
         "z-40",
         ghost
-          ? "landing-ui pointer-events-none absolute inset-x-0 top-0 border-0 bg-transparent"
+          ? "absolute inset-x-0 top-0 border-0 bg-transparent"
           : "sticky top-0 border-b border-cream/10 bg-ink/80 backdrop-blur-md"
       )}
     >

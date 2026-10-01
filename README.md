@@ -2,7 +2,7 @@
 
 Cinematic site for **TwoSuns**, a boutique film production company working from Los Angeles, Stockholm, and Melbourne. Domain: [twosuns.se](https://twosuns.se).
 
-The landing is a dual-projector showreel: the last four shorts play in overlapping gold and silver frames behind the official wordmark. Work, About, and Contact stay secondary.
+The landing is a single picture behind the official wordmark: the last four shorts playing quietly in the dark. Work, About, and Contact stay secondary.
 
 ## Local development
 
@@ -35,7 +35,7 @@ Placeholder reels are graded 8-second loops. They are not the finished pictures.
 
 ## What’s on the site
 
-- **Home** — projector landing, mute/unmute, reduced-motion stills, four identifiable shorts
+- **Home** — wordmark-led landing, one film plane, mute, reduced-motion stills, four shorts
 - **Work** — the full slate
 - **About** — the three desks
 - **Contact** — a letter to the desk (no email backend)
