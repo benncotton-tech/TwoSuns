@@ -1,7 +1,7 @@
 "use client"
 
 import { useSyncExternalStore } from "react"
-import { desks } from "@/lib/site"
+import { house } from "@/lib/site"
 import { cn } from "@/lib/utils"
 
 function subscribe(onStoreChange: () => void) {
@@ -41,40 +41,31 @@ function isDaylight(date: Date, timeZone: string) {
 export function HemisphereClocks({ className }: { className?: string }) {
   const timestamp = useSyncExternalStore(subscribe, getNow, getServerNow)
   const now = timestamp === 0 ? null : new Date(timestamp)
+  const daylight = now ? isDaylight(now, house.timezone) : null
 
   return (
-    <ul
+    <div
       className={cn(
-        "grid w-full grid-cols-1 gap-6 sm:grid-cols-3 sm:gap-8",
+        "flex w-full items-end justify-between gap-6 border-t border-cream/15 pt-4",
         className
       )}
     >
-      {desks.map((desk) => {
-        const daylight = now ? isDaylight(now, desk.timezone) : null
-        return (
-          <li
-            key={desk.id}
-            className="flex items-start justify-between gap-4 border-t border-cream/15 pt-4 sm:flex-col sm:justify-start"
-          >
-            <div>
-              <p className="font-heading text-lg tracking-wide text-cream sm:text-xl">
-                {desk.city}
-              </p>
-              <p className="mt-1 text-[0.7rem] uppercase tracking-[0.28em] text-silver">
-                {desk.code} · {desk.region}
-              </p>
-            </div>
-            <div className="text-right sm:text-left">
-              <p className="font-mono text-sm tabular-nums text-gold sm:text-base">
-                {now ? formatTime(now, desk.timezone) : "––:––:––"}
-              </p>
-              <p className="mt-1 text-[0.65rem] uppercase tracking-[0.22em] text-silver/80">
-                {daylight === null ? "Loading light" : daylight ? "Sun up" : "Sun down"}
-              </p>
-            </div>
-          </li>
-        )
-      })}
-    </ul>
+      <div>
+        <p className="font-heading text-lg tracking-wide text-cream sm:text-xl">
+          {house.city}
+        </p>
+        <p className="mt-1 text-[0.7rem] uppercase tracking-[0.28em] text-silver">
+          {house.code} · {house.country} · home
+        </p>
+      </div>
+      <div className="text-right">
+        <p className="font-mono text-sm tabular-nums text-gold sm:text-base">
+          {now ? formatTime(now, house.timezone) : "––:––:––"}
+        </p>
+        <p className="mt-1 text-[0.65rem] uppercase tracking-[0.22em] text-silver/80">
+          {daylight === null ? "Loading light" : daylight ? "Sun up" : "Sun down"}
+        </p>
+      </div>
+    </div>
   )
 }

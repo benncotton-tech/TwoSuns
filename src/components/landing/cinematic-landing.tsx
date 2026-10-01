@@ -115,7 +115,7 @@ export function CinematicLanding() {
           </div>
           {current ? (
             <p className="mt-8 max-w-md text-sm leading-relaxed text-silver">
-              Los Angeles · Stockholm · Melbourne
+              Two founders · Stockholm
             </p>
           ) : null}
         </div>
@@ -161,7 +161,7 @@ export function CinematicLanding() {
               ))}
             </ul>
 
-            <DeskBurnIn className="hidden gap-4 text-[0.6rem] uppercase tracking-[0.16em] text-silver lg:flex" />
+            <DeskBurnIn className="hidden items-baseline text-[0.6rem] uppercase tracking-[0.16em] text-silver lg:flex" />
           </div>
         </div>
       </div>

@@ -23,7 +23,7 @@ const bodoni = Bodoni_Moda({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: "TwoSuns — Boutique film production",
+    default: "TwoSuns — Boutique film production, Stockholm",
     template: "%s · TwoSuns",
   },
   description: site.description,

@@ -5,7 +5,7 @@ import { PageIntro } from "@/components/page-intro"
 export const metadata: Metadata = {
   title: "Work",
   description:
-    "The TwoSuns slate: features, documentaries, and shorts produced from Los Angeles, Stockholm, and Melbourne.",
+    "The TwoSuns slate: features, documentaries, and shorts produced from Stockholm.",
 }
 
 export default function WorkPage() {
@@ -15,7 +15,7 @@ export default function WorkPage() {
         <p>
           Eight titles. Features, documentaries, shorts — and two in
           development. We do not pad the list with service work. If a picture
-          is here, a desk is still living with it.
+          is here, one of us is still living with it.
         </p>
       </PageIntro>
       <div className="mt-14">

@@ -51,15 +51,12 @@ export default async function FilmPage({ params }: Props) {
           <dl className="mt-10 grid grid-cols-2 gap-6 text-sm sm:grid-cols-4">
             <Meta label="Year" value={film.year} />
             <Meta label="Runtime" value={film.runtime} />
-            <Meta label="Desk" value={film.desk} />
+            <Meta label="Location" value={film.location} />
             <Meta label="Status" value={film.status} />
           </dl>
           <DualRule className="mt-10" />
           <p className="mt-10 max-w-2xl text-base leading-relaxed text-cream/85">
             {film.synopsis}
-          </p>
-          <p className="mt-6 text-[0.7rem] uppercase tracking-[0.22em] text-silver">
-            {film.location}
           </p>
         </div>
         <div className="space-y-4">

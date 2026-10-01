@@ -2,29 +2,30 @@ import type { Metadata } from "next"
 import { DualSun } from "@/components/dual-sun"
 import { HemisphereClocks } from "@/components/hemisphere-clocks"
 import { PageIntro } from "@/components/page-intro"
-import { desks } from "@/lib/site"
+import { founders } from "@/lib/site"
 
 export const metadata: Metadata = {
   title: "About",
   description:
-    "TwoSuns is three principals across the United States, Sweden, and Australia — boutique film production from both hemispheres.",
+    "TwoSuns is a Swedish production company based in Stockholm. Two founders — Billy, from the United States, and Benjamin, from Australia — both live here. The two suns are the two of them.",
 }
 
 export default function AboutPage() {
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
-      <PageIntro eyebrow="About" title="Two suns. Three desks.">
+      <PageIntro eyebrow="About" title="Two suns. One city.">
         <p>
-          TwoSuns is a boutique film production company named for a practical
-          fact: we work both hemispheres. When the American day is wrapping,
-          Sweden is already lighting. When Stockholm goes dark, Melbourne is
-          still in the sun. The overlapping circles in the mark are that
-          overlap — gold and silver sharing an orbit, not a merger deck.
+          TwoSuns is a Swedish production company based in Stockholm. The name
+          is not three countries and it is not a merger. It is two people:
+          Billy, from the United States, and Benjamin, from Australia. Both
+          live here. The overlapping circles in the mark are them — gold and
+          silver sharing an orbit.
         </p>
         <p>
-          There is no fourth office and no layer of producers whose job is to
-          manage the other producers. Three principals. A short slate. Pictures
-          we will still answer for in ten years.
+          There is no Los Angeles office and no Melbourne office. Stockholm is
+          home. Australia and the United States are where the founders come
+          from, not extra desks. Pictures can be shot elsewhere. The company
+          does not move.
         </p>
       </PageIntro>
 
@@ -36,15 +37,15 @@ export default function AboutPage() {
         <HemisphereClocks />
       </section>
 
-      <section className="mt-20 grid gap-12 lg:grid-cols-3">
-        {desks.map((desk) => (
-          <article key={desk.id} className="border-t border-gold/40 pt-6">
+      <section className="mt-20 grid gap-12 lg:grid-cols-2">
+        {founders.map((person) => (
+          <article key={person.id} className="border-t border-gold/40 pt-6">
             <p className="text-[0.65rem] uppercase tracking-[0.28em] text-silver">
-              {desk.region}
+              From {person.from}
             </p>
-            <h2 className="mt-2 font-heading text-4xl text-cream">{desk.city}</h2>
-            <p className="mt-2 text-sm text-gold">{desk.role}</p>
-            <p className="mt-5 text-sm leading-relaxed text-silver">{desk.copy}</p>
+            <h2 className="mt-2 font-heading text-4xl text-cream">{person.name}</h2>
+            <p className="mt-2 text-sm text-gold">{person.role}</p>
+            <p className="mt-5 text-sm leading-relaxed text-silver">{person.copy}</p>
           </article>
         ))}
       </section>
@@ -54,13 +55,13 @@ export default function AboutPage() {
         <ol className="mt-10 space-y-8">
           <Step
             n="01"
-            title="One desk champions it"
-            copy="A film enters on a single principal’s desk. The other two can argue, but they cannot dilute. If nobody will put their name on the first page, it does not join the slate."
+            title="One of us champions it"
+            copy="A film enters because Billy or Benjamin will put their name on the first page. If neither will, it does not join the slate."
           />
           <Step
             n="02"
-            title="The work follows the light"
-            copy="Development, production, and post do not have to live in the same city. A Swedish winter and an Australian summer can belong to the same schedule. We move the picture, not a circus."
+            title="We go where the picture is"
+            copy="A Swedish winter or an Australian highway can belong to the same company without opening a second office. We travel for the work. We come home to Stockholm."
           />
           <Step
             n="03"

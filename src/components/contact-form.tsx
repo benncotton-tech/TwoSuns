@@ -33,7 +33,7 @@ export function ContactForm() {
     if (!name.trim()) next.name = "Tell us who is writing."
     if (!email.trim()) next.email = "We need an email so we can write back."
     else if (!emailPattern.test(email.trim())) next.email = "That email does not look usable."
-    if (!inquiry) next.inquiry = "Choose a lane so the right desk opens it."
+    if (!inquiry) next.inquiry = "Choose a lane so we know how to read it."
     if (!message.trim()) next.message = "The letter is empty."
     else if (message.trim().length < 20)
       next.message = "Give us a little more — twenty characters at least."
@@ -69,7 +69,7 @@ export function ContactForm() {
         | null
       if (!response.ok) {
         setStatus("error")
-        setServerMessage(data?.error ?? "The desk could not take this letter.")
+        setServerMessage(data?.error ?? "We could not take this letter.")
         return
       }
       setStatus("success")
@@ -97,8 +97,8 @@ export function ContactForm() {
         </p>
         <h2 className="mt-3 font-heading text-3xl text-cream">We have the letter.</h2>
         <p className="mt-4 max-w-md text-sm leading-relaxed text-silver">
-          Someone at the desk that should read it will write back. If it is
-          urgent, use hello@twosuns.se and put the city in the subject.
+          Billy or Benjamin will write back. If it is urgent, use
+          hello@twosuns.se.
         </p>
         <button
           type="button"
@@ -221,7 +221,7 @@ export function ContactForm() {
           disabled={status === "submitting"}
           className="inline-flex h-12 items-center justify-center bg-gold px-8 text-[0.7rem] uppercase tracking-[0.28em] text-ink hover:bg-gold/85 disabled:opacity-50"
         >
-          {status === "submitting" ? "Sending…" : "Send to the desk"}
+          {status === "submitting" ? "Sending…" : "Send the letter"}
         </button>
       </div>
     </form>

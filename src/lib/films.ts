@@ -14,7 +14,6 @@ export type Film = {
   status: FilmStatus
   runtime: string
   location: string
-  desk: "Los Angeles" | "Stockholm" | "Melbourne"
   logline: string
   synopsis: string
   /** Still: public/films/<slug>/poster.jpg */
@@ -37,14 +36,13 @@ export const films: Film[] = [
     status: "Festival circuit",
     runtime: "112 min",
     location: "Skåne, Sweden",
-    desk: "Stockholm",
     featured: true,
     poster: "/films/salt-light/poster.jpg",
     reel: "/films/salt-light/reel.mp4",
     logline:
       "A salvage diver spends one winter raising a wreck that should have stayed down. Her daughter keeps a camera rolling after the batteries should be dead.",
     synopsis:
-      "On the Skåne coast, Marta takes a contract nobody else would sign: a wreck in water too cold, too late in the season. Her teenage daughter, sent north for the winter, films the dives. The footage lasts longer than the batteries. TwoSuns produced the picture from the Stockholm desk with a small Swedish crew and a camera package that never quite behaved. It is the company’s first feature to travel.",
+      "On the Skåne coast, Marta takes a contract nobody else would sign: a wreck in water too cold, too late in the season. Her teenage daughter, sent north for the winter, films the dives. The footage lasts longer than the batteries. TwoSuns produced the picture from Stockholm with a small Swedish crew and a camera package that never quite behaved. It is the company’s first feature to travel.",
   },
   {
     slug: "the-dry-line",
@@ -54,13 +52,12 @@ export const films: Film[] = [
     status: "Post-production",
     runtime: "104 min",
     location: "Western Australia",
-    desk: "Melbourne",
     featured: true,
     poster: "/films/the-dry-line/poster.jpg",
     logline:
       "A surveyor is hired to map a river that no longer reaches the sea. The client wants a line on a document. The land wants the line erased.",
     synopsis:
-      "Shot on the edge of the wheatbelt and the salt lakes, The Dry Line follows a contract surveyor whose job is to draw a boundary through a riverbed that has not carried water in nine years. The Melbourne desk ran production; Los Angeles held the cut. TwoSuns does not treat landscape as backdrop. The land is the other lead.",
+      "Shot on the edge of the wheatbelt and the salt lakes, The Dry Line follows a contract surveyor whose job is to draw a boundary through a riverbed that has not carried water in nine years. Produced from Stockholm; shot in Western Australia. TwoSuns does not treat landscape as backdrop. The land is the other lead.",
   },
   {
     slug: "split-horizon",
@@ -70,13 +67,12 @@ export const films: Film[] = [
     status: "In production",
     runtime: "TBC",
     location: "Los Angeles / Stockholm",
-    desk: "Los Angeles",
     featured: true,
     poster: "/films/split-horizon/poster.jpg",
     logline:
       "Two sisters — one in Los Angeles, one in Stockholm — inherit an unfinished film their father shot on both coasts in 1998. Neither wants the footage. Both start cutting.",
     synopsis:
-      "A TwoSuns picture in the most literal sense: production split between the American and Swedish desks, edited in the hours when both cities are awake. The inherited rushes are real method, not a gimmick — we shot new material on the same stocks the father would have used, then let the sisters argue in the cut. Gold on one side of the frame, silver on the other.",
+      "A TwoSuns picture produced from Stockholm, with new material shot in both Los Angeles and Stockholm. The inherited rushes are real method, not a gimmick — we shot on the same stocks the father would have used, then let the sisters argue in the cut. Gold on one side of the frame, silver on the other.",
   },
   {
     slug: "harbour-hours",
@@ -86,13 +82,12 @@ export const films: Film[] = [
     status: "Released",
     runtime: "86 min",
     location: "Port of Melbourne",
-    desk: "Melbourne",
     poster: "/films/harbour-hours/poster.jpg",
     reel: "/films/harbour-hours/reel.mp4",
     logline:
       "Eighteen months on the Melbourne night shift: crane operators, quarantine dogs, a chaplain, and the ships that never arrive when they say they will.",
     synopsis:
-      "A documentary of waiting. The Melbourne desk embedded with night crews at the port for a year and a half. No interviews against brick walls. No score telling you how to feel about labour. Just the hours, the sodium lights, and the people who keep a city supplied while it sleeps.",
+      "A documentary of waiting. Shot with night crews at the Port of Melbourne over a year and a half; produced from Stockholm. No interviews against brick walls. No score telling you how to feel about labour. Just the hours, the sodium lights, and the people who keep a city supplied while it sleeps.",
   },
   {
     slug: "northern-inventory",
@@ -102,13 +97,12 @@ export const films: Film[] = [
     status: "Released",
     runtime: "79 min",
     location: "Stockholm",
-    desk: "Stockholm",
     poster: "/films/northern-inventory/poster.jpg",
     reel: "/films/northern-inventory/reel.mp4",
     logline:
       "A Stockholm archivist catalogs unclaimed rushes from collapsed productions. The pictures start to form a film nobody commissioned.",
     synopsis:
-      "Produced from the Swedish desk inside a real archive of unfinished work. We did not re-stage the shelves. The archivist is who she says she is. Northern Inventory is about what remains when a production company disappears and the pictures do not.",
+      "Produced from Stockholm inside a real archive of unfinished work. We did not re-stage the shelves. The archivist is who she says she is. Northern Inventory is about what remains when a production company disappears and the pictures do not.",
   },
   {
     slug: "after-the-bell",
@@ -118,7 +112,6 @@ export const films: Film[] = [
     status: "Released",
     runtime: "18 min",
     location: "Ohio, United States",
-    desk: "Los Angeles",
     poster: "/films/after-the-bell/poster.jpg",
     reel: "/films/after-the-bell/reel.mp4",
     logline:
@@ -134,12 +127,11 @@ export const films: Film[] = [
     status: "In development",
     runtime: "TBC",
     location: "Nullarbor, Australia",
-    desk: "Melbourne",
     poster: "/films/two-hours-east/poster.jpg",
     logline:
       "A driver is paid to take a sealed case across the Nullarbor and not ask what is in it. She asks.",
     synopsis:
-      "In development at the Melbourne desk, with Los Angeles on the draft. A road picture that treats distance as a moral problem, not a postcard. We will not shoot it until the script can survive silence.",
+      "In development from Stockholm. A road picture that treats distance as a moral problem, not a postcard. We will not shoot it until the script can survive silence.",
   },
   {
     slug: "the-second-sun",
@@ -149,7 +141,6 @@ export const films: Film[] = [
     status: "In development",
     runtime: "TBC",
     location: "Norrland, Sweden",
-    desk: "Stockholm",
     poster: "/films/the-second-sun/poster.jpg",
     logline:
       "A cinematographer who can no longer shoot in daylight follows a crew into a Nordic winter. Working title of the company, once. Now a picture.",

@@ -44,7 +44,7 @@ export function FilmCatalog() {
           </h2>
           <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-silver">
             TwoSuns keeps a short slate of features, documentaries, and shorts.
-            If you have a picture — not a product — write to the desk.
+            If you have a picture — not a product — write to us.
           </p>
           <Link
             href="/contact"

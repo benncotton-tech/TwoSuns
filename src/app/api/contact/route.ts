@@ -37,7 +37,7 @@ export async function POST(request: Request) {
   }
   if (typeof message !== "string" || message.trim().length < 20) {
     return NextResponse.json(
-      { error: "Give the desk a little more to go on." },
+      { error: "Give us a little more to go on." },
       { status: 400 }
     )
   }

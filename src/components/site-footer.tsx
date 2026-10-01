@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { DualSun } from "@/components/dual-sun"
 import { Wordmark } from "@/components/wordmark"
-import { desks, nav, site } from "@/lib/site"
+import { founders, house, nav, site } from "@/lib/site"
 
 export function SiteFooter() {
   return (
@@ -15,13 +15,17 @@ export function SiteFooter() {
         </div>
         <div>
           <p className="text-[0.65rem] uppercase tracking-[0.28em] text-gold">
-            Desks
+            House
           </p>
-          <ul className="mt-3 space-y-2 text-sm text-cream/90">
-            {desks.map((desk) => (
-              <li key={desk.id}>
-                {desk.city}
-                <span className="text-silver"> · {desk.region}</span>
+          <p className="mt-3 text-sm text-cream/90">
+            {house.city}
+            <span className="text-silver"> · {house.country}</span>
+          </p>
+          <ul className="mt-4 space-y-1 text-sm text-cream/90">
+            {founders.map((person) => (
+              <li key={person.id}>
+                {person.name}
+                <span className="text-silver"> · from {person.from}</span>
               </li>
             ))}
           </ul>

@@ -1,6 +1,6 @@
 # TwoSuns
 
-Cinematic site for **TwoSuns**, a boutique film production company working from Los Angeles, Stockholm, and Melbourne. Domain: [twosuns.se](https://twosuns.se).
+Cinematic site for **TwoSuns**, a Swedish film production company based in Stockholm. Two founders, Billy and Benjamin, both live here. Domain: [twosuns.se](https://twosuns.se).
 
 The landing is a single picture behind the official wordmark: the last four shorts playing quietly in the dark. Work, About, and Contact stay secondary.
 
@@ -37,8 +37,8 @@ Placeholder reels are graded 8-second loops. They are not the finished pictures.
 
 - **Home** — wordmark-led landing, one film plane, mute, reduced-motion stills, four shorts
 - **Work** — the full slate
-- **About** — the three desks
-- **Contact** — a letter to the desk (no email backend)
+- **About** — two founders, Stockholm
+- **Contact** — a letter to Stockholm (no email backend)
 
 ## Stack
 
