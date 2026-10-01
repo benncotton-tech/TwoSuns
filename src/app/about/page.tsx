@@ -18,8 +18,8 @@ export default function AboutPage() {
           TwoSuns is a Swedish production company based in Stockholm. The name
           is not three countries and it is not a merger. It is two people:
           Billy, from the United States, and Benjamin, from Australia. Both
-          live here. The overlapping circles in the mark are them — gold and
-          silver sharing an orbit.
+          live here. The overlapping circles in the mark are them — two people,
+          not two stars.
         </p>
         <p>
           There is no Los Angeles office and no Melbourne office. Stockholm is

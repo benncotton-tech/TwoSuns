@@ -145,7 +145,7 @@ export const films: Film[] = [
     logline:
       "A cinematographer who can no longer shoot in daylight follows a crew into a Nordic winter. Working title of the company, once. Now a picture.",
     synopsis:
-      "The name we almost kept as a film instead of a company. In development from Stockholm. It is not a making-of, and it is not autobiography. It is about what happens to seeing when one of the two suns goes out.",
+      "The name we almost kept as a film instead of a company. In development from Stockholm. It is not a making-of, and it is not autobiography. It is about what happens to seeing when one of the two people the company is named for can no longer look.",
   },
 ]
 

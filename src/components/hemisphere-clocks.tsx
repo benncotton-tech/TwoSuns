@@ -63,7 +63,7 @@ export function HemisphereClocks({ className }: { className?: string }) {
           {now ? formatTime(now, house.timezone) : "––:––:––"}
         </p>
         <p className="mt-1 text-[0.65rem] uppercase tracking-[0.22em] text-silver/80">
-          {daylight === null ? "Loading light" : daylight ? "Sun up" : "Sun down"}
+          {daylight === null ? "—" : daylight ? "Day" : "Night"}
         </p>
       </div>
     </div>

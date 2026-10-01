@@ -2,7 +2,7 @@
 
 Cinematic site for **TwoSuns**, a Swedish film production company based in Stockholm. Two founders, Billy and Benjamin, both live here. Domain: [twosuns.se](https://twosuns.se).
 
-The landing is a single picture behind the official wordmark: the last four shorts playing quietly in the dark. Work, About, and Contact stay secondary.
+The landing opens on the official wordmark on black. The last four shorts sit below as a quiet slate. Work, About, and Contact stay secondary.
 
 ## Local development
 
@@ -35,7 +35,7 @@ Placeholder reels are graded 8-second loops. They are not the finished pictures.
 
 ## What’s on the site
 
-- **Home** — wordmark-led landing, one film plane, mute, reduced-motion stills, four shorts
+- **Home** — wordmark on black, then four shorts as a slate
 - **Work** — the full slate
 - **About** — two founders, Stockholm
 - **Contact** — a letter to Stockholm (no email backend)

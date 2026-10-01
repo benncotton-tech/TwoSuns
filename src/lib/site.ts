@@ -21,14 +21,14 @@ export const founders = [
     name: "Billy",
     from: "United States",
     role: "Founder · lives in Stockholm",
-    copy: "Came from the United States. Lives in Stockholm. One of the two suns the company is named for — not an office in another city. Billy stays with a picture until the cut is honest.",
+    copy: "Came from the United States. Lives in Stockholm. One of the two people the company is named for — not an office in another city. Billy stays with a picture until the cut is honest.",
   },
   {
     id: "benjamin",
     name: "Benjamin",
     from: "Australia",
     role: "Founder · lives in Stockholm",
-    copy: "Came from Australia. Lives in Stockholm. The other sun. There is no Melbourne desk. The Australian in the story is him, working from here. Benjamin keeps the days that only work if someone will wait.",
+    copy: "Came from Australia. Lives in Stockholm. The other person the company is named for. There is no Melbourne desk. The Australian in the story is him, working from here. Benjamin keeps the days that only work if someone will wait.",
   },
 ] as const
 

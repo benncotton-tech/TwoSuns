@@ -36,7 +36,7 @@ export function DeskBurnIn({ className }: { className?: string }) {
       <span className="text-gold">{house.code}</span>
       <span className="ml-2 tabular-nums text-cream/90">{time}</span>
       <span className="ml-2 hidden text-silver/70 sm:inline">
-        {hour === null ? "" : up ? "SUN UP" : "SUN DOWN"}
+        {hour === null ? "" : up ? "DAY" : "NIGHT"}
       </span>
     </p>
   )
