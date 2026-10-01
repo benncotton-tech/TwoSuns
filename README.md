@@ -2,7 +2,7 @@
 
 Cinematic site for **TwoSuns**, a Swedish film production company based in Stockholm. Two founders, Billy and Benjamin, both live here. Domain: [twosuns.se](https://twosuns.se).
 
-The landing is a large official wordmark over the last four shorts, one picture at a time. Work, About, and Contact stay secondary.
+The landing is a large official wordmark over the TwoSuns showreel. Work, News, About, and Contact stay secondary.
 
 ## Local development
 
@@ -20,16 +20,11 @@ Then open [http://127.0.0.1:4317](http://127.0.0.1:4317).
 | `npm run start` | Serve the production build |
 | `npm run lint` | ESLint |
 
-## Landing video (animated logo)
+## Landing video (showreel)
 
-Not the website. The project files.
+The home page plays `public/landing/reel.mp4` behind the official wordmark. Mute stays on until you ask for sound; click **Showreel** to watch it full.
 
-1. In Cursor, open the **Files** sidebar (left).
-2. Open `public` → `drop-your-video-here`.
-3. Put your file in there, named `reel.mp4`.
-4. Message this chat that it is in.
-
-Chat attachments often turn a video into a black still. Putting the file in that folder is the reliable way.
+To replace the reel, overwrite that file (keep the name), or drop a new `reel.mp4` in `public/drop-your-video-here` and say so in chat. Chat attachments often flatten a video to a black still.
 
 ## Dropping in real films
 

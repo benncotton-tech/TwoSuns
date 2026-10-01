@@ -7,48 +7,33 @@ import { Volume2Icon, VolumeXIcon, XIcon } from "lucide-react"
 import { DeskBurnIn } from "@/components/landing/desk-burn-in"
 import { Wordmark } from "@/components/wordmark"
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion"
-import { showreelFilms, type Film } from "@/lib/films"
 import { cn } from "@/lib/utils"
 
-type Short = Film & { reel: string }
+const REEL = "/landing/reel.mp4"
+const POSTER = "/landing/poster.jpg"
 
 export function CinematicLanding() {
-  const shorts = showreelFilms()
   const reduceMotion = usePrefersReducedMotion()
-  const [index, setIndex] = useState(0)
   const [muted, setMuted] = useState(true)
-  const [watching, setWatching] = useState<Short | null>(null)
-  const nodes = useRef<(HTMLVideoElement | null)[]>([])
+  const [watching, setWatching] = useState(false)
+  const node = useRef<HTMLVideoElement | null>(null)
 
   useEffect(() => {
-    if (reduceMotion || watching) return
-    const id = window.setInterval(() => {
-      setIndex((value) => (value + 1) % shorts.length)
-    }, 11000)
-    return () => window.clearInterval(id)
-  }, [reduceMotion, watching, shorts.length])
-
-  useEffect(() => {
-    nodes.current.forEach((video, i) => {
-      if (!video) return
-      video.muted = muted
-      if (reduceMotion || watching) {
-        video.pause()
-        return
-      }
-      if (i === index) {
-        const play = video.play()
-        if (play) play.catch(() => undefined)
-      } else {
-        video.pause()
-      }
-    })
-  }, [index, muted, reduceMotion, watching])
+    const video = node.current
+    if (!video) return
+    video.muted = muted
+    if (reduceMotion || watching) {
+      video.pause()
+      return
+    }
+    const play = video.play()
+    if (play) play.catch(() => undefined)
+  }, [muted, reduceMotion, watching])
 
   useEffect(() => {
     if (!watching) return
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setWatching(null)
+      if (event.key === "Escape") setWatching(false)
     }
     window.addEventListener("keydown", onKey)
     return () => window.removeEventListener("keydown", onKey)
@@ -57,42 +42,27 @@ export function CinematicLanding() {
   return (
     <section className="relative h-[100dvh] min-h-[100dvh] overflow-hidden bg-ink">
       <div className="absolute inset-0">
-        {shorts.map((film, i) => {
-          const on = i === index
-          return (
-            <div
-              key={film.slug}
-              className={cn(
-                "absolute inset-0 transition-opacity duration-1000",
-                on ? "opacity-100" : "opacity-0"
-              )}
-            >
-              {reduceMotion ? (
-                <Image
-                  src={film.poster}
-                  alt=""
-                  fill
-                  priority={on}
-                  className="object-cover"
-                  sizes="100vw"
-                />
-              ) : (
-                <video
-                  ref={(node) => {
-                    nodes.current[i] = node
-                  }}
-                  src={film.reel}
-                  poster={film.poster}
-                  playsInline
-                  loop
-                  muted
-                  preload={on ? "auto" : "metadata"}
-                  className="h-full w-full object-cover"
-                />
-              )}
-            </div>
-          )
-        })}
+        {reduceMotion ? (
+          <Image
+            src={POSTER}
+            alt=""
+            fill
+            priority
+            className="object-cover"
+            sizes="100vw"
+          />
+        ) : (
+          <video
+            ref={node}
+            src={REEL}
+            poster={POSTER}
+            playsInline
+            loop
+            muted
+            preload="auto"
+            className="h-full w-full object-cover"
+          />
+        )}
       </div>
 
       <div className="pointer-events-none absolute inset-0 bg-ink/40" aria-hidden />
@@ -125,25 +95,13 @@ export function CinematicLanding() {
               {muted ? "Sound" : "Mute"}
             </button>
 
-            <ul className="flex flex-wrap gap-x-5 gap-y-2">
-              {shorts.map((film, i) => (
-                <li key={film.slug}>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setIndex(i)
-                      setWatching(film)
-                    }}
-                    className={cn(
-                      "text-left text-[0.7rem] uppercase tracking-[0.2em] transition-colors",
-                      i === index ? "text-cream" : "text-silver/70 hover:text-cream"
-                    )}
-                  >
-                    {film.title}
-                  </button>
-                </li>
-              ))}
-            </ul>
+            <button
+              type="button"
+              onClick={() => setWatching(true)}
+              className="text-left text-[0.7rem] uppercase tracking-[0.2em] text-cream hover:text-gold"
+            >
+              Showreel
+            </button>
 
             <DeskBurnIn className="hidden items-baseline text-[0.6rem] uppercase tracking-[0.16em] text-silver lg:flex" />
           </div>
@@ -156,7 +114,7 @@ export function CinematicLanding() {
             type="button"
             className="absolute inset-0 bg-black/88"
             aria-label="Close film"
-            onClick={() => setWatching(null)}
+            onClick={() => setWatching(false)}
           />
           <div
             role="dialog"
@@ -168,15 +126,14 @@ export function CinematicLanding() {
               type="button"
               className="absolute top-2 right-2 z-[2] inline-flex size-10 items-center justify-center text-cream"
               aria-label="Close film"
-              onClick={() => setWatching(null)}
+              onClick={() => setWatching(false)}
             >
               <XIcon className="size-5" />
             </button>
             <div className="aspect-video bg-black">
               <video
-                key={watching.slug}
-                src={watching.reel}
-                poster={watching.poster}
+                src={REEL}
+                poster={POSTER}
                 autoPlay
                 controls
                 playsInline
@@ -185,16 +142,16 @@ export function CinematicLanding() {
             </div>
             <div className="px-5 py-5">
               <p className="text-[0.65rem] uppercase tracking-[0.28em] text-gold">
-                {watching.year} · {watching.location}
+                Stockholm
               </p>
               <h2 id="watch-title" className="mt-2 font-heading text-3xl text-cream">
-                {watching.title}
+                Showreel
               </h2>
               <p className="mt-3 max-w-2xl text-sm leading-relaxed text-silver">
-                {watching.logline}
+                Pictures from the house. Mute stays on until you ask for sound.
               </p>
               <Link
-                href={`/work/${watching.slug}`}
+                href="/work"
                 className="mt-5 inline-block text-[0.7rem] uppercase tracking-[0.22em] text-gold hover:text-cream"
               >
                 On the slate
