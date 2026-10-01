@@ -20,6 +20,17 @@ Then open [http://127.0.0.1:4317](http://127.0.0.1:4317).
 | `npm run start` | Serve the production build |
 | `npm run lint` | ESLint |
 
+## Landing video (animated logo)
+
+Not the website. The project files.
+
+1. In Cursor, open the **Files** sidebar (left).
+2. Open `public` → `drop-your-video-here`.
+3. Put your file in there, named `reel.mp4`.
+4. Message this chat that it is in.
+
+Chat attachments often turn a video into a black still. Putting the file in that folder is the reliable way.
+
 ## Dropping in real films
 
 Each picture lives in its own folder. Replace the placeholder reel when the finished file exists; keep the filename.
