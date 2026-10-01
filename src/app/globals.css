@@ -135,3 +135,16 @@
     background-image: none;
   }
 }
+
+html.landing-lock,
+html.landing-lock body {
+  height: 100%;
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-lock * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

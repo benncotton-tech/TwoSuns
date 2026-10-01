@@ -1,18 +1,49 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { XIcon } from "lucide-react"
+import { Volume2Icon, VolumeXIcon, XIcon } from "lucide-react"
 import { DeskBurnIn } from "@/components/landing/desk-burn-in"
 import { Wordmark } from "@/components/wordmark"
+import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion"
 import { showreelFilms, type Film } from "@/lib/films"
+import { cn } from "@/lib/utils"
 
 type Short = Film & { reel: string }
 
 export function CinematicLanding() {
   const shorts = showreelFilms()
+  const reduceMotion = usePrefersReducedMotion()
+  const [index, setIndex] = useState(0)
+  const [muted, setMuted] = useState(true)
   const [watching, setWatching] = useState<Short | null>(null)
+  const nodes = useRef<(HTMLVideoElement | null)[]>([])
+
+  useEffect(() => {
+    if (reduceMotion || watching) return
+    const id = window.setInterval(() => {
+      setIndex((value) => (value + 1) % shorts.length)
+    }, 11000)
+    return () => window.clearInterval(id)
+  }, [reduceMotion, watching, shorts.length])
+
+  useEffect(() => {
+    nodes.current.forEach((video, i) => {
+      if (!video) return
+      video.muted = muted
+      if (reduceMotion || watching) {
+        video.pause()
+        return
+      }
+      if (i === index) {
+        const play = video.play()
+        if (play) play.catch(() => undefined)
+      } else {
+        video.pause()
+      }
+    })
+  }, [index, muted, reduceMotion, watching])
 
   useEffect(() => {
     if (!watching) return
@@ -24,62 +55,100 @@ export function CinematicLanding() {
   }, [watching])
 
   return (
-    <div className="bg-ink">
-      <section className="flex min-h-[100dvh] flex-col">
-        <div className="flex flex-1 flex-col items-center justify-center px-6 text-center">
-          <p className="text-[0.7rem] uppercase tracking-[0.42em] text-gold">
-            Boutique film production
-          </p>
-          <div className="mt-10 w-[min(94vw,42rem)] sm:w-[min(88vw,40rem)]">
+    <section className="relative h-[100dvh] min-h-[100dvh] overflow-hidden bg-ink">
+      <div className="absolute inset-0">
+        {shorts.map((film, i) => {
+          const on = i === index
+          return (
+            <div
+              key={film.slug}
+              className={cn(
+                "absolute inset-0 transition-opacity duration-1000",
+                on ? "opacity-100" : "opacity-0"
+              )}
+            >
+              {reduceMotion ? (
+                <Image
+                  src={film.poster}
+                  alt=""
+                  fill
+                  priority={on}
+                  className="object-cover"
+                  sizes="100vw"
+                />
+              ) : (
+                <video
+                  ref={(node) => {
+                    nodes.current[i] = node
+                  }}
+                  src={film.reel}
+                  poster={film.poster}
+                  playsInline
+                  loop
+                  muted
+                  preload={on ? "auto" : "metadata"}
+                  className="h-full w-full object-cover"
+                />
+              )}
+            </div>
+          )
+        })}
+      </div>
+
+      <div className="pointer-events-none absolute inset-0 bg-ink/40" aria-hidden />
+
+      <div className="relative z-10 flex h-full flex-col">
+        <div className="flex flex-1 flex-col items-center justify-center px-4 text-center sm:px-6">
+          <div className="w-[min(96vw,86rem)]">
             <Wordmark priority />
           </div>
-          <p className="mt-8 max-w-md text-sm leading-relaxed text-silver">
-            Two founders · Stockholm
-          </p>
         </div>
-      </section>
 
-      <section className="border-t border-cream/10 px-4 pb-[max(3rem,env(safe-area-inset-bottom))] sm:px-6 lg:px-8">
-        <div className="mx-auto flex max-w-6xl flex-col gap-3 pt-8 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <p className="text-[0.65rem] uppercase tracking-[0.28em] text-gold">
-              The last four
-            </p>
-            <p className="mt-2 max-w-sm text-sm text-silver">
-              Click a title to watch.
-            </p>
+        <div className="px-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] sm:px-6 lg:px-8">
+          <div className="mx-auto flex max-w-6xl flex-col gap-4 border-t border-cream/10 pt-4 sm:flex-row sm:items-end sm:justify-between">
+            <button
+              type="button"
+              onClick={() => setMuted((value) => !value)}
+              disabled={reduceMotion}
+              aria-pressed={!muted}
+              aria-label={muted ? "Unmute showreel" : "Mute showreel"}
+              className={cn(
+                "inline-flex h-9 items-center gap-2 text-[0.65rem] uppercase tracking-[0.22em] text-silver hover:text-cream",
+                reduceMotion && "opacity-40"
+              )}
+            >
+              {muted ? (
+                <VolumeXIcon className="size-3.5" />
+              ) : (
+                <Volume2Icon className="size-3.5" />
+              )}
+              {muted ? "Sound" : "Mute"}
+            </button>
+
+            <ul className="flex flex-wrap gap-x-5 gap-y-2">
+              {shorts.map((film, i) => (
+                <li key={film.slug}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIndex(i)
+                      setWatching(film)
+                    }}
+                    className={cn(
+                      "text-left text-[0.7rem] uppercase tracking-[0.2em] transition-colors",
+                      i === index ? "text-cream" : "text-silver/70 hover:text-cream"
+                    )}
+                  >
+                    {film.title}
+                  </button>
+                </li>
+              ))}
+            </ul>
+
+            <DeskBurnIn className="hidden items-baseline text-[0.6rem] uppercase tracking-[0.16em] text-silver lg:flex" />
           </div>
-          <DeskBurnIn className="hidden text-[0.6rem] uppercase tracking-[0.16em] text-silver lg:block" />
         </div>
-
-        <ul className="mx-auto mt-10 grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {shorts.map((film) => (
-            <li key={film.slug}>
-              <button
-                type="button"
-                onClick={() => setWatching(film)}
-                className="group w-full text-left"
-              >
-                <div className="relative aspect-video overflow-hidden border border-cream/10 bg-black">
-                  <Image
-                    src={film.poster}
-                    alt=""
-                    fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                    className="object-cover transition duration-500 group-hover:scale-[1.03]"
-                  />
-                </div>
-                <p className="mt-3 text-[0.7rem] uppercase tracking-[0.2em] text-cream group-hover:text-gold">
-                  {film.title}
-                </p>
-                <p className="mt-1 text-[0.65rem] uppercase tracking-[0.18em] text-silver">
-                  {film.year} · {film.location}
-                </p>
-              </button>
-            </li>
-          ))}
-        </ul>
-      </section>
+      </div>
 
       {watching ? (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
@@ -134,6 +203,6 @@ export function CinematicLanding() {
           </div>
         </div>
       ) : null}
-    </div>
+    </section>
   )
 }
