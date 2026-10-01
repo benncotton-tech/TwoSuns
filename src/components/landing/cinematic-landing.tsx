@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { createPortal } from "react-dom"
 import Image from "next/image"
 import Link from "next/link"
@@ -19,6 +19,16 @@ export function CinematicLanding() {
   const [watching, setWatching] = useState(false)
   const node = useRef<HTMLVideoElement | null>(null)
 
+  const playBackground = useCallback(
+    (video: HTMLVideoElement | null) => {
+      if (!video || reduceMotion || watching) return
+      video.muted = muted
+      const play = video.play()
+      if (play) play.catch(() => undefined)
+    },
+    [muted, reduceMotion, watching]
+  )
+
   useEffect(() => {
     const video = node.current
     if (!video) return
@@ -27,9 +37,8 @@ export function CinematicLanding() {
       video.pause()
       return
     }
-    const play = video.play()
-    if (play) play.catch(() => undefined)
-  }, [muted, reduceMotion, watching])
+    playBackground(video)
+  }, [muted, reduceMotion, watching, playBackground])
 
   useEffect(() => {
     if (!watching) return
@@ -69,10 +78,13 @@ export function CinematicLanding() {
             ref={node}
             src={REEL}
             poster={POSTER}
+            autoPlay
             playsInline
             loop
             muted
             preload="auto"
+            onCanPlay={(event) => playBackground(event.currentTarget)}
+            onLoadedData={(event) => playBackground(event.currentTarget)}
             className="h-full w-full object-cover"
           />
         )}
