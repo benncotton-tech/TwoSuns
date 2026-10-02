@@ -58,6 +58,13 @@ export default async function FilmPage({ params }: Props) {
           <p className="mt-10 max-w-2xl text-base leading-relaxed text-cream/85">
             {film.synopsis}
           </p>
+          {film.credits ? (
+            <dl className="mt-10 grid max-w-2xl grid-cols-1 gap-4 sm:grid-cols-2">
+              {film.credits.map((row) => (
+                <Meta key={row.label} label={row.label} value={row.value} />
+              ))}
+            </dl>
+          ) : null}
         </div>
         <div className="space-y-4">
           {film.reel ? (
@@ -73,7 +80,7 @@ export default async function FilmPage({ params }: Props) {
           <div className="relative mx-auto aspect-[3/4] w-full max-w-xs overflow-hidden border border-cream/15 lg:max-w-none">
           <Image
             src={film.poster}
-            alt={`${film.title} still`}
+            alt={`${film.title} poster`}
             fill
             priority
             sizes="(max-width: 1024px) 320px, 288px"

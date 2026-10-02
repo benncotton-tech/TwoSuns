@@ -30,9 +30,35 @@ export type Film = {
     order: number
     note: string
   }
+  credits?: { label: string; value: string }[]
 }
 
 export const films: Film[] = [
+  {
+    slug: "skol",
+    title: "SKOL",
+    year: "2025",
+    format: "Short",
+    status: "Festival circuit",
+    runtime: "15 min",
+    location: "Stockholm",
+    featured: true,
+    poster: "/films/skol/poster.jpg",
+    logline:
+      "Two men, Elisha and David, meet at a bar in Stockholm. Their conversation is awkward and hesitant; neither seems willing to address their relationship or shared past.",
+    synopsis:
+      "A film by Billy Chester, a TwoSuns founder. Original title Skål. English language, no subtitles. Produced and photographed by Benjamin Cotton. Edited by Sebastian Strand. Screened in Swedish shorts 5 at Göteborg Film Festival / Gothenburg Film Festival 2025. The official poster carries Diplomatico, Region Västmanland, and a third Swedish cultural partner.",
+    credits: [
+      { label: "Director", value: "Billy Chester" },
+      { label: "Screenplay", value: "Billy Chester" },
+      { label: "Producer", value: "Benjamin Cotton" },
+      { label: "Cinematography", value: "Benjamin Cotton" },
+      { label: "Editor", value: "Sebastian Strand" },
+      { label: "Cast", value: "Adam Lundgren, Kim Sulocki" },
+      { label: "Original title", value: "Skål" },
+      { label: "Festival", value: "Göteborg Film Festival 2025 — Swedish shorts 5" },
+    ],
+  },
   {
     slug: "salt-light",
     title: "Salt Light",
