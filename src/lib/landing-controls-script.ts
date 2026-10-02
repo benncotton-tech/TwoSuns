@@ -100,16 +100,16 @@ export const landingControlsScript = `(function () {
         return;
       }
 
-      var link = target.closest('a[href^="/#"], a[href^="#"]');
-      if (link && document.getElementById) {
+      var link = target.closest('a[href*="#"]');
+      if (link) {
         var href = link.getAttribute("href") || "";
-        var id = href.replace(/^\/?#/, "");
-        var section = id && document.getElementById(id);
-        if (section) {
+        var hash = href.split("#")[1] || "";
+        var section = hash && document.getElementById(hash);
+        if (section && (href.charAt(0) === "#" || href.indexOf("/#") === 0)) {
           event.preventDefault();
           section.scrollIntoView({ behavior: "smooth", block: "start" });
           if (window.history && window.history.replaceState) {
-            window.history.replaceState(null, "", "/#" + id);
+            window.history.replaceState(null, "", "/#" + hash);
           }
         }
       }
