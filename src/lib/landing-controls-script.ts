@@ -97,6 +97,21 @@ export const landingControlsScript = `(function () {
       if (showBtn) {
         window.__twosunsWatchStamp = event.timeStamp;
         openShowreel();
+        return;
+      }
+
+      var link = target.closest('a[href^="/#"], a[href^="#"]');
+      if (link && document.getElementById) {
+        var href = link.getAttribute("href") || "";
+        var id = href.replace(/^\/?#/, "");
+        var section = id && document.getElementById(id);
+        if (section) {
+          event.preventDefault();
+          section.scrollIntoView({ behavior: "smooth", block: "start" });
+          if (window.history && window.history.replaceState) {
+            window.history.replaceState(null, "", "/#" + id);
+          }
+        }
       }
     },
     true
