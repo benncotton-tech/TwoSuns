@@ -101,7 +101,7 @@ export function CinematicLanding() {
 
       <div className="pointer-events-none relative z-10 flex h-full flex-col">
         <div className="flex flex-1 flex-col items-center justify-center px-4 text-center sm:px-6">
-          <div className="w-[min(96vw,86rem)]">
+          <div className="w-[min(82vw,64rem)]">
             <Wordmark priority />
           </div>
         </div>
