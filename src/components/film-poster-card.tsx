@@ -40,7 +40,7 @@ export function FilmPosterGrid({
   children: ReactNode
 }) {
   return (
-    <ul className="mt-12 grid grid-cols-1 gap-10 sm:grid-cols-2 sm:gap-x-10 sm:gap-y-14 lg:gap-x-14 lg:gap-y-16">
+    <ul className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3 lg:gap-x-10 lg:gap-y-12">
       {children}
     </ul>
   )
