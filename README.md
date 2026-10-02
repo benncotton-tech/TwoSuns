@@ -11,7 +11,7 @@ Stack: Next.js (App Router), TypeScript, Tailwind CSS, shadcn/ui.
 ## Remaining human clicks
 
 1. **Create repo** in Cursor — public, suggested name `twosuns` (or `twosuns.se`). GitHub still cannot be created from this agent.
-2. At the registrar for **twosuns.se**, add the A record Vercel printed (below). `twosuns.se` is already on the Vercel project; status is **Invalid Configuration** until DNS matches.
+2. Loopia Kundzon: set `@` A to `216.198.79.1` (steps below), then Vercel **Refresh**. `twosuns.se` is already on the project; status is **Invalid Configuration** until DNS matches.
 
 No draft PR until the GitHub repo exists. The temporary Vercel host is **Valid**.
 
@@ -107,7 +107,12 @@ Once a GitHub repo exists, import it in Vercel so pushes rebuild production.
 
 ## Point twosuns.se at Vercel
 
-Vercel domain card for `twosuns.se` (use this, not the legacy anycast):
+Registrar is [Loopia.se](https://www.loopia.se/). Apex cannot be a CNAME at Loopia. Docs: [DNS-editorn — A och CNAME](https://support.loopia.se/wiki/dnseditorn-a-och-cname/).
+
+1. Log in to **Kundzon**, click **twosuns.se**, open the blue **DNS-editor**.
+2. Under **`@`**, change or add **A** to **`216.198.79.1`**. **Ta bort** any conflicting A or CNAME on `@` first if needed.
+3. Do not touch **MX**.
+4. In Vercel, **Refresh** the domain.
 
 | Type | Name | Value |
 | --- | --- | --- |
@@ -115,7 +120,7 @@ Vercel domain card for `twosuns.se` (use this, not the legacy anycast):
 
 Legacy `76.76.21.21` / `cname.vercel-dns.com` still work, but use the new IP.
 
-This agent cannot change the registrar. Do not paste API tokens into DNS. When the record matches, Vercel should flip from **Invalid Configuration** to **Valid** and issue HTTPS.
+Do not paste API tokens into DNS. When the record matches, Vercel should flip from **Invalid Configuration** to **Valid** and issue HTTPS.
 
 ## What’s on the page
 
