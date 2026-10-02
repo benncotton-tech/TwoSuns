@@ -131,7 +131,7 @@ Do not paste API tokens into DNS. When the record matches, Vercel should flip fr
 
 - **Hero** — wordmark over the showreel, Sound, Showreel
 - **Upcoming** — pictures still in the house (`/#work`)
-- **The slate** — full Work list, including an empty Commercials lane
+- **The slate** — the shorts (`/#work`). Features still in the house sit in Upcoming.
 - **News** — now / coming up / notes (`/#news`); individual posts at `/news/<slug>`
 - **About** — two founders, Stockholm (`/#about`)
 - **Contact** — letter to Stockholm (`/#contact`)

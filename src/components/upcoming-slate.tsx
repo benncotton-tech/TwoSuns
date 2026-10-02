@@ -24,24 +24,9 @@ export function UpcomingSlate() {
       <DualRule className="mt-8" />
 
       {pictures.length === 0 ? (
-        <div className="mt-10 border border-cream/15 px-6 py-16 text-center">
-          <p className="text-[0.65rem] uppercase tracking-[0.28em] text-gold">
-            Empty lane
-          </p>
-          <h3 className="mt-4 font-heading text-3xl text-cream">
-            Nothing upcoming.
-          </h3>
-          <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-silver">
-            When a picture is coming, it sits on this slate — not on the news
-            board. If you have one, write to Stockholm.
-          </p>
-          <Link
-            href="/#contact"
-            className="mt-8 inline-flex h-11 items-center bg-gold px-6 text-[0.7rem] uppercase tracking-[0.28em] text-ink hover:bg-gold/85"
-          >
-            Write to the house
-          </Link>
-        </div>
+        <p className="mt-10 max-w-xl text-sm leading-relaxed text-silver">
+          When a picture is coming, it sits here.
+        </p>
       ) : (
         <ul className="mt-10 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4 lg:gap-8">
           {pictures.map((film) => (

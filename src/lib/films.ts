@@ -178,18 +178,6 @@ export const showreelSlugs = [
   "after-the-bell",
 ] as const
 
-export const filmLanes = [
-  { id: "all", label: "All" },
-  { id: "Feature", label: "Features" },
-  { id: "Documentary", label: "Documentaries" },
-  { id: "Short", label: "Shorts" },
-  { id: "Upcoming", label: "Upcoming" },
-  { id: "Development", label: "Development" },
-  { id: "Commercial", label: "Commercials" },
-] as const
-
-export type FilmLane = (typeof filmLanes)[number]["id"]
-
 export function getFilm(slug: string) {
   return films.find((film) => film.slug === slug)
 }
@@ -200,14 +188,9 @@ export function showreelFilms() {
     .filter((film): film is Film & { reel: string } => Boolean(film?.reel))
 }
 
-export function filterFilms(lane: FilmLane) {
-  if (lane === "all") return films
-  if (lane === "Upcoming") return upcomingFilms()
-  if (lane === "Development") {
-    return films.filter((film) => film.status === "In development")
-  }
-  if (lane === "Commercial") return []
-  return films.filter((film) => film.format === lane)
+/** Work slate: shorts only. Features in the house live in Upcoming. */
+export function slateFilms() {
+  return films.filter((film) => film.format === "Short" && !film.upcoming)
 }
 
 export function featuredFilms() {
@@ -227,3 +210,4 @@ export function nextFilm(slug: string) {
   if (index === -1) return films[0]
   return films[(index + 1) % films.length]
 }
+

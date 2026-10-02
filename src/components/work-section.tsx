@@ -1,8 +1,7 @@
 import { FilmCatalog } from "@/components/film-catalog"
 import { UpcomingSlate } from "@/components/upcoming-slate"
-import type { FilmLane } from "@/lib/films"
 
-export function WorkSection({ lane }: { lane: FilmLane }) {
+export function WorkSection() {
   return (
     <section
       id="work"
@@ -20,11 +19,10 @@ export function WorkSection({ lane }: { lane: FilmLane }) {
             The slate
           </h2>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-silver sm:text-base">
-            Everything we will stand next to. Filter by form. Commercials is
-            empty on purpose.
+            The shorts. Features still in the house sit in Upcoming, above.
           </p>
           <div className="mt-10">
-            <FilmCatalog lane={lane} />
+            <FilmCatalog />
           </div>
         </div>
       </div>

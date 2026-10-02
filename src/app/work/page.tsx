@@ -4,7 +4,7 @@ import { SectionAlias } from "@/components/section-alias"
 export default function WorkPage() {
   return (
     <Suspense fallback={null}>
-      <SectionAlias hash="work" lane />
+      <SectionAlias hash="work" />
     </Suspense>
   )
 }

@@ -64,7 +64,7 @@ export function AboutSection() {
             <Step
               n="03"
               title="The slate stays short"
-              copy="We turn down commissioned commercials and most branded work. Capacity is a creative choice. Empty lanes on the slate are not a failure of marketing."
+              copy="We turn down commissioned commercials and most branded work. Capacity is a creative choice. The slate stays short on purpose."
             />
           </ol>
         </div>
