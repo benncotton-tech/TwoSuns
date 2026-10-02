@@ -110,8 +110,7 @@ export const landingControlsScript = `(function () {
           event.stopPropagation();
           var y =
             section.getBoundingClientRect().top +
-            (window.pageYOffset || document.documentElement.scrollTop) -
-            72;
+            (window.pageYOffset || document.documentElement.scrollTop);
           window.scrollTo(0, y < 0 ? 0 : y);
           if (window.history && window.history.replaceState) {
             window.history.replaceState(null, "", "/#" + hash);

@@ -68,8 +68,7 @@ export function SiteHeader({ home = false }: { home?: boolean }) {
     if (!node) return
     event.preventDefault()
     event.stopPropagation()
-    const top =
-      node.getBoundingClientRect().top + window.scrollY - 72
+    const top = node.getBoundingClientRect().top + window.scrollY
     window.scrollTo(0, Math.max(0, top))
     window.history.replaceState(null, "", `/#${id}`)
     setSection(id)
