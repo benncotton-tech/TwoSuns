@@ -106,22 +106,21 @@ export function SiteHeader({ home = false }: { home?: boolean }) {
           home ? "max-w-none" : "max-w-6xl"
         )}
       >
-        {ghost ? (
-          <span className="sr-only">TwoSuns</span>
-        ) : (
-          <Link
-            href="/"
-            className="relative z-10 flex items-center"
-            aria-label="TwoSuns home"
-          >
-            <Wordmark className="h-8 w-auto sm:h-9" priority />
-          </Link>
-        )}
+        <Link
+          href="/"
+          className={cn(
+            "relative z-10 flex items-center",
+            ghost && "pointer-events-auto drop-shadow-[0_2px_12px_rgba(0,0,0,0.85)]"
+          )}
+          aria-label="TwoSuns home"
+        >
+          <Wordmark className="h-8 w-auto sm:h-9" priority />
+        </Link>
 
         <nav
           className={cn(
             "hidden items-center gap-10 md:flex",
-            ghost && "pointer-events-auto ml-auto"
+            ghost && "pointer-events-auto drop-shadow-[0_1px_8px_rgba(0,0,0,0.8)]"
           )}
           aria-label="Primary"
         >
