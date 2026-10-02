@@ -32,6 +32,7 @@ export default function MerchPage() {
                 src={item.image}
                 alt={`${item.name} — black ${item.kind.toLowerCase()} with the cream TwoSuns wordmark`}
                 fill
+                unoptimized
                 sizes="(max-width: 640px) 100vw, 50vw"
                 className="object-cover"
               />

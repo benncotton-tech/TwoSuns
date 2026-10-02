@@ -32,7 +32,7 @@ export const merch: MerchItem[] = [
     kind: "Hat",
     image: "/merch/cap.jpg",
     fabric: "Black cotton twill",
-    copy: "Unstructured. Cream mark on the front panel. Metal buckle. Made to be worn, not merchandised.",
+    copy: "Unstructured. A large cream TwoSuns wordmark on the front panel. Metal buckle. Made to be worn, not merchandised.",
   },
   {
     slug: "wordmark-beanie",
@@ -40,6 +40,6 @@ export const merch: MerchItem[] = [
     kind: "Hat",
     image: "/merch/beanie.jpg",
     fabric: "Black knit",
-    copy: "A watch cap with the mark on the cuff. For Gotland weather and Stockholm nights.",
+    copy: "A watch cap with a large cream house mark on the front. For Gotland weather and Stockholm nights.",
   },
 ]

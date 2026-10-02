@@ -1,7 +1,11 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from "next"
 
 const nextConfig: NextConfig = {
-  /* config options here */
-};
+  images: {
+    // Original poster/still/merch JPEGs. Default optimizer (q=75, small srcset)
+    // made the Work slate look soft.
+    unoptimized: true,
+  },
+}
 
-export default nextConfig;
+export default nextConfig

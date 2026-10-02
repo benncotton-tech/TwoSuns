@@ -12,13 +12,14 @@ export function FilmPosterCard({
 }) {
   return (
     <Link href={`/work/${film.slug}`} className="group block">
-      <div className="relative aspect-[3/4] overflow-hidden border border-cream/10">
+      <div className="relative aspect-[2/3] overflow-hidden border border-cream/10 bg-black">
         <Image
           src={film.poster}
           alt=""
           fill
+          unoptimized
           sizes="(max-width: 1024px) 50vw, 25vw"
-          className="object-cover transition duration-500 group-hover:scale-[1.03]"
+          className="object-contain"
         />
       </div>
       <p className="mt-3 text-[0.6rem] uppercase tracking-[0.2em] text-gold sm:text-[0.65rem] sm:tracking-[0.22em]">

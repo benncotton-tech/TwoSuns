@@ -77,14 +77,15 @@ export default async function FilmPage({ params }: Props) {
               className="aspect-video w-full border border-cream/15 bg-black object-cover"
             />
           ) : null}
-          <div className="relative mx-auto aspect-[3/4] w-full max-w-xs overflow-hidden border border-cream/15 lg:max-w-none">
+          <div className="relative mx-auto aspect-[2/3] w-full max-w-md overflow-hidden border border-cream/15 bg-black lg:max-w-none">
             <Image
               src={film.poster}
               alt={`${film.title} poster`}
               fill
               priority
-              sizes="(max-width: 1024px) 320px, 288px"
-              className="object-cover"
+              unoptimized
+              sizes="(max-width: 1024px) 28rem, 28rem"
+              className="object-contain"
             />
           </div>
         </div>
@@ -107,8 +108,9 @@ export default async function FilmPage({ params }: Props) {
                   src={src}
                   alt={`${film.title} still ${index + 1}`}
                   fill
+                  unoptimized
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  className="object-cover"
+                  className="object-contain"
                 />
               </li>
             ))}

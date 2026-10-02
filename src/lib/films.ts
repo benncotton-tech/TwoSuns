@@ -213,21 +213,6 @@ export const films: Film[] = [
       "Produced from Stockholm inside a real archive of unfinished work. We did not re-stage the shelves. The archivist is who she says she is. Northern Inventory is about what remains when a production company disappears and the pictures do not.",
   },
   {
-    slug: "after-the-bell",
-    title: "After the Bell",
-    year: "2022",
-    format: "Short",
-    status: "Released",
-    runtime: "18 min",
-    location: "Ohio, United States",
-    poster: "/films/after-the-bell/poster.jpg",
-    reel: "/films/after-the-bell/reel.mp4",
-    logline:
-      "A night porter in a closed Midwestern hotel keeps the lights on for one guest who may not be staying.",
-    synopsis:
-      "The first TwoSuns short. Shot in a hotel that had already failed, with a crew of seven and a single tungsten package. It is still the picture we send when someone asks what we mean by boutique: few people, enough time, no logo in the end card besides our own.",
-  },
-  {
     slug: "two-hours-east",
     title: "Two Hours East",
     year: "TBC",
@@ -265,12 +250,11 @@ export const films: Film[] = [
   },
 ]
 
-/** Last four shorts / showreel cuts, most recent first. */
+/** Last showreel cuts, most recent first. */
 export const showreelSlugs = [
   "salt-light",
   "northern-inventory",
   "harbour-hours",
-  "after-the-bell",
 ] as const
 
 export function getFilm(slug: string) {
@@ -283,9 +267,11 @@ export function showreelFilms() {
     .filter((film): film is Film & { reel: string } => Boolean(film?.reel))
 }
 
-/** Work slate: shorts only. Features in the house live in Upcoming. */
+/** Work slate: shorts only, newest year first. Features in the house live in Upcoming. */
 export function slateFilms() {
-  return films.filter((film) => film.format === "Short" && !film.upcoming)
+  return films
+    .filter((film) => film.format === "Short" && !film.upcoming)
+    .sort((a, b) => Number(b.year) - Number(a.year))
 }
 
 export function featuredFilms() {
