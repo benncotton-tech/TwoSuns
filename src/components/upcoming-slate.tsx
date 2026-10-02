@@ -1,5 +1,3 @@
-import Image from "next/image"
-import Link from "next/link"
 import { DualRule } from "@/components/dual-sun"
 import { FilmPosterCard, FilmPosterGrid } from "@/components/film-poster-card"
 import { upcomingFilms } from "@/lib/films"
