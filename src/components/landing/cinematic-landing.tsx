@@ -67,8 +67,10 @@ export function CinematicLanding() {
     setMuted(next)
     const player = playerRef.current
     if (!player) return
-    player.setMuted(next).catch(() => undefined)
-    if (!next) player.setVolume(1).catch(() => undefined)
+    void player
+      .setMuted(next)
+      .then(() => (next ? undefined : player.setVolume(1)))
+      .catch(() => undefined)
   }
 
   return (
@@ -90,7 +92,7 @@ export function CinematicLanding() {
             ref={iframeRef}
             src={backgroundPlayerSrc}
             title={reel.title}
-            allow="autoplay; fullscreen; picture-in-picture"
+            allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
             referrerPolicy="strict-origin-when-cross-origin"
             allowFullScreen
           />
@@ -111,10 +113,7 @@ export function CinematicLanding() {
         <div className="mx-auto flex max-w-6xl flex-col gap-3 border-t border-cream/10 pt-3 sm:flex-row sm:items-end sm:justify-between">
           <button
             type="button"
-            onPointerDown={(event) => {
-              event.preventDefault()
-              toggleSound()
-            }}
+            onClick={toggleSound}
             aria-pressed={!muted}
             aria-label={muted ? "Unmute showreel" : "Mute showreel"}
             className={cn(
@@ -131,10 +130,7 @@ export function CinematicLanding() {
 
           <button
             type="button"
-            onPointerDown={(event) => {
-              event.preventDefault()
-              setWatching(true)
-            }}
+            onClick={() => setWatching(true)}
             className="inline-flex h-11 cursor-pointer items-center text-[0.7rem] uppercase tracking-[0.2em] text-cream hover:text-gold"
           >
             Showreel
@@ -182,7 +178,7 @@ function ShowreelWatcher({ onClose }: { onClose: () => void }) {
             src={watchPlayerSrc}
             title={reel.title}
             className="h-full w-full"
-            allow="autoplay; fullscreen; picture-in-picture"
+            allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
             referrerPolicy="strict-origin-when-cross-origin"
             allowFullScreen
           />
