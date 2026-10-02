@@ -11,13 +11,6 @@ import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion"
 import { reel } from "@/lib/reel"
 import { cn } from "@/lib/utils"
 
-declare global {
-  interface Window {
-    __twosunsOnSound?: (soundOn: boolean) => void
-    __twosunsSoundBound?: boolean
-  }
-}
-
 export function CinematicLanding() {
   const reduceMotion = usePrefersReducedMotion()
   const [muted, setMuted] = useState(true)
@@ -25,23 +18,15 @@ export function CinematicLanding() {
   const videoRef = useRef<HTMLVideoElement | null>(null)
 
   useEffect(() => {
-    window.__twosunsOnSound = (soundOn: boolean) => setMuted(!soundOn)
-    return () => {
-      delete window.__twosunsOnSound
-    }
-  }, [])
-
-  useEffect(() => {
     const video = videoRef.current
     if (!video) return
-    video.muted = muted
     if (reduceMotion || watching) {
       video.pause()
       return
     }
     const play = video.play()
     if (play) play.catch(() => undefined)
-  }, [muted, reduceMotion, watching])
+  }, [reduceMotion, watching])
 
   useEffect(() => {
     if (!watching) return
@@ -56,6 +41,19 @@ export function CinematicLanding() {
       document.body.style.overflow = previous
     }
   }, [watching])
+
+  const toggleSound = () => {
+    const video = videoRef.current
+    if (!video) return
+    const soundOn = video.muted
+    video.muted = !soundOn
+    video.volume = 1
+    if (soundOn) {
+      const play = video.play()
+      if (play) play.catch(() => undefined)
+    }
+    setMuted(!soundOn)
+  }
 
   return (
     <section className="relative h-[100dvh] min-h-[100dvh] overflow-hidden bg-ink">
@@ -78,7 +76,7 @@ export function CinematicLanding() {
             autoPlay
             playsInline
             loop
-            muted
+            muted={muted}
             preload="auto"
             className="h-full w-full object-cover"
           />
@@ -102,8 +100,9 @@ export function CinematicLanding() {
             data-sound-toggle="true"
             aria-pressed={!muted}
             aria-label={muted ? "Unmute showreel" : "Mute showreel"}
+            onClick={toggleSound}
             className={cn(
-              "inline-flex h-11 cursor-pointer items-center gap-2 text-[0.65rem] uppercase tracking-[0.22em] text-silver hover:text-cream"
+              "inline-flex h-11 min-w-24 cursor-pointer items-center gap-2 text-[0.65rem] uppercase tracking-[0.22em] text-silver hover:text-cream"
             )}
           >
             {muted ? (
@@ -132,35 +131,6 @@ export function CinematicLanding() {
             document.body
           )
         : null}
-
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `(function(){
-  if (window.__twosunsSoundBound) return;
-  window.__twosunsSoundBound = true;
-  document.addEventListener("click", function(event) {
-    var target = event.target;
-    if (!target || !target.closest) return;
-    var btn = target.closest("[data-sound-toggle]");
-    if (!btn) return;
-    var video = document.querySelector("[data-landing-reel]");
-    if (!video) return;
-    var soundOn = video.muted;
-    video.muted = !soundOn;
-    video.volume = 1;
-    if (soundOn) {
-      var play = video.play();
-      if (play && play.catch) play.catch(function(){});
-    }
-    btn.setAttribute("aria-pressed", soundOn ? "true" : "false");
-    btn.setAttribute("aria-label", soundOn ? "Mute showreel" : "Unmute showreel");
-    var label = btn.querySelector("[data-sound-label]");
-    if (label) label.textContent = soundOn ? "Mute" : "Sound";
-    if (typeof window.__twosunsOnSound === "function") window.__twosunsOnSound(soundOn);
-  });
-})();`,
-        }}
-      />
     </section>
   )
 }
