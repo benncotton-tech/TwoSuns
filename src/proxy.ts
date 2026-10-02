@@ -28,7 +28,8 @@ function authorized(header: string | null, password: string): boolean {
   return passwordsMatch(pass, password);
 }
 
-export function middleware(request: NextRequest) {
+/** Site-wide HTTP Basic Auth when SITE_PASSWORD is set. Node proxy (not Edge middleware) so Vercel source deploys work. */
+export function proxy(request: NextRequest) {
   const password = process.env.SITE_PASSWORD;
   if (!password) {
     return NextResponse.next();
