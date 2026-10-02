@@ -1,7 +1,6 @@
 "use client"
 
 import { memo, useEffect, useRef, useState, type MouseEvent, type Ref } from "react"
-import Image from "next/image"
 import { Volume2Icon, VolumeXIcon } from "lucide-react"
 import { DeskBurnIn } from "@/components/landing/desk-burn-in"
 import { Wordmark } from "@/components/wordmark"
@@ -79,14 +78,10 @@ export function CinematicLanding() {
       <h1 className="sr-only">TwoSuns</h1>
       <div className="pointer-events-none absolute inset-0">
         {reduceMotion ? (
-          <Image
+          <img
             src={reel.poster}
             alt=""
-            fill
-            priority
-            unoptimized
-            className="object-cover"
-            sizes="100vw"
+            className="absolute inset-0 h-full w-full object-cover"
           />
         ) : (
           <LandingReel videoRef={videoRef} />

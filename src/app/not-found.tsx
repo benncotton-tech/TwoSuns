@@ -1,5 +1,4 @@
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
 
 export default function NotFound() {
   return (
@@ -11,21 +10,18 @@ export default function NotFound() {
         shot. Go back to the house, or look at the work that exists.
       </p>
       <div className="mt-8 flex flex-wrap gap-3">
-        <Button
-          nativeButton={false}
-          render={<Link href="/" />}
-          className="h-11 rounded-none bg-gold px-6 text-[0.7rem] uppercase tracking-[0.28em] text-ink"
+        <Link
+          href="/"
+          className="inline-flex h-11 items-center bg-gold px-6 text-[0.7rem] uppercase tracking-[0.28em] text-ink"
         >
           Home
-        </Button>
-        <Button
-          nativeButton={false}
-          variant="outline"
-          render={<Link href="/#work" />}
-          className="h-11 rounded-none border-cream/30 px-6 text-[0.7rem] uppercase tracking-[0.28em] text-cream"
+        </Link>
+        <Link
+          href="/#work"
+          className="inline-flex h-11 items-center border border-cream/30 px-6 text-[0.7rem] uppercase tracking-[0.28em] text-cream"
         >
           Work
-        </Button>
+        </Link>
       </div>
     </div>
   )

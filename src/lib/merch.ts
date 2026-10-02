@@ -40,6 +40,6 @@ export const merch: MerchItem[] = [
     kind: "Hat",
     image: "/merch/beanie.jpg",
     fabric: "Black knit",
-    copy: "A watch cap with a large cream house mark on the front. For Gotland weather and Stockholm nights.",
+    copy: "A watch cap with the mark on the cuff. For Gotland weather and Stockholm nights.",
   },
 ]

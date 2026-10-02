@@ -129,6 +129,24 @@ export const films: Film[] = [
     ],
   },
   {
+    slug: "bonde-feature",
+    title: "BONDE",
+    year: "2027",
+    format: "Feature",
+    status: "In development",
+    runtime: "TBC",
+    location: "TBC",
+    featured: true,
+    poster: "/films/bonde-feature/poster.jpg",
+    upcoming: {
+      order: 1,
+      note: "Production, May 2027.",
+    },
+    logline: "The next TwoSuns feature. Production begins May 2027.",
+    synopsis:
+      "A TwoSuns feature. The picture goes into production in May 2027.",
+  },
+  {
     slug: "salt-light",
     title: "Salt Light",
     year: "2024",
@@ -143,44 +161,6 @@ export const films: Film[] = [
       "A salvage diver spends one winter raising a wreck that should have stayed down. Her daughter keeps a camera rolling after the batteries should be dead.",
     synopsis:
       "On the Skåne coast, Marta takes a contract nobody else would sign: a wreck in water too cold, too late in the season. Her teenage daughter, sent north for the winter, films the dives. The footage lasts longer than the batteries. TwoSuns produced the picture from Stockholm with a small Swedish crew and a camera package that never quite behaved. It is the company’s first feature to travel.",
-  },
-  {
-    slug: "the-dry-line",
-    title: "The Dry Line",
-    year: "2025",
-    format: "Feature",
-    status: "Post-production",
-    runtime: "104 min",
-    location: "Western Australia",
-    featured: true,
-    poster: "/films/the-dry-line/poster.jpg",
-    upcoming: {
-      order: 1,
-      note: "In the cut from Stockholm. First screening when we have a date we will keep.",
-    },
-    logline:
-      "A surveyor is hired to map a river that no longer reaches the sea. The client wants a line on a document. The land wants the line erased.",
-    synopsis:
-      "Shot on the edge of the wheatbelt and the salt lakes, The Dry Line follows a contract surveyor whose job is to draw a boundary through a riverbed that has not carried water in nine years. Produced from Stockholm; shot in Western Australia. TwoSuns does not treat landscape as backdrop. The land is the other lead.",
-  },
-  {
-    slug: "split-horizon",
-    title: "Split Horizon",
-    year: "2026",
-    format: "Feature",
-    status: "In production",
-    runtime: "TBC",
-    location: "Los Angeles / Stockholm",
-    featured: true,
-    poster: "/films/split-horizon/poster.jpg",
-    upcoming: {
-      order: 2,
-      note: "Principal photography. New days in Los Angeles; the picture is produced from Stockholm.",
-    },
-    logline:
-      "Two sisters — one in Los Angeles, one in Stockholm — inherit an unfinished film their father shot on both coasts in 1998. Neither wants the footage. Both start cutting.",
-    synopsis:
-      "A TwoSuns picture produced from Stockholm, with new material shot in both Los Angeles and Stockholm. The inherited rushes are real method, not a gimmick — we shot on the same stocks the father would have used, then let the sisters argue in the cut. Gold on one side of the frame, silver on the other.",
   },
   {
     slug: "harbour-hours",
@@ -211,42 +191,6 @@ export const films: Film[] = [
       "A Stockholm archivist catalogs unclaimed rushes from collapsed productions. The pictures start to form a film nobody commissioned.",
     synopsis:
       "Produced from Stockholm inside a real archive of unfinished work. We did not re-stage the shelves. The archivist is who she says she is. Northern Inventory is about what remains when a production company disappears and the pictures do not.",
-  },
-  {
-    slug: "two-hours-east",
-    title: "Two Hours East",
-    year: "TBC",
-    format: "Feature",
-    status: "In development",
-    runtime: "TBC",
-    location: "Nullarbor, Australia",
-    poster: "/films/two-hours-east/poster.jpg",
-    upcoming: {
-      order: 3,
-      note: "Script. A Nullarbor road picture. It does not shoot until it can survive silence.",
-    },
-    logline:
-      "A driver is paid to take a sealed case across the Nullarbor and not ask what is in it. She asks.",
-    synopsis:
-      "In development from Stockholm. A road picture that treats distance as a moral problem, not a postcard. We will not shoot it until the script can survive silence.",
-  },
-  {
-    slug: "the-second-sun",
-    title: "The Second Sun",
-    year: "TBC",
-    format: "Feature",
-    status: "In development",
-    runtime: "TBC",
-    location: "Norrland, Sweden",
-    poster: "/films/the-second-sun/poster.jpg",
-    upcoming: {
-      order: 4,
-      note: "In development from Stockholm. The title we almost kept as a company name. Now a film.",
-    },
-    logline:
-      "A cinematographer who can no longer shoot in daylight follows a crew into a Nordic winter. Working title of the company, once. Now a picture.",
-    synopsis:
-      "The name we almost kept as a film instead of a company. In development from Stockholm. It is not a making-of, and it is not autobiography. It is about what happens to seeing when one of the two people the company is named for can no longer look.",
   },
 ]
 
@@ -287,8 +231,10 @@ export function upcomingFilms(): UpcomingFilm[] {
 }
 
 export function nextFilm(slug: string) {
-  const index = films.findIndex((film) => film.slug === slug)
-  if (index === -1) return films[0]
-  return films[(index + 1) % films.length]
+  const sequence = [...upcomingFilms(), ...slateFilms()]
+  const ordered = sequence.length > 0 ? sequence : films
+  const index = ordered.findIndex((film) => film.slug === slug)
+  if (index === -1) return ordered[0]
+  return ordered[(index + 1) % ordered.length]
 }
 

@@ -1,5 +1,3 @@
-import Image from "next/image"
-
 const SRC = "/twosuns-wordmark.png"
 const WIDTH = 2859
 const HEIGHT = 1181
@@ -12,13 +10,12 @@ export function Wordmark({
   priority?: boolean
 }) {
   return (
-    <Image
+    <img
       src={SRC}
       alt="TwoSuns"
       width={WIDTH}
       height={HEIGHT}
-      priority={priority}
-      unoptimized
+      {...(priority ? { fetchPriority: "high" as const } : {})}
       className={className}
     />
   )

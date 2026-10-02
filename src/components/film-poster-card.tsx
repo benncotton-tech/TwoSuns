@@ -1,4 +1,3 @@
-import Image from "next/image"
 import Link from "next/link"
 import type { ReactNode } from "react"
 import type { Film } from "@/lib/films"
@@ -13,25 +12,22 @@ export function FilmPosterCard({
   return (
     <Link href={`/work/${film.slug}`} className="group block">
       <div className="relative aspect-[2/3] overflow-hidden border border-cream/10 bg-black">
-        <Image
+        <img
           src={film.poster}
           alt=""
-          fill
-          unoptimized
-          sizes="(max-width: 1024px) 50vw, 25vw"
-          className="object-contain"
+          className="absolute inset-0 h-full w-full object-cover"
         />
       </div>
-      <p className="mt-3 text-[0.6rem] uppercase tracking-[0.2em] text-gold sm:text-[0.65rem] sm:tracking-[0.22em]">
+      <p className="mt-4 text-[0.65rem] uppercase tracking-[0.2em] text-gold sm:text-xs sm:tracking-[0.22em]">
         {film.status}
       </p>
-      <h3 className="mt-1 font-heading text-xl leading-tight text-cream transition-colors group-hover:text-gold sm:text-2xl">
+      <h3 className="mt-2 font-heading text-2xl leading-tight text-cream transition-colors group-hover:text-gold sm:text-3xl lg:text-4xl">
         {film.title}
       </h3>
-      <p className="mt-1 text-[0.6rem] uppercase tracking-[0.16em] text-silver sm:text-[0.65rem] sm:tracking-[0.18em]">
+      <p className="mt-2 text-[0.65rem] uppercase tracking-[0.16em] text-silver sm:text-xs sm:tracking-[0.18em]">
         {film.format} · {film.year}
       </p>
-      <p className="mt-2 text-xs leading-relaxed text-cream/75 sm:text-sm">
+      <p className="mt-3 text-sm leading-relaxed text-cream/75 sm:text-base">
         {note}
       </p>
     </Link>
@@ -44,7 +40,7 @@ export function FilmPosterGrid({
   children: ReactNode
 }) {
   return (
-    <ul className="mt-10 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4 lg:gap-8">
+    <ul className="mt-12 grid grid-cols-1 gap-10 sm:grid-cols-2 sm:gap-x-10 sm:gap-y-14 lg:gap-x-14 lg:gap-y-16">
       {children}
     </ul>
   )

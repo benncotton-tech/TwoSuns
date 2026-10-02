@@ -1,9 +1,7 @@
 import type { Metadata } from "next"
-import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { DualRule } from "@/components/dual-sun"
-import { Button } from "@/components/ui/button"
 import { films, getFilm, nextFilm } from "@/lib/films"
 
 type Props = {
@@ -78,14 +76,10 @@ export default async function FilmPage({ params }: Props) {
             />
           ) : null}
           <div className="relative mx-auto aspect-[2/3] w-full max-w-md overflow-hidden border border-cream/15 bg-black lg:max-w-none">
-            <Image
+            <img
               src={film.poster}
               alt={`${film.title} poster`}
-              fill
-              priority
-              unoptimized
-              sizes="(max-width: 1024px) 28rem, 28rem"
-              className="object-contain"
+              className="absolute inset-0 h-full w-full object-cover"
             />
           </div>
         </div>
@@ -104,13 +98,10 @@ export default async function FilmPage({ params }: Props) {
                 key={src}
                 className="relative aspect-[16/9] overflow-hidden border border-cream/10 bg-black"
               >
-                <Image
+                <img
                   src={src}
                   alt={`${film.title} still ${index + 1}`}
-                  fill
-                  unoptimized
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  className="object-contain"
+                  className="absolute inset-0 h-full w-full object-cover"
                 />
               </li>
             ))}
@@ -121,14 +112,12 @@ export default async function FilmPage({ params }: Props) {
         <p className="text-[0.7rem] uppercase tracking-[0.28em] text-silver">
           Next on the slate
         </p>
-        <Button
-          nativeButton={false}
-          variant="outline"
-          render={<Link href={`/work/${next.slug}`} />}
-          className="h-11 rounded-none border-cream/30 px-6 text-[0.7rem] uppercase tracking-[0.28em] text-cream"
+        <Link
+          href={`/work/${next.slug}`}
+          className="inline-flex h-11 items-center border border-cream/30 px-6 text-[0.7rem] uppercase tracking-[0.28em] text-cream"
         >
-          {next.title} →
-        </Button>
+          {next.title} · {next.format} →
+        </Link>
       </div>
     </article>
   )

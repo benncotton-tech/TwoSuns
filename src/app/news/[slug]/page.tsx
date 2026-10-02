@@ -2,7 +2,6 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { DualRule } from "@/components/dual-sun"
-import { Button } from "@/components/ui/button"
 import { getFilm } from "@/lib/films"
 import {
   formatNewsDate,
@@ -74,14 +73,12 @@ export default async function NewsPostPage({ params }: Props) {
         <p className="text-[0.7rem] uppercase tracking-[0.28em] text-silver">
           Next on the board
         </p>
-        <Button
-          nativeButton={false}
-          variant="outline"
-          render={<Link href={`/news/${next.slug}`} />}
-          className="h-11 rounded-none border-cream/30 px-6 text-[0.7rem] uppercase tracking-[0.28em] text-cream"
+        <Link
+          href={`/news/${next.slug}`}
+          className="inline-flex h-11 items-center border border-cream/30 px-6 text-[0.7rem] uppercase tracking-[0.28em] text-cream"
         >
           {next.title} →
-        </Button>
+        </Link>
       </div>
     </article>
   )

@@ -43,7 +43,7 @@ export function SiteFooter() {
           </nav>
           <div className="flex items-center justify-between gap-4">
             <p className="text-xs text-silver">
-              © {new Date().getFullYear()} {site.name} · {site.domain}
+              © {site.name} · {site.domain}
             </p>
             <DualSun className="h-6 w-10" />
           </div>

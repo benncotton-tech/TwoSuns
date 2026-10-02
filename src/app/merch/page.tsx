@@ -1,9 +1,7 @@
 import type { Metadata } from "next"
-import Image from "next/image"
 import Link from "next/link"
 import { DualRule } from "@/components/dual-sun"
 import { PageIntro } from "@/components/page-intro"
-import { Button } from "@/components/ui/button"
 import { merch } from "@/lib/merch"
 
 export const metadata: Metadata = {
@@ -28,13 +26,10 @@ export default function MerchPage() {
         {merch.map((item) => (
           <li key={item.slug} className="group">
             <div className="relative aspect-[3/4] overflow-hidden border border-cream/10 bg-black">
-              <Image
+              <img
                 src={item.image}
                 alt={`${item.name} — black ${item.kind.toLowerCase()} with the cream TwoSuns wordmark`}
-                fill
-                unoptimized
-                sizes="(max-width: 640px) 100vw, 50vw"
-                className="object-cover"
+                className="absolute inset-0 h-full w-full object-cover"
               />
             </div>
             <p className="mt-4 text-[0.6rem] uppercase tracking-[0.2em] text-gold sm:text-[0.65rem] sm:tracking-[0.22em]">
@@ -49,14 +44,12 @@ export default function MerchPage() {
             <p className="mt-3 max-w-md text-sm leading-relaxed text-cream/75">
               {item.copy}
             </p>
-            <Button
-              nativeButton={false}
-              variant="outline"
-              render={<Link href="/?inquiry=merch#contact" />}
-              className="mt-5 h-11 rounded-none border-cream/30 px-5 text-[0.65rem] uppercase tracking-[0.24em] text-cream"
+            <Link
+              href="/?inquiry=merch#contact"
+              className="mt-5 inline-flex h-11 items-center border border-cream/30 px-5 text-[0.65rem] uppercase tracking-[0.24em] text-cream"
             >
               Enquire
-            </Button>
+            </Link>
           </li>
         ))}
       </ul>

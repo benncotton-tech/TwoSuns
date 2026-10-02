@@ -1,7 +1,6 @@
 "use client"
 
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
 
 export default function GlobalError({
   reset,
@@ -20,21 +19,19 @@ export default function GlobalError({
         through the front.
       </p>
       <div className="mt-8 flex flex-wrap gap-3">
-        <Button
+        <button
           type="button"
           onClick={reset}
-          className="h-11 rounded-none bg-gold px-6 text-[0.7rem] uppercase tracking-[0.28em] text-ink"
+          className="inline-flex h-11 items-center bg-gold px-6 text-[0.7rem] uppercase tracking-[0.28em] text-ink"
         >
           Try again
-        </Button>
-        <Button
-          nativeButton={false}
-          variant="outline"
-          render={<Link href="/" />}
-          className="h-11 rounded-none border-cream/30 px-6 text-[0.7rem] uppercase tracking-[0.28em] text-cream"
+        </button>
+        <Link
+          href="/"
+          className="inline-flex h-11 items-center border border-cream/30 px-6 text-[0.7rem] uppercase tracking-[0.28em] text-cream"
         >
           Home
-        </Button>
+        </Link>
       </div>
     </div>
   )
