@@ -8,18 +8,28 @@ The first screen is the official cream wordmark over the looping showreel. Scrol
 
 Stack: Next.js (App Router), TypeScript, Tailwind CSS, shadcn/ui.
 
+## Remaining human clicks
+
+This agent cannot finish GitHub or a durable Vercel project from here (`gh` logged out, Origin token not scoped to create a public GitHub repo, `vercel` CLI logged out).
+
+1. **Create repo** in Cursor — public, suggested name `twosuns` (or `twosuns.se`).
+2. **Claim the Vercel deploy** — [claim this deployment](https://vercel.com/claim-deployment?code=2d64867d-2e25-43bf-820c-bcc0f49bfe5a) (anonymous URL expires in about an hour). After GitHub exists, **Add New → Project** and import the repo instead / as well.
+3. Vercel **Settings → Domains → Add** `twosuns.se`, then paste the **exact** records that card prints at the registrar.
+
+No draft PR until the GitHub repo exists.
+
 ## Run it locally
 
 You need [Node.js 20+](https://nodejs.org/) and npm.
 
 ```bash
-git clone <this-repo-url>
+git clone <github-repo-url>
 cd twosuns
 npm install
 npm run dev
 ```
 
-Open [http://127.0.0.1:4391](http://127.0.0.1:4391).
+Open [http://127.0.0.1:4391](http://127.0.0.1:4391). There is no GitHub URL yet — this agent cannot create the repo (`gh` is logged out; the Origin token cannot create a standard public GitHub repo). Click **Create repo** in Cursor (public, suggested name `twosuns`).
 
 | Script | What it does |
 | --- | --- |
@@ -88,10 +98,17 @@ Official wordmark: `public/twosuns-wordmark.png`.
 
 ## Deploy on Vercel
 
-Do not wait on a login from this chat. When the GitHub repo exists:
+The Vercel CLI in this environment is **logged out**. No production project exists under Benjamin’s account, so this agent cannot attach `twosuns.se` or print project-specific DNS.
 
-1. Sign in at [vercel.com](https://vercel.com) (GitHub is fine).
-2. **Add New… → Project** and import this repository.
+A claimable anonymous production build is live (expires about **one hour** after it was created):
+
+- Site: [https://temporary-nimble-koto-dbvpvq6.vercel.app](https://temporary-nimble-koto-dbvpvq6.vercel.app)
+- Claim: [https://vercel.com/claim-deployment?code=2d64867d-2e25-43bf-820c-bcc0f49bfe5a](https://vercel.com/claim-deployment?code=2d64867d-2e25-43bf-820c-bcc0f49bfe5a)
+
+Durable path once the GitHub repo exists:
+
+1. Sign in at [vercel.com](https://vercel.com) (GitHub is fine), or run `vercel login`.
+2. **Add New… → Project** and import this repository (or claim the temporary URL above).
 3. Vercel should detect **Next.js**. Leave the defaults:
    - Build command: `next build` (or `npm run build`)
    - Output: Next.js (no extra config file is required)
@@ -102,12 +119,24 @@ The contact form posts to `/api/contact` and acknowledges the letter. It does no
 
 ## Point twosuns.se at Vercel
 
-Do this in two places. Vercel will print the **exact** records — use those, not a guessed IP.
+Vercel has **not** printed project-specific DNS for `twosuns.se`. An anonymous deploy cannot add a custom domain. After you claim the deployment (or import the GitHub repo):
 
-1. In the Vercel project: **Settings → Domains → Add** `twosuns.se` (and `www.twosuns.se` if you want the www).
-2. At the registrar that owns **twosuns.se**, open DNS and add the records Vercel shows. Typical shapes (confirm against Vercel’s screen):
-   - Apex `twosuns.se` — **A** record, or nameservers Vercel provides
-   - `www.twosuns.se` — **CNAME** to the host Vercel names (often `cname.vercel-dns.com`)
+1. In the Vercel project: **Settings → Domains → Add** `twosuns.se` (and `www.twosuns.se` if you want www).
+2. Copy the **exact** records from that domain card. Paste them at the registrar that owns **twosuns.se**. This agent cannot change the registrar.
+
+Until the card exists, Vercel’s documented general-purpose shapes (replace with the card if it differs — newer projects often get a different anycast IP and a project-specific CNAME) are:
+
+| Host | Type | Value |
+| --- | --- | --- |
+| `@` / `twosuns.se` | **A** | `76.76.21.21` |
+| `www` | **CNAME** | `cname.vercel-dns-0.com` |
+
+If the domain card asks for nameservers instead:
+
+| Type | Value |
+| --- | --- |
+| NS | `ns1.vercel-dns.com` |
+| NS | `ns2.vercel-dns.com` |
 
 Do not paste API tokens, Vercel passwords, or GitHub tokens into DNS. Wait for the domain to show **Valid** in Vercel. HTTPS is issued automatically once DNS is correct.
 
