@@ -10,24 +10,22 @@ Stack: Next.js (App Router), TypeScript, Tailwind CSS, shadcn/ui.
 
 ## Remaining human clicks
 
-1. **Create repo** in Cursor — public, suggested name `twosuns` (or `twosuns.se`). GitHub still cannot be created from this agent.
-2. Loopia Kundzon: set `@` A to `216.198.79.1` (steps below), then Vercel **Refresh**. `twosuns.se` is already on the project; status is **Invalid Configuration** until DNS matches.
-3. Vercel **Settings → Environment Variables → Production** → `SITE_PASSWORD` → **Redeploy**. Until that exists, the live site is open.
-
-No draft PR until the GitHub repo exists. The temporary Vercel host is **Valid**.
+1. In the **existing** Vercel project that already has `twosuns.se`, connect [https://github.com/benncotton-tech/TwoSuns](https://github.com/benncotton-tech/TwoSuns) (`main`), set **`SITE_PASSWORD`** (Production), and deploy. Do not Redeploy the old prebuilt anonymous URL.
+2. Loopia Kundzon: set `@` A to `216.198.79.1` (steps below), then Vercel **Refresh**.
+3. Vercel → Add **`www.twosuns.se`** if needed, then **Refresh**.
 
 ## Run it locally
 
 You need [Node.js 20+](https://nodejs.org/) and npm.
 
 ```bash
-git clone <github-repo-url>
-cd twosuns
+git clone https://github.com/benncotton-tech/TwoSuns.git
+cd TwoSuns
 npm install
 npm run dev
 ```
 
-Open [http://127.0.0.1:4391](http://127.0.0.1:4391). There is no GitHub URL yet — this agent cannot create the repo (`gh` is logged out; the Origin token cannot create a standard public GitHub repo). Click **Create repo** in Cursor (public, suggested name `twosuns`).
+Open [http://127.0.0.1:4391](http://127.0.0.1:4391).
 
 | Script | What it does |
 | --- | --- |
