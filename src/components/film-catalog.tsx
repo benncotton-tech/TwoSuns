@@ -1,26 +1,22 @@
-"use client"
-
-import { useMemo, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { filmLanes, filterFilms, type FilmLane } from "@/lib/films"
 import { cn } from "@/lib/utils"
 
-export function FilmCatalog() {
-  const [lane, setLane] = useState<FilmLane>("all")
-  const visible = useMemo(() => filterFilms(lane), [lane])
+export function FilmCatalog({ lane }: { lane: FilmLane }) {
+  const visible = filterFilms(lane)
 
   return (
     <div>
       <div className="flex flex-wrap gap-2" role="group" aria-label="Slate filter">
         {filmLanes.map((item) => {
           const active = lane === item.id
+          const href = item.id === "all" ? "/work#slate-heading" : `/work?lane=${item.id}#slate-heading`
           return (
-            <button
+            <Link
               key={item.id}
-              type="button"
-              onClick={() => setLane(item.id)}
-              aria-pressed={active}
+              href={href}
+              aria-current={active ? "page" : undefined}
               className={cn(
                 "inline-flex h-9 items-center border px-3 text-[0.65rem] uppercase tracking-[0.22em] transition-colors",
                 active
@@ -29,7 +25,7 @@ export function FilmCatalog() {
               )}
             >
               {item.label}
-            </button>
+            </Link>
           )
         })}
       </div>
@@ -48,9 +44,9 @@ export function FilmCatalog() {
                   {String(index + 1).padStart(2, "0")}
                 </span>
                 <div>
-                  <h2 className="font-heading text-3xl text-cream transition-colors group-hover:text-gold sm:text-4xl">
+                  <h3 className="font-heading text-3xl text-cream transition-colors group-hover:text-gold sm:text-4xl">
                     {film.title}
-                  </h2>
+                  </h3>
                   <p className="mt-2 text-[0.7rem] uppercase tracking-[0.22em] text-silver">
                     {film.format} · {film.year} · {film.location}
                   </p>
@@ -104,7 +100,7 @@ function EmptyLane({ lane }: { lane: FilmLane }) {
       <p className="text-[0.65rem] uppercase tracking-[0.28em] text-gold">
         Empty lane
       </p>
-      <h2 className="mt-4 font-heading text-3xl text-cream">{copy.title}</h2>
+      <h3 className="mt-4 font-heading text-3xl text-cream">{copy.title}</h3>
       <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-silver">
         {copy.body}
       </p>

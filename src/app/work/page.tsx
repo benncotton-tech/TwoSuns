@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { FilmCatalog } from "@/components/film-catalog"
 import { PageIntro } from "@/components/page-intro"
 import { UpcomingSlate } from "@/components/upcoming-slate"
+import { filmLanes, type FilmLane } from "@/lib/films"
 
 export const metadata: Metadata = {
   title: "Work",
@@ -9,7 +10,19 @@ export const metadata: Metadata = {
     "The TwoSuns slate: features, documentaries, and shorts produced from Stockholm, plus pictures still upcoming.",
 }
 
-export default function WorkPage() {
+function laneFromParam(value: string | string[] | undefined): FilmLane {
+  const lane = Array.isArray(value) ? value[0] : value
+  return filmLanes.some((item) => item.id === lane) ? (lane as FilmLane) : "all"
+}
+
+export default async function WorkPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ lane?: string | string[] }>
+}) {
+  const params = await searchParams
+  const lane = laneFromParam(params.lane)
+
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
       <PageIntro eyebrow="Work" title="A short slate, on purpose.">
@@ -36,7 +49,7 @@ export default function WorkPage() {
           empty on purpose.
         </p>
         <div className="mt-10">
-          <FilmCatalog />
+          <FilmCatalog lane={lane} />
         </div>
       </section>
     </div>
