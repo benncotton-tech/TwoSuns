@@ -148,3 +148,98 @@ html.landing-lock body {
     transition: none !important;
   }
 }
+
+.twosuns-showreel {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.twosuns-showreel-backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgb(0 0 0 / 88%);
+  cursor: pointer;
+}
+
+.twosuns-showreel-panel {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 52rem);
+  background: var(--ink);
+}
+
+.twosuns-showreel-x {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 2;
+  display: inline-flex;
+  width: 2.75rem;
+  height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: transparent;
+  color: var(--cream);
+  font-size: 1.75rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.twosuns-showreel-frame {
+  aspect-ratio: 16 / 9;
+  background: #000;
+}
+
+.twosuns-showreel-frame video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.twosuns-showreel-copy {
+  padding: 1.25rem;
+}
+
+.twosuns-showreel-kicker {
+  margin: 0;
+  font-size: 0.65rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.twosuns-showreel-copy h2 {
+  margin: 0.5rem 0 0;
+  font-family: var(--font-heading), serif;
+  font-size: 1.875rem;
+  color: var(--cream);
+}
+
+.twosuns-showreel-copy p:last-of-type {
+  margin: 0.75rem 0 0;
+  max-width: 42rem;
+  font-size: 0.875rem;
+  line-height: 1.625;
+  color: var(--silver);
+}
+
+.twosuns-showreel-copy a {
+  display: inline-block;
+  margin-top: 1.25rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-decoration: none;
+}
+
+.twosuns-showreel-copy a:hover {
+  color: var(--cream);
+}

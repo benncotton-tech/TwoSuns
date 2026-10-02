@@ -1,10 +1,8 @@
 "use client"
 
 import { memo, useEffect, useRef, useState, type MouseEvent, type Ref } from "react"
-import { createPortal } from "react-dom"
 import Image from "next/image"
-import Link from "next/link"
-import { Volume2Icon, VolumeXIcon, XIcon } from "lucide-react"
+import { Volume2Icon, VolumeXIcon } from "lucide-react"
 import { DeskBurnIn } from "@/components/landing/desk-burn-in"
 import { Wordmark } from "@/components/wordmark"
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion"
@@ -14,8 +12,11 @@ import { cn } from "@/lib/utils"
 declare global {
   interface Window {
     __twosunsOnSound?: (soundOn: boolean) => void
-    __twosunsSoundBound?: boolean
+    __twosunsOnWatch?: (watching: boolean) => void
+    __twosunsOpenShowreel?: () => void
+    __twosunsCloseShowreel?: () => void
     __twosunsSoundStamp?: number
+    __twosunsWatchStamp?: number
   }
 }
 
@@ -27,8 +28,10 @@ export function CinematicLanding() {
 
   useEffect(() => {
     window.__twosunsOnSound = (soundOn: boolean) => setMuted(!soundOn)
+    window.__twosunsOnWatch = setWatching
     return () => {
       delete window.__twosunsOnSound
+      delete window.__twosunsOnWatch
     }
   }, [])
 
@@ -42,20 +45,6 @@ export function CinematicLanding() {
     const play = video.play()
     if (play) play.catch(() => undefined)
   }, [reduceMotion, watching])
-
-  useEffect(() => {
-    if (!watching) return
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setWatching(false)
-    }
-    window.addEventListener("keydown", onKey)
-    const previous = document.body.style.overflow
-    document.body.style.overflow = "hidden"
-    return () => {
-      window.removeEventListener("keydown", onKey)
-      document.body.style.overflow = previous
-    }
-  }, [watching])
 
   const onSoundClick = (event: MouseEvent<HTMLButtonElement>) => {
     const video = videoRef.current
@@ -72,6 +61,17 @@ export function CinematicLanding() {
       if (play) play.catch(() => undefined)
     }
     setMuted(!soundOn)
+  }
+
+  const onShowreelClick = (event: MouseEvent<HTMLButtonElement>) => {
+    if (window.__twosunsWatchStamp === event.nativeEvent.timeStamp) {
+      setWatching(true)
+      return
+    }
+    if (typeof window.__twosunsOpenShowreel === "function") {
+      window.__twosunsOpenShowreel()
+    }
+    setWatching(true)
   }
 
   return (
@@ -123,7 +123,8 @@ export function CinematicLanding() {
 
           <button
             type="button"
-            onClick={() => setWatching(true)}
+            data-showreel-toggle="true"
+            onClick={onShowreelClick}
             className="inline-flex h-11 cursor-pointer items-center text-[0.7rem] uppercase tracking-[0.2em] text-cream hover:text-gold"
           >
             Showreel
@@ -132,13 +133,6 @@ export function CinematicLanding() {
           <DeskBurnIn className="hidden h-11 items-center text-[0.6rem] uppercase tracking-[0.16em] text-silver lg:flex" />
         </div>
       </div>
-
-      {watching
-        ? createPortal(
-            <ShowreelWatcher onClose={() => setWatching(false)} />,
-            document.body
-          )
-        : null}
     </section>
   )
 }
@@ -163,58 +157,3 @@ const LandingReel = memo(function LandingReel({
     />
   )
 })
-
-function ShowreelWatcher({ onClose }: { onClose: () => void }) {
-  return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
-      <button
-        type="button"
-        className="absolute inset-0 bg-black/88"
-        aria-label="Close film"
-        onClick={onClose}
-      />
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="watch-title"
-        className="relative z-[1] w-[min(100%,52rem)] bg-ink"
-      >
-        <button
-          type="button"
-          className="absolute top-2 right-2 z-[2] inline-flex size-11 cursor-pointer items-center justify-center text-cream"
-          aria-label="Close film"
-          onClick={onClose}
-        >
-          <XIcon className="size-5" />
-        </button>
-        <div className="aspect-video bg-black">
-          <video
-            src={reel.file}
-            poster={reel.poster}
-            autoPlay
-            controls
-            playsInline
-            className="h-full w-full object-cover"
-          />
-        </div>
-        <div className="px-5 py-5">
-          <p className="text-[0.65rem] uppercase tracking-[0.28em] text-gold">
-            Stockholm
-          </p>
-          <h2 id="watch-title" className="mt-2 font-heading text-3xl text-cream">
-            Showreel
-          </h2>
-          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-silver">
-            Pictures from the house. Mute stays on until you ask for sound.
-          </p>
-          <Link
-            href="/work"
-            className="mt-5 inline-block text-[0.7rem] uppercase tracking-[0.22em] text-gold hover:text-cream"
-          >
-            On the slate
-          </Link>
-        </div>
-      </div>
-    </div>
-  )
-}
