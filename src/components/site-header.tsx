@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { createPortal } from "react-dom"
 import { MenuIcon, XIcon } from "lucide-react"
 import { Wordmark } from "@/components/wordmark"
 import { nav } from "@/lib/site"
@@ -19,7 +20,6 @@ export function SiteHeader({ home = false }: { home?: boolean }) {
 
   useEffect(() => {
     if (!open) return
-    const panel = panelRef.current
     closeRef.current?.focus()
 
     const onKey = (event: KeyboardEvent) => {
@@ -27,6 +27,7 @@ export function SiteHeader({ home = false }: { home?: boolean }) {
         setOpen(false)
         return
       }
+      const panel = panelRef.current
       if (event.key !== "Tab" || !panel) return
       const focusable = [
         ...panel.querySelectorAll<HTMLElement>('a[href], button:not([disabled])'),
@@ -45,9 +46,11 @@ export function SiteHeader({ home = false }: { home?: boolean }) {
 
     window.addEventListener("keydown", onKey)
     document.body.style.overflow = "hidden"
+    document.documentElement.style.overflow = "hidden"
     return () => {
       window.removeEventListener("keydown", onKey)
       document.body.style.overflow = ""
+      document.documentElement.style.overflow = ""
     }
   }, [open])
 
@@ -83,10 +86,15 @@ export function SiteHeader({ home = false }: { home?: boolean }) {
 
   const ghost = home && !scrolled && !open
 
+  function closeMenu() {
+    setOpen(false)
+  }
+
   function goToSection(
     event: MouseEvent<HTMLAnchorElement>,
     id: (typeof nav)[number]["id"]
   ) {
+    closeMenu()
     if (pathname !== "/") return
     const node = document.getElementById(id)
     if (!node) return
@@ -96,7 +104,6 @@ export function SiteHeader({ home = false }: { home?: boolean }) {
     window.scrollTo({ top: Math.max(0, top), behavior: "instant" })
     window.history.replaceState(null, "", `/#${id}`)
     setSection(id)
-    setOpen(false)
   }
 
   function isActive(id: (typeof nav)[number]["id"]) {
@@ -108,138 +115,138 @@ export function SiteHeader({ home = false }: { home?: boolean }) {
   }
 
   return (
-    <header
-      className={cn(
-        "z-40",
-        home
-          ? cn(
-              "fixed inset-x-0 top-0",
-              ghost
-                ? "pointer-events-none border-0 bg-transparent"
-                : "border-b border-cream/10 bg-ink/80 backdrop-blur-md"
-            )
-          : "sticky top-0 border-b border-cream/10 bg-ink/80 backdrop-blur-md"
-      )}
-    >
-      <div
+    <>
+      <header
         className={cn(
-          "mx-auto flex h-16 items-center justify-between px-4 sm:h-[4.25rem] sm:px-6 lg:px-8",
-          home ? "max-w-none" : "max-w-6xl"
+          "z-40",
+          home
+            ? cn(
+                "fixed inset-x-0 top-0",
+                ghost
+                  ? "pointer-events-none border-0 bg-transparent"
+                  : "border-b border-cream/10 bg-ink/80 backdrop-blur-md"
+              )
+            : "sticky top-0 border-b border-cream/10 bg-ink/80 backdrop-blur-md"
         )}
       >
-        <Link
-          href="/"
+        <div
           className={cn(
-            "relative z-10 flex items-center",
-            ghost && "pointer-events-auto drop-shadow-[0_2px_12px_rgba(0,0,0,0.85)]"
+            "mx-auto flex h-16 items-center justify-between px-4 sm:h-[4.25rem] sm:px-6 lg:px-8",
+            home ? "max-w-none" : "max-w-6xl"
           )}
-          aria-label="TwoSuns home"
         >
-          <Wordmark className="h-8 w-auto sm:h-9" priority />
-        </Link>
+          <Link
+            href="/"
+            className={cn(
+              "relative z-10 flex items-center",
+              ghost && "pointer-events-auto drop-shadow-[0_2px_12px_rgba(0,0,0,0.85)]"
+            )}
+            aria-label="TwoSuns home"
+          >
+            <Wordmark className="h-8 w-auto sm:h-9" priority />
+          </Link>
 
-        <nav
-          className={cn(
-            "hidden items-center gap-6 lg:gap-10 md:flex",
-            ghost && "pointer-events-auto drop-shadow-[0_1px_8px_rgba(0,0,0,0.8)]"
-          )}
-          aria-label="Primary"
-        >
-          {nav.map((item) => {
-            const active = isActive(item.id)
-            return (
-              <Link
-                key={item.id}
-                href={item.href}
-                onClick={(event) => goToSection(event, item.id)}
-                aria-current={active ? "page" : undefined}
-                className={cn(
-                  "text-[0.7rem] uppercase tracking-[0.32em] transition-colors",
-                  active ? "text-gold" : "text-cream/80 hover:text-cream"
-                )}
-              >
-                {item.label}
-              </Link>
-            )
-          })}
-        </nav>
+          <nav
+            className={cn(
+              "hidden items-center gap-6 lg:gap-10 md:flex",
+              ghost && "pointer-events-auto drop-shadow-[0_1px_8px_rgba(0,0,0,0.8)]"
+            )}
+            aria-label="Primary"
+          >
+            {nav.map((item) => {
+              const active = isActive(item.id)
+              return (
+                <Link
+                  key={item.id}
+                  href={item.href}
+                  onClick={(event) => goToSection(event, item.id)}
+                  aria-current={active ? "page" : undefined}
+                  className={cn(
+                    "text-[0.7rem] uppercase tracking-[0.32em] transition-colors",
+                    active ? "text-gold" : "text-cream/80 hover:text-cream"
+                  )}
+                >
+                  {item.label}
+                </Link>
+              )
+            })}
+          </nav>
 
-        <button
-          type="button"
-          className={cn(
-            "inline-flex size-11 items-center justify-center text-cream md:hidden",
-            ghost && "pointer-events-auto ml-auto"
-          )}
-          aria-label={open ? "Close menu" : "Open menu"}
-          aria-expanded={open}
-          aria-controls={menuId}
-          onClick={() => setOpen((value) => !value)}
-        >
-          {open ? <XIcon className="size-5" /> : <MenuIcon className="size-5" />}
-        </button>
-      </div>
-
-      {open ? (
-        <div className="fixed inset-0 z-[90] md:hidden">
           <button
             type="button"
-            className="absolute inset-0 bg-black/75"
-            aria-label="Close menu"
-            onClick={() => setOpen(false)}
-          />
-          <div
-            ref={panelRef}
-            id={menuId}
-            role="dialog"
-            aria-modal="true"
-            aria-label="Menu"
-            className="absolute inset-y-0 right-0 flex w-[min(100%,20rem)] flex-col border-l border-cream/15 bg-ink"
+            className={cn(
+              "inline-flex size-11 items-center justify-center text-cream md:hidden",
+              ghost && "pointer-events-auto ml-auto"
+            )}
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            aria-controls={menuId}
+            onClick={() => setOpen((value) => !value)}
           >
-            <div className="flex items-center justify-between px-4 py-4">
-              <p className="font-heading text-lg text-cream">TwoSuns</p>
-              <button
-                ref={closeRef}
-                type="button"
-                className="inline-flex size-11 items-center justify-center text-cream"
-                aria-label="Close menu"
-                onClick={() => setOpen(false)}
-              >
-                <XIcon className="size-5" />
-              </button>
-            </div>
-            <nav className="flex flex-col gap-1 px-4 pb-[max(1rem,env(safe-area-inset-bottom))]" aria-label="Mobile">
-              <Link
-                href="/"
-                onClick={() => setOpen(false)}
-                aria-current={home && !section ? "page" : undefined}
-                className={cn(
-                  "min-h-11 py-3 text-sm uppercase tracking-[0.28em]",
-                  home && !section ? "text-gold" : "text-cream/85"
-                )}
-              >
-                Home
-              </Link>
-              {nav.map((item) => {
-                const active = isActive(item.id)
-                return (
-                  <Link
-                    key={item.id}
-                    href={item.href}
-                    onClick={(event) => goToSection(event, item.id)}
-                    aria-current={active ? "page" : undefined}
-                    className={cn(
-                      "min-h-11 py-3 text-sm uppercase tracking-[0.28em]",
-                      active ? "text-gold" : "text-cream/85"
-                    )}
-                  >
-                    {item.label}
-                  </Link>
-                )
-              })}
-            </nav>
-          </div>
+            {open ? <XIcon className="size-5" /> : <MenuIcon className="size-5" />}
+          </button>
         </div>
-      ) : null}
-    </header>
+      </header>
+
+      {open
+        ? createPortal(
+            <div
+              ref={panelRef}
+              id={menuId}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Menu"
+              className="mobile-menu flex flex-col md:hidden"
+            >
+              <div className="flex h-16 shrink-0 items-center justify-between px-4 sm:h-[4.25rem] sm:px-6">
+                <p className="font-heading text-lg text-cream">TwoSuns</p>
+                <button
+                  ref={closeRef}
+                  type="button"
+                  className="inline-flex size-11 items-center justify-center text-cream"
+                  aria-label="Close menu"
+                  onClick={closeMenu}
+                >
+                  <XIcon className="size-5" />
+                </button>
+              </div>
+              <nav
+                className="flex flex-1 flex-col justify-center gap-1 px-6 pb-[max(2rem,env(safe-area-inset-bottom))]"
+                aria-label="Mobile"
+              >
+                <Link
+                  href="/"
+                  onClick={closeMenu}
+                  aria-current={home && !section ? "page" : undefined}
+                  className={cn(
+                    "block min-h-14 py-4 font-heading text-3xl tracking-normal",
+                    home && !section ? "text-gold" : "text-cream"
+                  )}
+                >
+                  Home
+                </Link>
+                {nav.map((item) => {
+                  const active = isActive(item.id)
+                  return (
+                    <Link
+                      key={item.id}
+                      href={item.href}
+                      onClick={(event) => goToSection(event, item.id)}
+                      aria-current={active ? "page" : undefined}
+                      className={cn(
+                        "block min-h-14 py-4 font-heading text-3xl tracking-normal",
+                        active ? "text-gold" : "text-cream"
+                      )}
+                    >
+                      {item.label}
+                    </Link>
+                  )
+                })}
+              </nav>
+            </div>,
+            document.body
+          )
+        : null}
+    </>
   )
 }
