@@ -11,11 +11,11 @@ npm install
 npm run dev
 ```
 
-Then open [http://127.0.0.1:4317](http://127.0.0.1:4317).
+Then open [http://127.0.0.1:4391](http://127.0.0.1:4391).
 
 | Script | What it does |
 | --- | --- |
-| `npm run dev` | Dev server on port **4317** |
+| `npm run dev` | Dev server on port **4391** |
 | `npm run build` | Production build |
 | `npm run start` | Serve the production build |
 | `npm run lint` | ESLint |
