@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 
-export default function ErrorPage({
+export default function ContactError({
   reset,
 }: {
   error: Error & { digest?: string }
@@ -13,10 +13,9 @@ export default function ErrorPage({
       <p className="text-[0.7rem] uppercase tracking-[0.32em] text-gold">
         Fault
       </p>
-      <h1 className="mt-4 font-heading text-4xl text-cream">The projector stopped.</h1>
+      <h1 className="mt-4 font-heading text-4xl text-cream">The letter would not load.</h1>
       <p className="mt-4 text-sm leading-relaxed text-silver">
-        Something in the house failed. Try again, or leave and come back
-        through the front.
+        The form jammed. Try again, or write hello@twosuns.se directly.
       </p>
       <div className="mt-8 flex flex-wrap gap-3">
         <button

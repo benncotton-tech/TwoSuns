@@ -16,9 +16,14 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
           : "site-frame relative flex min-h-full flex-1 flex-col"
       }
     >
+      <a href="#content" className="skip-link">
+        Skip to content
+      </a>
       {home ? null : <div className="film-grain" aria-hidden />}
       <SiteHeader home={home} />
-      <main className="flex flex-1 flex-col">{children}</main>
+      <main id="content" className="flex flex-1 flex-col">
+        {children}
+      </main>
       {home ? null : <SiteFooter />}
     </div>
   )

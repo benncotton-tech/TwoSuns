@@ -14,7 +14,7 @@ export function FilmPosterCard({
       <div className="relative aspect-[2/3] overflow-hidden border border-cream/10 bg-black">
         <img
           src={film.poster}
-          alt=""
+          alt={`${film.title} poster`}
           className="absolute inset-0 h-full w-full object-cover"
         />
       </div>

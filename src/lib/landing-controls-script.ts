@@ -48,6 +48,8 @@ export const landingControlsScript = `(function () {
         "</div>" +
       "</div>";
     document.body.appendChild(overlay);
+    var closeBtn = overlay.querySelector(".twosuns-showreel-x");
+    if (closeBtn && closeBtn.focus) closeBtn.focus();
 
     overlay.addEventListener("click", function (event) {
       var close = event.target && event.target.closest && event.target.closest("[data-showreel-close]");
@@ -126,6 +128,23 @@ export const landingControlsScript = `(function () {
   );
 
   document.addEventListener("keydown", function (event) {
-    if (event.key === "Escape") closeShowreel();
+    var overlay = document.getElementById("twosuns-showreel");
+    if (!overlay) return;
+    if (event.key === "Escape") {
+      closeShowreel();
+      return;
+    }
+    if (event.key !== "Tab") return;
+    var focusable = overlay.querySelectorAll("a[href], button, video");
+    if (!focusable.length) return;
+    var first = focusable[0];
+    var last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
   });
 })();`

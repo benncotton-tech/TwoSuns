@@ -2,17 +2,21 @@
 
 Website for **TwoSuns**, a Swedish film production company based in Stockholm. Two founders — Billy (USA) and Benjamin (Australia) — both live here. The two suns are the two of them. Domain: [twosuns.se](https://twosuns.se).
 
-This is a Next.js site with **file-based content**. There is no CMS, no database, and no user accounts. You edit TypeScript files, commit, and the site updates. An optional `SITE_PASSWORD` can gate the live site with HTTP Basic Auth.
+Repo: [github.com/benncotton-tech/TwoSuns](https://github.com/benncotton-tech/TwoSuns).
 
-The first screen is the official cream wordmark over the looping showreel. Scroll down for Upcoming, the Work slate, News, About, and Contact. The nav (Work / News / About / Contact) jumps to those sections. **Sound** unmutes the reel. **Showreel** opens the same cut with controls.
+This is a Next.js site with **file-based content**. There is no CMS, no database, and no user accounts. You edit TypeScript files, commit, and the site updates. Production deploys from `main` on Vercel.
 
-Stack: Next.js (App Router), TypeScript, Tailwind CSS, shadcn/ui. Production deploys from this GitHub repo on Vercel (Git connected).
+The live site stays behind **`SITE_PASSWORD`** (HTTP Basic Auth) until Benjamin opens it. While that env var is set, the site sends `noindex` so search engines do not list the gated house.
+
+The first screen is the official cream wordmark over the looping showreel. Scroll down for Upcoming, the Work slate, News, About, and Contact. The nav (Work / News / About / Contact / Merch) jumps to those sections, except Merch which is its own lookbook. **Sound** unmutes the reel. **Showreel** opens the same cut with controls.
+
+Stack: Next.js (App Router), TypeScript, Tailwind CSS, shadcn/ui.
 
 ## Remaining human clicks
 
-1. Watch Vercel **Deployments** for a source production build from `main`. `SITE_PASSWORD` is already set. Do not Redeploy the old prebuilt anonymous URL.
-2. Loopia Kundzon: set `@` A to `216.198.79.1` (steps below), then Vercel **Refresh**.
-3. Vercel → Add **`www.twosuns.se`** if needed, then **Refresh**.
+1. Loopia Kundzon: set `@` A to `216.198.79.1` if Vercel still shows **Invalid Configuration**, then **Refresh** the domain.
+2. Keep **`SITE_PASSWORD`** on Vercel Production until the house is ready to go public. Username can be anything (or `twosuns`); the password is that value.
+3. Do not Redeploy an old anonymous / prebuilt Vercel URL. Production is this GitHub repo on `main`.
 
 ## Run it locally
 
@@ -25,7 +29,7 @@ npm install
 npm run dev
 ```
 
-Open [http://127.0.0.1:4391](http://127.0.0.1:4391).
+Open [http://127.0.0.1:4391](http://127.0.0.1:4391). Leave `SITE_PASSWORD` unset locally so preview stays open.
 
 | Script | What it does |
 | --- | --- |
@@ -38,7 +42,7 @@ Anyone with access to the GitHub repo can clone it, edit, and push. That is how 
 
 ## How to edit the site
 
-Content lives in TypeScript, not a CMS. After you change a file, the dev server hot-reloads. For the live site, commit and push — Vercel rebuilds.
+Content lives in TypeScript, not a CMS. After you change a file, the dev server hot-reloads. For the live site, commit and push to `main` — Vercel rebuilds.
 
 ### House copy — `src/lib/site.ts`
 
@@ -46,7 +50,7 @@ Company name, Stockholm house, founders (Billy and Benjamin), nav, contact email
 
 ### Pictures — `src/lib/films.ts`
 
-The slate. Each film has a `slug`, title, year, format, status, logline, synopsis, poster path, optional reel, and optional `upcoming` block.
+The slate. Each film has a `slug`, title, year, format, status, logline, synopsis, poster path, optional reel, optional stills, and optional `upcoming` block.
 
 To put a title in **Upcoming** (on the landing, not on the News board):
 
@@ -61,10 +65,11 @@ Stills and picture files:
 
 ```
 public/films/<slug>/poster.jpg
+public/films/<slug>/still-01.jpg
 public/films/<slug>/reel.mp4
 ```
 
-Replace the placeholder reel when the finished file exists; keep the filename.
+The Work slate is shorts only, newest year first. Features still in the house sit in Upcoming. Do not invent titles.
 
 ### News — `src/lib/news.ts`
 
@@ -74,15 +79,19 @@ There is no CMS. Add a post at the **top** of the `posts` array (newest first).
 {
   slug: "short-url-name",
   title: "The headline.",
-  date: "2026-10-01", // ISO
+  date: "2026-10-02", // ISO
   kind: "now", // "now" | "coming-up" | "news"
   dek: "One or two sentences for the board.",
   body: ["First paragraph.", "Second paragraph."],
-  film: "salt-light", // optional work slug
+  film: "bonde-feature", // optional work slug
 }
 ```
 
 News **Coming up** is a house note. Work **Upcoming** is the pictures.
+
+### Merch — `src/lib/merch.ts` and `public/merch/`
+
+Lookbook only. No cart. Enquire goes to the contact letter with the merch lane. Hats and tees use the official cream wordmark on black cloth. The beanie keeps the smaller cuff mark.
 
 ### Showreel — `src/lib/reel.ts` and `public/landing/`
 
@@ -90,25 +99,13 @@ The landing plays `public/landing/reel.mp4` (Benjamin’s Vimeo cut, *Demoreel t
 
 Source: `https://vimeo.com/1232004117/19df93e39f`. Before embedding that Vimeo URL elsewhere, allow **twosuns.se** in the Vimeo video’s embed settings.
 
-Official wordmark: `public/twosuns-wordmark.png`.
+Official wordmark: `public/twosuns-wordmark.png`. Favicon and Open Graph (`public/og.jpg`) are that same mark on black. Do not redraw it.
 
 ## Deploy on Vercel
 
-Live site from a **source** anonymous deploy (no `--prebuilt`; includes the password gate). Expires about an hour after it was created unless claimed:
-
-[https://temporary-speedy-frost-foigbjp.vercel.app](https://temporary-speedy-frost-foigbjp.vercel.app)
-
-Claim: [https://vercel.com/claim-deployment?code=f73b0e4d-0c34-41c4-9940-4f137834a069](https://vercel.com/claim-deployment?code=f73b0e4d-0c34-41c4-9940-4f137834a069)
-
-The earlier prebuilt URL cannot be Redeployed. This agent is still logged out of Vercel, so this is a new anonymous project — not a `--prod` deploy onto the old one. After claim: **Settings → Environment Variables → Production** → `SITE_PASSWORD` → **Redeploy**. Until that env exists, the site stays open.
-
-`twosuns.se` is added on that project. Vercel status for the domain is **Invalid Configuration** until the A record below is at the registrar.
-
-There is no database. The only env var is optional **`SITE_PASSWORD`**: when it is set, the whole site (including `/` and the reel) asks for HTTP Basic Auth. Username can be anything (or `twosuns`); the password is that value. Leave it unset locally so preview stays open. On Vercel: **Settings → Environment Variables → Production** → `SITE_PASSWORD` → **Redeploy**. Do not put the password in git.
+GitHub `main` → Vercel production. There is no database. The only env var is optional **`SITE_PASSWORD`**: when it is set, the whole site (including `/` and the reel) asks for HTTP Basic Auth, and pages are `noindex`. Leave it unset locally. On Vercel: **Settings → Environment Variables → Production** → `SITE_PASSWORD` → **Redeploy**. Do not put the password in git.
 
 The contact form posts to `/api/contact` and acknowledges the letter. It does not send email until you later wire a mailer. Until then, people can still use `hello@twosuns.se`.
-
-Once a GitHub repo exists, import it in Vercel so pushes rebuild production.
 
 ## Point twosuns.se at Vercel
 
@@ -130,9 +127,10 @@ Do not paste API tokens into DNS. When the record matches, Vercel should flip fr
 ## What’s on the page
 
 - **Hero** — wordmark over the showreel, Sound, Showreel
-- **Upcoming** — pictures still in the house (`/#work`)
-- **The slate** — the shorts (`/#work`). Features still in the house sit in Upcoming.
+- **Upcoming** — the feature BONDE, production May 2027 (`/#work`)
+- **The slate** — shorts newest to oldest: BONDE, SKÅL, No Answer (`/#work`)
 - **News** — now / coming up / notes (`/#news`); individual posts at `/news/<slug>`
 - **About** — two founders, Stockholm (`/#about`)
+- **Merch** — hats and tees lookbook (`/merch`)
 - **Contact** — letter to Stockholm (`/#contact`)
 - Film pages: `/work/<slug>`

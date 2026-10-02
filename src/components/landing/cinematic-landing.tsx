@@ -76,7 +76,7 @@ export function CinematicLanding() {
   return (
     <section className="landing-hero relative h-[100dvh] min-h-[100dvh] overflow-hidden bg-ink">
       <h1 className="sr-only">TwoSuns</h1>
-      <div className="pointer-events-none absolute inset-0">
+      <div className="pointer-events-none absolute inset-0" aria-hidden>
         {reduceMotion ? (
           <img
             src={reel.poster}
@@ -150,6 +150,7 @@ const LandingReel = memo(function LandingReel({
       loop
       muted
       preload="auto"
+      aria-hidden
       className="h-full w-full object-cover"
     />
   )

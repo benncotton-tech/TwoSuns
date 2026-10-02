@@ -6,19 +6,43 @@ import { MenuIcon, XIcon } from "lucide-react"
 import { Wordmark } from "@/components/wordmark"
 import { nav } from "@/lib/site"
 import { cn } from "@/lib/utils"
-import { useEffect, useState, type MouseEvent } from "react"
+import { useEffect, useId, useRef, useState, type MouseEvent } from "react"
 
 export function SiteHeader({ home = false }: { home?: boolean }) {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [section, setSection] = useState("")
+  const menuId = useId()
+  const panelRef = useRef<HTMLDivElement>(null)
+  const closeRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
     if (!open) return
+    const panel = panelRef.current
+    closeRef.current?.focus()
+
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setOpen(false)
+      if (event.key === "Escape") {
+        setOpen(false)
+        return
+      }
+      if (event.key !== "Tab" || !panel) return
+      const focusable = [
+        ...panel.querySelectorAll<HTMLElement>('a[href], button:not([disabled])'),
+      ]
+      if (focusable.length === 0) return
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault()
+        last.focus()
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault()
+        first.focus()
+      }
     }
+
     window.addEventListener("keydown", onKey)
     document.body.style.overflow = "hidden"
     return () => {
@@ -69,11 +93,7 @@ export function SiteHeader({ home = false }: { home?: boolean }) {
     event.preventDefault()
     event.stopPropagation()
     const top = node.getBoundingClientRect().top + window.scrollY
-    const html = document.documentElement
-    const previous = html.style.scrollBehavior
-    html.style.scrollBehavior = "auto"
-    window.scrollTo(0, Math.max(0, top))
-    html.style.scrollBehavior = previous
+    window.scrollTo({ top: Math.max(0, top), behavior: "instant" })
     window.history.replaceState(null, "", `/#${id}`)
     setSection(id)
     setOpen(false)
@@ -132,6 +152,7 @@ export function SiteHeader({ home = false }: { home?: boolean }) {
                 key={item.id}
                 href={item.href}
                 onClick={(event) => goToSection(event, item.id)}
+                aria-current={active ? "page" : undefined}
                 className={cn(
                   "text-[0.7rem] uppercase tracking-[0.32em] transition-colors",
                   active ? "text-gold" : "text-cream/80 hover:text-cream"
@@ -146,11 +167,12 @@ export function SiteHeader({ home = false }: { home?: boolean }) {
         <button
           type="button"
           className={cn(
-            "inline-flex size-10 items-center justify-center text-cream md:hidden",
+            "inline-flex size-11 items-center justify-center text-cream md:hidden",
             ghost && "pointer-events-auto ml-auto"
           )}
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
+          aria-controls={menuId}
           onClick={() => setOpen((value) => !value)}
         >
           {open ? <XIcon className="size-5" /> : <MenuIcon className="size-5" />}
@@ -165,24 +187,33 @@ export function SiteHeader({ home = false }: { home?: boolean }) {
             aria-label="Close menu"
             onClick={() => setOpen(false)}
           />
-          <div className="absolute inset-y-0 right-0 flex w-[min(100%,20rem)] flex-col border-l border-cream/15 bg-ink">
+          <div
+            ref={panelRef}
+            id={menuId}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Menu"
+            className="absolute inset-y-0 right-0 flex w-[min(100%,20rem)] flex-col border-l border-cream/15 bg-ink"
+          >
             <div className="flex items-center justify-between px-4 py-4">
               <p className="font-heading text-lg text-cream">TwoSuns</p>
               <button
+                ref={closeRef}
                 type="button"
-                className="inline-flex size-10 items-center justify-center text-cream"
+                className="inline-flex size-11 items-center justify-center text-cream"
                 aria-label="Close menu"
                 onClick={() => setOpen(false)}
               >
                 <XIcon className="size-5" />
               </button>
             </div>
-            <nav className="flex flex-col gap-1 px-4" aria-label="Mobile">
+            <nav className="flex flex-col gap-1 px-4 pb-[max(1rem,env(safe-area-inset-bottom))]" aria-label="Mobile">
               <Link
                 href="/"
                 onClick={() => setOpen(false)}
+                aria-current={home && !section ? "page" : undefined}
                 className={cn(
-                  "py-3 text-sm uppercase tracking-[0.28em]",
+                  "min-h-11 py-3 text-sm uppercase tracking-[0.28em]",
                   home && !section ? "text-gold" : "text-cream/85"
                 )}
               >
@@ -195,8 +226,9 @@ export function SiteHeader({ home = false }: { home?: boolean }) {
                     key={item.id}
                     href={item.href}
                     onClick={(event) => goToSection(event, item.id)}
+                    aria-current={active ? "page" : undefined}
                     className={cn(
-                      "py-3 text-sm uppercase tracking-[0.28em]",
+                      "min-h-11 py-3 text-sm uppercase tracking-[0.28em]",
                       active ? "text-gold" : "text-cream/85"
                     )}
                   >

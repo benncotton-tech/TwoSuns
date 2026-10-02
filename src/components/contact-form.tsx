@@ -31,6 +31,8 @@ export function ContactForm() {
   useEffect(() => {
     const lane = new URLSearchParams(window.location.search).get("inquiry")
     if (lane && inquiryLanes.some((item) => item.value === lane)) {
+      // Prefill from ?inquiry= when arriving from Merch Enquire.
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time URL bootstrap
       setInquiry(lane)
     }
   }, [])
@@ -148,6 +150,7 @@ export function ContactForm() {
             value={name}
             onChange={(event) => setName(event.target.value)}
             autoComplete="name"
+            aria-required="true"
             aria-invalid={Boolean(errors.name)}
             aria-describedby={errors.name ? "name-error" : undefined}
             className="h-11 rounded-none border-cream/20 bg-transparent text-cream"
@@ -162,6 +165,7 @@ export function ContactForm() {
             value={email}
             onChange={(event) => setEmail(event.target.value)}
             autoComplete="email"
+            aria-required="true"
             aria-invalid={Boolean(errors.email)}
             aria-describedby={errors.email ? "email-error" : undefined}
             className="h-11 rounded-none border-cream/20 bg-transparent text-cream"
@@ -190,6 +194,7 @@ export function ContactForm() {
             setInquiry(event.target.value)
             setErrors((current) => ({ ...current, inquiry: undefined }))
           }}
+          aria-required="true"
           aria-invalid={Boolean(errors.inquiry)}
           aria-describedby={errors.inquiry ? "inquiry-error" : undefined}
           className={cn(
@@ -212,6 +217,7 @@ export function ContactForm() {
           name="message"
           value={message}
           onChange={(event) => setMessage(event.target.value)}
+          aria-required="true"
           aria-invalid={Boolean(errors.message)}
           aria-describedby={errors.message ? "message-error" : undefined}
           className="min-h-36 rounded-none border-cream/20 bg-transparent text-cream"

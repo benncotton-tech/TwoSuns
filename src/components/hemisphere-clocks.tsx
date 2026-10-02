@@ -59,8 +59,17 @@ export function HemisphereClocks({ className }: { className?: string }) {
         </p>
       </div>
       <div className="text-right">
-        <p className="font-mono text-sm tabular-nums text-gold sm:text-base">
-          {now ? formatTime(now, house.timezone) : "––:––:––"}
+        <p
+          className="font-mono text-sm tabular-nums text-gold sm:text-base"
+          aria-live="off"
+        >
+          {now ? (
+            <time dateTime={now.toISOString()}>
+              {formatTime(now, house.timezone)}
+            </time>
+          ) : (
+            "––:––:––"
+          )}
         </p>
         <p className="mt-1 text-[0.65rem] uppercase tracking-[0.22em] text-silver/80">
           {daylight === null ? "—" : daylight ? "Day" : "Night"}

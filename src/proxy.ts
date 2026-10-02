@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { noindexHeader } from "@/lib/indexing";
 
 function passwordsMatch(provided: string, expected: string): boolean {
   const enc = new TextEncoder();
@@ -28,6 +29,13 @@ function authorized(header: string | null, password: string): boolean {
   return passwordsMatch(pass, password);
 }
 
+function withRobots(response: NextResponse, gated: boolean) {
+  if (gated) {
+    response.headers.set("X-Robots-Tag", noindexHeader);
+  }
+  return response;
+}
+
 /** Site-wide HTTP Basic Auth when SITE_PASSWORD is set. Node proxy (not Edge middleware) so Vercel source deploys work. */
 export function proxy(request: NextRequest) {
   const password = process.env.SITE_PASSWORD;
@@ -36,14 +44,17 @@ export function proxy(request: NextRequest) {
   }
 
   if (authorized(request.headers.get("authorization"), password)) {
-    return NextResponse.next();
+    return withRobots(NextResponse.next(), true);
   }
 
-  return new NextResponse("Authentication required.", {
-    status: 401,
-    headers: {
-      "WWW-Authenticate": 'Basic realm="TwoSuns", charset="UTF-8"',
-      "Cache-Control": "no-store",
-    },
-  });
+  return withRobots(
+    new NextResponse("Authentication required.", {
+      status: 401,
+      headers: {
+        "WWW-Authenticate": 'Basic realm="TwoSuns", charset="UTF-8"',
+        "Cache-Control": "no-store",
+      },
+    }),
+    true
+  );
 }

@@ -20,11 +20,7 @@ export type Film = {
   poster: string
   /** Production stills: public/films/<slug>/still-01.jpg … */
   stills?: string[]
-  /**
-   * Picture: public/films/<slug>/reel.mp4
-   * Drop the finished film in that path when it exists. Placeholders are graded
-   * 8-second loops so the landing can run before the real files arrive.
-   */
+  /** Optional cut: public/films/<slug>/reel.mp4 */
   reel?: string
   featured?: boolean
   /** Set when the picture belongs in Work → Upcoming, not on the news board. */
@@ -146,69 +142,10 @@ export const films: Film[] = [
     synopsis:
       "A TwoSuns feature. The picture goes into production in May 2027.",
   },
-  {
-    slug: "salt-light",
-    title: "Salt Light",
-    year: "2024",
-    format: "Feature",
-    status: "Festival circuit",
-    runtime: "112 min",
-    location: "Skåne, Sweden",
-    featured: true,
-    poster: "/films/salt-light/poster.jpg",
-    reel: "/films/salt-light/reel.mp4",
-    logline:
-      "A salvage diver spends one winter raising a wreck that should have stayed down. Her daughter keeps a camera rolling after the batteries should be dead.",
-    synopsis:
-      "On the Skåne coast, Marta takes a contract nobody else would sign: a wreck in water too cold, too late in the season. Her teenage daughter, sent north for the winter, films the dives. The footage lasts longer than the batteries. TwoSuns produced the picture from Stockholm with a small Swedish crew and a camera package that never quite behaved. It is the company’s first feature to travel.",
-  },
-  {
-    slug: "harbour-hours",
-    title: "Harbour Hours",
-    year: "2023",
-    format: "Documentary",
-    status: "Released",
-    runtime: "86 min",
-    location: "Port of Melbourne",
-    poster: "/films/harbour-hours/poster.jpg",
-    reel: "/films/harbour-hours/reel.mp4",
-    logline:
-      "Eighteen months on the Melbourne night shift: crane operators, quarantine dogs, a chaplain, and the ships that never arrive when they say they will.",
-    synopsis:
-      "A documentary of waiting. Shot with night crews at the Port of Melbourne over a year and a half; produced from Stockholm. No interviews against brick walls. No score telling you how to feel about labour. Just the hours, the sodium lights, and the people who keep a city supplied while it sleeps.",
-  },
-  {
-    slug: "northern-inventory",
-    title: "Northern Inventory",
-    year: "2024",
-    format: "Documentary",
-    status: "Released",
-    runtime: "79 min",
-    location: "Stockholm",
-    poster: "/films/northern-inventory/poster.jpg",
-    reel: "/films/northern-inventory/reel.mp4",
-    logline:
-      "A Stockholm archivist catalogs unclaimed rushes from collapsed productions. The pictures start to form a film nobody commissioned.",
-    synopsis:
-      "Produced from Stockholm inside a real archive of unfinished work. We did not re-stage the shelves. The archivist is who she says she is. Northern Inventory is about what remains when a production company disappears and the pictures do not.",
-  },
 ]
-
-/** Last showreel cuts, most recent first. */
-export const showreelSlugs = [
-  "salt-light",
-  "northern-inventory",
-  "harbour-hours",
-] as const
 
 export function getFilm(slug: string) {
   return films.find((film) => film.slug === slug)
-}
-
-export function showreelFilms() {
-  return showreelSlugs
-    .map((slug) => getFilm(slug))
-    .filter((film): film is Film & { reel: string } => Boolean(film?.reel))
 }
 
 /** Work slate: shorts only, newest year first. Features in the house live in Upcoming. */
@@ -216,10 +153,6 @@ export function slateFilms() {
   return films
     .filter((film) => film.format === "Short" && !film.upcoming)
     .sort((a, b) => Number(b.year) - Number(a.year))
-}
-
-export function featuredFilms() {
-  return films.filter((film) => film.featured)
 }
 
 export type UpcomingFilm = Film & { upcoming: NonNullable<Film["upcoming"]> }
@@ -237,4 +170,3 @@ export function nextFilm(slug: string) {
   if (index === -1) return ordered[0]
   return ordered[(index + 1) % ordered.length]
 }
-

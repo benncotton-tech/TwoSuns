@@ -22,13 +22,19 @@ export function FilmCatalog() {
       </p>
       <DualRule className="mt-8" />
 
-      <FilmPosterGrid>
-        {visible.map((film) => (
-          <li key={film.slug}>
-            <FilmPosterCard film={film} note={film.logline} />
-          </li>
-        ))}
-      </FilmPosterGrid>
+      {visible.length === 0 ? (
+        <p className="mt-10 max-w-xl text-sm leading-relaxed text-silver">
+          When a short has left the house, it sits here.
+        </p>
+      ) : (
+        <FilmPosterGrid>
+          {visible.map((film) => (
+            <li key={film.slug}>
+              <FilmPosterCard film={film} note={film.logline} />
+            </li>
+          ))}
+        </FilmPosterGrid>
+      )}
     </section>
   )
 }

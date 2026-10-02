@@ -1,6 +1,11 @@
 export default function NewsLoading() {
   return (
-    <div className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+    <div
+      className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24"
+      aria-busy="true"
+      aria-live="polite"
+    >
+      <p className="sr-only">Loading news</p>
       <div className="h-3 w-24 animate-pulse bg-gold/30" />
       <div className="mt-6 h-12 w-80 max-w-full animate-pulse bg-cream/10" />
       <div className="mt-6 h-20 max-w-xl animate-pulse bg-cream/5" />
