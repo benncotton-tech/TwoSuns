@@ -82,6 +82,7 @@ export function SiteHeader({ home = false }: { home?: boolean }) {
   function isActive(id: (typeof nav)[number]["id"]) {
     if (pathname.startsWith("/work/")) return id === "work"
     if (pathname.startsWith("/news/")) return id === "news"
+    if (pathname.startsWith("/merch")) return id === "merch"
     if (home) return section === id
     return false
   }
@@ -119,7 +120,7 @@ export function SiteHeader({ home = false }: { home?: boolean }) {
 
         <nav
           className={cn(
-            "hidden items-center gap-10 md:flex",
+            "hidden items-center gap-6 lg:gap-10 md:flex",
             ghost && "pointer-events-auto drop-shadow-[0_1px_8px_rgba(0,0,0,0.8)]"
           )}
           aria-label="Primary"

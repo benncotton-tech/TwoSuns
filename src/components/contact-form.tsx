@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
@@ -27,6 +27,13 @@ export function ContactForm() {
   const [status, setStatus] = useState<Status>("idle")
   const [errors, setErrors] = useState<FieldErrors>({})
   const [serverMessage, setServerMessage] = useState("")
+
+  useEffect(() => {
+    const lane = new URLSearchParams(window.location.search).get("inquiry")
+    if (lane && inquiryLanes.some((item) => item.value === lane)) {
+      setInquiry(lane)
+    }
+  }, [])
 
   function validate() {
     const next: FieldErrors = {}

@@ -78,17 +78,43 @@ export default async function FilmPage({ params }: Props) {
             />
           ) : null}
           <div className="relative mx-auto aspect-[3/4] w-full max-w-xs overflow-hidden border border-cream/15 lg:max-w-none">
-          <Image
-            src={film.poster}
-            alt={`${film.title} poster`}
-            fill
-            priority
-            sizes="(max-width: 1024px) 320px, 288px"
-            className="object-cover"
-          />
+            <Image
+              src={film.poster}
+              alt={`${film.title} poster`}
+              fill
+              priority
+              sizes="(max-width: 1024px) 320px, 288px"
+              className="object-cover"
+            />
           </div>
         </div>
       </div>
+      {film.stills && film.stills.length > 0 ? (
+        <section className="mt-16 sm:mt-20" aria-labelledby="stills-heading">
+          <p
+            id="stills-heading"
+            className="text-[0.7rem] uppercase tracking-[0.28em] text-gold"
+          >
+            Stills
+          </p>
+          <ul className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
+            {film.stills.map((src, index) => (
+              <li
+                key={src}
+                className="relative aspect-[16/9] overflow-hidden border border-cream/10 bg-black"
+              >
+                <Image
+                  src={src}
+                  alt={`${film.title} still ${index + 1}`}
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className="object-cover"
+                />
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
       <div className="mt-20 flex flex-col gap-4 border-t border-cream/10 pt-8 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-[0.7rem] uppercase tracking-[0.28em] text-silver">
           Next on the slate

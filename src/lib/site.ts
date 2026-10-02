@@ -36,6 +36,7 @@ export const nav = [
   { id: "work", href: "/#work", label: "Work" },
   { id: "news", href: "/#news", label: "News" },
   { id: "about", href: "/#about", label: "About" },
+  { id: "merch", href: "/merch", label: "Merch" },
   { id: "contact", href: "/#contact", label: "Contact" },
 ] as const
 
@@ -43,5 +44,6 @@ export const inquiryLanes = [
   { value: "new-project", label: "A new project" },
   { value: "festival", label: "Festival, sales, or booking" },
   { value: "press", label: "Press" },
+  { value: "merch", label: "Merch" },
   { value: "other", label: "Something else" },
 ] as const

@@ -18,6 +18,8 @@ export type Film = {
   synopsis: string
   /** Still: public/films/<slug>/poster.jpg */
   poster: string
+  /** Production stills: public/films/<slug>/still-01.jpg … */
+  stills?: string[]
   /**
    * Picture: public/films/<slug>/reel.mp4
    * Drop the finished film in that path when it exists. Placeholders are graded
@@ -80,6 +82,49 @@ export const films: Film[] = [
       {
         label: "Cast",
         value: "Omar Aragones, Siena Aragones, Dana Blaszkowski, Dervis Lici",
+      },
+    ],
+  },
+  {
+    slug: "bonde",
+    title: "BONDE",
+    year: "2026",
+    format: "Short",
+    status: "Festival circuit",
+    runtime: "TBC",
+    location: "Gotland, Sweden",
+    featured: true,
+    poster: "/films/bonde/poster.jpg",
+    stills: [
+      "/films/bonde/still-01.jpg",
+      "/films/bonde/still-02.jpg",
+      "/films/bonde/still-03.jpg",
+      "/films/bonde/still-04.jpg",
+      "/films/bonde/still-05.jpg",
+      "/films/bonde/still-06.jpg",
+      "/films/bonde/still-07.jpg",
+      "/films/bonde/still-08.jpg",
+      "/films/bonde/still-09.jpg",
+      "/films/bonde/still-10.jpg",
+      "/films/bonde/still-11.jpg",
+      "/films/bonde/still-12.jpg",
+    ],
+    logline:
+      "On Gotland, a farmer bound to a life of rigid routine is left to fend for himself when that structure starts to go.",
+    synopsis:
+      "Hasse lives inside a small, familiar world built on repetition. When that world begins to shift, he has to face a life he has never had to navigate alone. Oscar Töringe plays him. John Anderson Beavers shot it on the island. A film by Billy Daniel Chester.",
+    credits: [
+      { label: "Director", value: "Billy Daniel Chester" },
+      { label: "Cast", value: "Oscar Töringe" },
+      { label: "Producers", value: "Benjamin Cotton & Karolina Berkell" },
+      { label: "Cinematography", value: "John Anderson Beavers" },
+      { label: "Color", value: "Olivier Ogneux" },
+      { label: "Sound", value: "Octavio Sánchez" },
+      { label: "Presented by", value: "TwoSuns" },
+      { label: "Supported by", value: "Film på Gotland" },
+      {
+        label: "Special thanks",
+        value: "Gotland Museum, Destination Gotland",
       },
     ],
   },
