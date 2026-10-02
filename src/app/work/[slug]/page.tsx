@@ -35,7 +35,7 @@ export default async function FilmPage({ params }: Props) {
   return (
     <article className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
       <p className="text-[0.7rem] uppercase tracking-[0.32em] text-gold">
-        <Link href="/work" className="hover:text-cream">
+        <Link href="/#work" className="hover:text-cream">
           Work
         </Link>
         <span className="text-silver"> / {film.format}</span>

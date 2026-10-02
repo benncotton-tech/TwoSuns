@@ -11,7 +11,8 @@ export function FilmCatalog({ lane }: { lane: FilmLane }) {
       <div className="flex flex-wrap gap-2" role="group" aria-label="Slate filter">
         {filmLanes.map((item) => {
           const active = lane === item.id
-          const href = item.id === "all" ? "/work#slate-heading" : `/work?lane=${item.id}#slate-heading`
+          const href =
+            item.id === "all" ? "/#slate-heading" : `/?lane=${item.id}#slate-heading`
           return (
             <Link
               key={item.id}
@@ -105,7 +106,7 @@ function EmptyLane({ lane }: { lane: FilmLane }) {
         {copy.body}
       </p>
       <Link
-        href="/contact"
+        href="/#contact"
         className="mt-8 inline-flex h-11 items-center bg-gold px-6 text-[0.7rem] uppercase tracking-[0.28em] text-ink hover:bg-gold/85"
       >
         {copy.action}

@@ -2,7 +2,7 @@
 
 Cinematic site for **TwoSuns**, a Swedish film production company based in Stockholm. Two founders, Billy and Benjamin, both live here. Domain: [twosuns.se](https://twosuns.se).
 
-The landing is a large official wordmark over the TwoSuns showreel. Work, News, About, and Contact stay secondary.
+The landing is a large official wordmark over the TwoSuns showreel. Scroll down for Upcoming, the slate, News, About, and Contact. Work, News, About, and Contact in the nav jump to those sections.
 
 ## Local development
 
@@ -41,15 +41,13 @@ Placeholder reels are graded 8-second loops. They are not the finished pictures.
 
 ## What’s on the site
 
-- **Home** — large wordmark over the showreel, mute, click-to-watch
-- **Work** — the full slate, with upcoming pictures on the page
-- **News** — now, coming up, and notes from the house
-- **About** — two founders, Stockholm
-- **Contact** — a letter to Stockholm (no email backend)
+- **Home** — wordmark over the showreel, then Upcoming, Work, News, About, Contact as you scroll
+- **Work / News / About / Contact** — sections on the home page (`/#work`, `/#news`, `/#about`, `/#contact`)
+- Film and news posts still have their own pages (`/work/<slug>`, `/news/<slug>`)
 
 ## Upcoming on Work
 
-Upcoming is a section on Work, not its own page. Mark a picture in `src/lib/films.ts`:
+Upcoming is a section on the landing (under the reel), not its own page. Mark a picture in `src/lib/films.ts`:
 
 ```ts
 upcoming: {

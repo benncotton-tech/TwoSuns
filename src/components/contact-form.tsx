@@ -114,7 +114,7 @@ export function ContactForm() {
   const hasFieldErrors = Object.keys(errors).length > 0
 
   return (
-    <form method="post" action="/contact" onSubmit={onSubmit} className="space-y-6" noValidate>
+    <form method="post" action="/#contact" onSubmit={onSubmit} className="space-y-6" noValidate>
       {status === "error" ? (
         <div
           className="border border-destructive bg-destructive/15 px-4 py-3 text-sm text-cream"

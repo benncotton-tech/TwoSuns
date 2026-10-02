@@ -75,7 +75,8 @@ export function CinematicLanding() {
   }
 
   return (
-    <section className="relative h-[100dvh] min-h-[100dvh] overflow-hidden bg-ink">
+    <section className="landing-hero relative h-[100dvh] min-h-[100dvh] overflow-hidden bg-ink">
+      <h1 className="sr-only">TwoSuns</h1>
       <div className="pointer-events-none absolute inset-0">
         {reduceMotion ? (
           <Image

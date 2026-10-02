@@ -21,7 +21,7 @@ export default function NotFound() {
         <Button
           nativeButton={false}
           variant="outline"
-          render={<Link href="/work" />}
+          render={<Link href="/#work" />}
           className="h-11 rounded-none border-cream/30 px-6 text-[0.7rem] uppercase tracking-[0.28em] text-cream"
         >
           Work

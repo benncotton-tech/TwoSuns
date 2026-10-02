@@ -33,10 +33,10 @@ export const founders = [
 ] as const
 
 export const nav = [
-  { href: "/work", label: "Work" },
-  { href: "/news", label: "News" },
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
+  { id: "work", href: "/#work", label: "Work" },
+  { id: "news", href: "/#news", label: "News" },
+  { id: "about", href: "/#about", label: "About" },
+  { id: "contact", href: "/#contact", label: "Contact" },
 ] as const
 
 export const inquiryLanes = [

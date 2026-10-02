@@ -6,11 +6,13 @@ import { MenuIcon, XIcon } from "lucide-react"
 import { Wordmark } from "@/components/wordmark"
 import { nav } from "@/lib/site"
 import { cn } from "@/lib/utils"
-import { useEffect, useState } from "react"
+import { useEffect, useState, type MouseEvent } from "react"
 
-export function SiteHeader({ ghost = false }: { ghost?: boolean }) {
+export function SiteHeader({ home = false }: { home?: boolean }) {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+  const [section, setSection] = useState("")
 
   useEffect(() => {
     if (!open) return
@@ -25,25 +27,87 @@ export function SiteHeader({ ghost = false }: { ghost?: boolean }) {
     }
   }, [open])
 
+  useEffect(() => {
+    if (!home) return
+    const onScroll = () => setScrolled(window.scrollY > 48)
+    onScroll()
+    window.addEventListener("scroll", onScroll, { passive: true })
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [home])
+
+  useEffect(() => {
+    if (!home) return
+    const ids = nav.map((item) => item.id)
+    const nodes = ids
+      .map((id) => document.getElementById(id))
+      .filter((node): node is HTMLElement => Boolean(node))
+    if (nodes.length === 0) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)
+        if (visible[0]?.target.id) setSection(visible[0].target.id)
+        if (window.scrollY < window.innerHeight * 0.55) setSection("")
+      },
+      { rootMargin: "-20% 0px -55% 0px", threshold: [0.1, 0.25, 0.5] }
+    )
+    nodes.forEach((node) => observer.observe(node))
+    return () => observer.disconnect()
+  }, [home])
+
+  const ghost = home && !scrolled && !open
+
+  function goToSection(
+    event: MouseEvent<HTMLAnchorElement>,
+    id: (typeof nav)[number]["id"]
+  ) {
+    if (pathname !== "/") return
+    const node = document.getElementById(id)
+    if (!node) return
+    event.preventDefault()
+    node.scrollIntoView({ behavior: "smooth" })
+    window.history.replaceState(null, "", `/#${id}`)
+    setSection(id)
+    setOpen(false)
+  }
+
+  function isActive(id: (typeof nav)[number]["id"]) {
+    if (pathname.startsWith("/work/")) return id === "work"
+    if (pathname.startsWith("/news/")) return id === "news"
+    if (home) return section === id
+    return false
+  }
+
   return (
     <header
       className={cn(
         "z-40",
-        ghost
-          ? "pointer-events-none absolute inset-x-0 top-0 border-0 bg-transparent"
+        home
+          ? cn(
+              "fixed inset-x-0 top-0",
+              ghost
+                ? "pointer-events-none border-0 bg-transparent"
+                : "border-b border-cream/10 bg-ink/80 backdrop-blur-md"
+            )
           : "sticky top-0 border-b border-cream/10 bg-ink/80 backdrop-blur-md"
       )}
     >
       <div
         className={cn(
           "mx-auto flex h-16 items-center justify-between px-4 sm:h-[4.25rem] sm:px-6 lg:px-8",
-          ghost ? "max-w-none" : "max-w-6xl"
+          home ? "max-w-none" : "max-w-6xl"
         )}
       >
         {ghost ? (
           <span className="sr-only">TwoSuns</span>
         ) : (
-          <Link href="/" className="relative z-10 flex items-center" aria-label="TwoSuns home">
+          <Link
+            href="/"
+            className="relative z-10 flex items-center"
+            aria-label="TwoSuns home"
+          >
             <Wordmark className="h-8 w-auto sm:h-9" priority />
           </Link>
         )}
@@ -56,12 +120,12 @@ export function SiteHeader({ ghost = false }: { ghost?: boolean }) {
           aria-label="Primary"
         >
           {nav.map((item) => {
-            const active =
-              pathname === item.href || pathname.startsWith(`${item.href}/`)
+            const active = isActive(item.id)
             return (
               <Link
-                key={item.href}
+                key={item.id}
                 href={item.href}
+                onClick={(event) => goToSection(event, item.id)}
                 className={cn(
                   "text-[0.7rem] uppercase tracking-[0.32em] transition-colors",
                   active ? "text-gold" : "text-cream/80 hover:text-cream"
@@ -113,19 +177,18 @@ export function SiteHeader({ ghost = false }: { ghost?: boolean }) {
                 onClick={() => setOpen(false)}
                 className={cn(
                   "py-3 text-sm uppercase tracking-[0.28em]",
-                  pathname === "/" ? "text-gold" : "text-cream/85"
+                  home && !section ? "text-gold" : "text-cream/85"
                 )}
               >
                 Home
               </Link>
               {nav.map((item) => {
-                const active =
-                  pathname === item.href || pathname.startsWith(`${item.href}/`)
+                const active = isActive(item.id)
                 return (
                   <Link
-                    key={item.href}
+                    key={item.id}
                     href={item.href}
-                    onClick={() => setOpen(false)}
+                    onClick={(event) => goToSection(event, item.id)}
                     className={cn(
                       "py-3 text-sm uppercase tracking-[0.28em]",
                       active ? "text-gold" : "text-cream/85"

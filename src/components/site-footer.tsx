@@ -1,4 +1,3 @@
-import Link from "next/link"
 import { DualSun } from "@/components/dual-sun"
 import { Wordmark } from "@/components/wordmark"
 import { founders, house, nav, site } from "@/lib/site"
@@ -33,13 +32,13 @@ export function SiteFooter() {
         <div className="flex flex-col justify-between gap-6">
           <nav className="flex flex-wrap gap-x-6 gap-y-2" aria-label="Footer">
             {nav.map((item) => (
-              <Link
-                key={item.href}
+              <a
+                key={item.id}
                 href={item.href}
                 className="text-[0.7rem] uppercase tracking-[0.28em] text-cream/80 hover:text-gold"
               >
                 {item.label}
-              </Link>
+              </a>
             ))}
           </nav>
           <div className="flex items-center justify-between gap-4">

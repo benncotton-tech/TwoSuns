@@ -50,7 +50,7 @@ export function NewsBoard() {
             empty, check back — or write to Stockholm.
           </p>
           <Link
-            href="/contact"
+            href="/#contact"
             className="mt-8 inline-flex h-11 items-center bg-gold px-6 text-[0.7rem] uppercase tracking-[0.28em] text-ink hover:bg-gold/85"
           >
             Write to the house

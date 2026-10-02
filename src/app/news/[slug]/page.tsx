@@ -42,7 +42,7 @@ export default async function NewsPostPage({ params }: Props) {
   return (
     <article className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
       <p className="text-[0.7rem] uppercase tracking-[0.32em] text-gold">
-        <Link href="/news" className="hover:text-cream">
+        <Link href="/#news" className="hover:text-cream">
           News
         </Link>
         <span className="text-silver"> / {newsKindLabel[post.kind]}</span>

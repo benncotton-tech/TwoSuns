@@ -44,7 +44,7 @@ export const landingControlsScript = `(function () {
           '<p class="twosuns-showreel-kicker">Stockholm</p>' +
           '<h2 id="watch-title">Showreel</h2>' +
           '<p>Pictures from the house. Mute stays on until you ask for sound.</p>' +
-          '<a href="/work">On the slate</a>' +
+          '<a href="/#work">On the slate</a>' +
         "</div>" +
       "</div>";
     document.body.appendChild(overlay);

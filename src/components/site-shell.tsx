@@ -1,18 +1,12 @@
 "use client"
 
 import { usePathname } from "next/navigation"
-import { useLayoutEffect } from "react"
 import { SiteFooter } from "@/components/site-footer"
 import { SiteHeader } from "@/components/site-header"
 
 export function SiteShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const home = pathname === "/"
-
-  useLayoutEffect(() => {
-    document.documentElement.classList.toggle("landing-lock", home)
-    return () => document.documentElement.classList.remove("landing-lock")
-  }, [home])
 
   return (
     <div
@@ -23,7 +17,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
       }
     >
       {home ? null : <div className="film-grain" aria-hidden />}
-      <SiteHeader ghost={home} />
+      <SiteHeader home={home} />
       <main className="flex flex-1 flex-col">{children}</main>
       {home ? null : <SiteFooter />}
     </div>
