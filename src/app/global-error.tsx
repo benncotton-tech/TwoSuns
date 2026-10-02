@@ -1,11 +1,16 @@
 "use client"
 
+import { useEffect } from "react"
+import { bindResumeRecovery } from "@/lib/recover-on-resume"
+
 export default function GlobalError({
   reset,
 }: {
   error: Error & { digest?: string }
   reset: () => void
 }) {
+  useEffect(() => bindResumeRecovery(reset), [reset])
+
   return (
     <html lang="en" className="dark h-full">
       <body
@@ -54,8 +59,8 @@ export default function GlobalError({
               color: "#c9c9c7",
             }}
           >
-            Something in the house failed. Try again, or leave and come back
-            through the front.
+            Something in the house failed. If you just left Safari and came
+            back, this screen should clear itself. If it stays dark, try again.
           </p>
           <div style={{ marginTop: "2rem", display: "flex", gap: "0.75rem" }}>
             <button

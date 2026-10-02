@@ -10,14 +10,11 @@ export const landingControlsScript = `(function () {
     var overlay = document.getElementById("twosuns-showreel");
     if (!overlay) return;
     var watch = overlay.querySelector("video");
-    if (watch) watch.pause();
+    safePause(watch);
     overlay.remove();
     document.body.style.overflow = window.__twosunsOverflow || "";
     var bg = landingVideo();
-    if (bg) {
-      var play = bg.play();
-      if (play && play.catch) play.catch(function () {});
-    }
+    if (bg && !bg.hasAttribute("data-reel-hold")) safePlay(bg);
     if (typeof window.__twosunsOnWatch === "function") window.__twosunsOnWatch(false);
   }
 
@@ -28,7 +25,7 @@ export const landingControlsScript = `(function () {
     var poster = (bg && bg.getAttribute("poster")) || "/landing/poster.jpg";
     window.__twosunsOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    if (bg) bg.pause();
+    if (bg) safePause(bg);
 
     var overlay = document.createElement("div");
     overlay.id = "twosuns-showreel";
@@ -59,9 +56,8 @@ export const landingControlsScript = `(function () {
     var watch = overlay.querySelector("video");
     if (watch) {
       watch.muted = false;
-      watch.volume = 1;
-      var play = watch.play();
-      if (play && play.catch) play.catch(function () {});
+      try { watch.volume = 1; } catch (e) {}
+      safePlay(watch);
     }
     if (typeof window.__twosunsOnWatch === "function") window.__twosunsOnWatch(true);
   }
@@ -82,11 +78,8 @@ export const landingControlsScript = `(function () {
         window.__twosunsSoundStamp = event.timeStamp;
         var soundOn = video.muted;
         video.muted = !soundOn;
-        video.volume = 1;
-        if (soundOn) {
-          var play = video.play();
-          if (play && play.catch) play.catch(function () {});
-        }
+        try { video.volume = 1; } catch (e) {}
+        if (soundOn) safePlay(video);
         soundBtn.setAttribute("aria-pressed", soundOn ? "true" : "false");
         soundBtn.setAttribute("aria-label", soundOn ? "Mute showreel" : "Unmute showreel");
         var label = soundBtn.querySelector("[data-sound-label]");
@@ -126,6 +119,72 @@ export const landingControlsScript = `(function () {
     },
     true
   );
+
+  function safePause(el) {
+    if (!el) return;
+    try { el.pause(); } catch (e) {}
+  }
+
+  function safePlay(el) {
+    if (!el || document.hidden) return;
+    try {
+      if (el.error) {
+        try { el.load(); } catch (e) { return; }
+      }
+      var play = el.play();
+      if (play && play.catch) play.catch(function () {});
+    } catch (e) {}
+  }
+
+  function pauseHouseMedia() {
+    var list = document.querySelectorAll("video");
+    for (var i = 0; i < list.length; i++) {
+      if (!list[i].paused) list[i].setAttribute("data-was-playing", "1");
+      safePause(list[i]);
+    }
+  }
+
+  function resumeHouseMedia() {
+    if (document.hidden) return;
+    var overlay = document.getElementById("twosuns-showreel");
+    if (overlay) {
+      safePlay(overlay.querySelector("video"));
+      return;
+    }
+    var marked = document.querySelectorAll("video[data-was-playing='1']");
+    for (var m = 0; m < marked.length; m++) {
+      marked[m].removeAttribute("data-was-playing");
+      safePlay(marked[m]);
+    }
+    var bg = landingVideo();
+    if (bg && !bg.hasAttribute("data-reel-hold")) safePlay(bg);
+  }
+
+  function isIgnorableReason(reason) {
+    if (!reason) return false;
+    var name = reason.name || "";
+    var msg = String(reason.message || reason || "");
+    if (name === "AbortError" || name === "NotAllowedError" || name === "NotSupportedError") {
+      return true;
+    }
+    return /play\(\)|interrupted|aborted|Load failed|Failed to fetch|The operation was aborted|media resource|fetching process for the media/i.test(msg);
+  }
+
+  window.addEventListener("unhandledrejection", function (event) {
+    if (isIgnorableReason(event.reason)) event.preventDefault();
+  });
+
+  if (!window.__twosunsResumeBound) {
+    window.__twosunsResumeBound = true;
+    document.addEventListener("visibilitychange", function () {
+      if (document.visibilityState === "hidden") pauseHouseMedia();
+      else resumeHouseMedia();
+    });
+    window.addEventListener("pageshow", resumeHouseMedia);
+    window.addEventListener("pagehide", pauseHouseMedia);
+    document.addEventListener("freeze", pauseHouseMedia);
+    document.addEventListener("resume", resumeHouseMedia);
+  }
 
   document.addEventListener("keydown", function (event) {
     var overlay = document.getElementById("twosuns-showreel");

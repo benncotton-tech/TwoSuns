@@ -3,9 +3,11 @@
 import { memo, useEffect, useRef, useState, type MouseEvent, type Ref } from "react"
 import { Volume2Icon, VolumeXIcon } from "lucide-react"
 import { DeskBurnIn } from "@/components/landing/desk-burn-in"
+import { ReelBoundary } from "@/components/reel-boundary"
 import { Wordmark } from "@/components/wordmark"
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion"
 import { reel } from "@/lib/reel"
+import { safePause, safePlay } from "@/lib/safe-media"
 import { cn } from "@/lib/utils"
 
 declare global {
@@ -37,12 +39,61 @@ export function CinematicLanding() {
   useEffect(() => {
     const video = videoRef.current
     if (!video) return
-    if (reduceMotion || watching) {
-      video.pause()
-      return
+
+    const hold = () => video.setAttribute("data-reel-hold", "true")
+    const release = () => video.removeAttribute("data-reel-hold")
+
+    const pause = () => {
+      safePause(video)
     }
-    const play = video.play()
-    if (play) play.catch(() => undefined)
+
+    const play = () => {
+      if (reduceMotion || watching || document.hidden) {
+        pause()
+        return
+      }
+      release()
+      safePlay(video)
+    }
+
+    if (reduceMotion || watching) {
+      hold()
+      pause()
+    } else {
+      play()
+    }
+
+    const onVisible = () => {
+      if (document.visibilityState === "hidden") pause()
+      else play()
+    }
+    const onPageShow = () => play()
+    const onPageHide = () => pause()
+    const onError = () => {
+      try {
+        video.load()
+      } catch {
+        return
+      }
+      play()
+    }
+
+    document.addEventListener("visibilitychange", onVisible)
+    window.addEventListener("pageshow", onPageShow)
+    window.addEventListener("pagehide", onPageHide)
+    document.addEventListener("freeze", onPageHide)
+    document.addEventListener("resume", onPageShow)
+    video.addEventListener("error", onError)
+
+    return () => {
+      document.removeEventListener("visibilitychange", onVisible)
+      window.removeEventListener("pageshow", onPageShow)
+      window.removeEventListener("pagehide", onPageHide)
+      document.removeEventListener("freeze", onPageHide)
+      document.removeEventListener("resume", onPageShow)
+      video.removeEventListener("error", onError)
+      pause()
+    }
   }, [reduceMotion, watching])
 
   const onSoundClick = (event: MouseEvent<HTMLButtonElement>) => {
@@ -54,11 +105,12 @@ export function CinematicLanding() {
     }
     const soundOn = video.muted
     video.muted = !soundOn
-    video.volume = 1
-    if (soundOn) {
-      const play = video.play()
-      if (play) play.catch(() => undefined)
+    try {
+      video.volume = 1
+    } catch {
+      /* ignore */
     }
+    if (soundOn) safePlay(video)
     setMuted(!soundOn)
   }
 
@@ -84,7 +136,9 @@ export function CinematicLanding() {
             className="absolute inset-0 h-full w-full object-cover"
           />
         ) : (
-          <LandingReel videoRef={videoRef} />
+          <ReelBoundary>
+            <LandingReel videoRef={videoRef} />
+          </ReelBoundary>
         )}
       </div>
 

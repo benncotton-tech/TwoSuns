@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { DualRule } from "@/components/dual-sun"
+import { SafeVideo } from "@/components/safe-video"
 import { films, getFilm, nextFilm } from "@/lib/films"
 
 type Props = {
@@ -66,11 +67,10 @@ export default async function FilmPage({ params }: Props) {
         </div>
         <div className="space-y-4">
           {film.reel ? (
-            <video
+            <SafeVideo
               src={film.reel}
               poster={film.poster}
               controls
-              playsInline
               preload="metadata"
               className="aspect-video w-full border border-cream/15 bg-black object-cover"
             />
