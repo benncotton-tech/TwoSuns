@@ -69,7 +69,11 @@ export function SiteHeader({ home = false }: { home?: boolean }) {
     event.preventDefault()
     event.stopPropagation()
     const top = node.getBoundingClientRect().top + window.scrollY
+    const html = document.documentElement
+    const previous = html.style.scrollBehavior
+    html.style.scrollBehavior = "auto"
     window.scrollTo(0, Math.max(0, top))
+    html.style.scrollBehavior = previous
     window.history.replaceState(null, "", `/#${id}`)
     setSection(id)
     setOpen(false)

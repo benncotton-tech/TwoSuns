@@ -111,7 +111,11 @@ export const landingControlsScript = `(function () {
           var y =
             section.getBoundingClientRect().top +
             (window.pageYOffset || document.documentElement.scrollTop);
+          var html = document.documentElement;
+          var prev = html.style.scrollBehavior;
+          html.style.scrollBehavior = "auto";
           window.scrollTo(0, y < 0 ? 0 : y);
+          html.style.scrollBehavior = prev;
           if (window.history && window.history.replaceState) {
             window.history.replaceState(null, "", "/#" + hash);
           }
