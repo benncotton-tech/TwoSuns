@@ -67,7 +67,10 @@ export function SiteHeader({ home = false }: { home?: boolean }) {
     const node = document.getElementById(id)
     if (!node) return
     event.preventDefault()
-    node.scrollIntoView({ behavior: "smooth" })
+    event.stopPropagation()
+    const top =
+      node.getBoundingClientRect().top + window.scrollY - 72
+    window.scrollTo(0, Math.max(0, top))
     window.history.replaceState(null, "", `/#${id}`)
     setSection(id)
     setOpen(false)

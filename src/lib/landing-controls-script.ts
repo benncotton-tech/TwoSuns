@@ -107,7 +107,12 @@ export const landingControlsScript = `(function () {
         var section = hash && document.getElementById(hash);
         if (section && (href.charAt(0) === "#" || href.indexOf("/#") === 0)) {
           event.preventDefault();
-          section.scrollIntoView({ behavior: "smooth", block: "start" });
+          event.stopPropagation();
+          var y =
+            section.getBoundingClientRect().top +
+            (window.pageYOffset || document.documentElement.scrollTop) -
+            72;
+          window.scrollTo(0, y < 0 ? 0 : y);
           if (window.history && window.history.replaceState) {
             window.history.replaceState(null, "", "/#" + hash);
           }
