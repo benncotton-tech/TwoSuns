@@ -47,7 +47,7 @@ export const films: Film[] = [
     logline:
       "Two men, Elisha and David, meet at a bar in Stockholm. Their conversation is awkward and hesitant; neither seems willing to address their relationship or shared past.",
     synopsis:
-      "A film by Billy Chester, a TwoSuns founder. Original title Skål. English language, no subtitles. Produced and photographed by Benjamin Cotton. Edited by Sebastian Strand. Screened in Swedish shorts 5 at Göteborg Film Festival / Gothenburg Film Festival 2025. The official poster carries Diplomatico, Region Västmanland, and a third Swedish cultural partner.",
+      "A film by Billy Chester, a TwoSuns founder. Original title Skål.",
     credits: [
       { label: "Director", value: "Billy Chester" },
       { label: "Screenplay", value: "Billy Chester" },
@@ -56,7 +56,6 @@ export const films: Film[] = [
       { label: "Editor", value: "Sebastian Strand" },
       { label: "Cast", value: "Adam Lundgren, Kim Sulocki" },
       { label: "Original title", value: "Skål" },
-      { label: "Festival", value: "Göteborg Film Festival 2025 — Swedish shorts 5" },
     ],
   },
   {
