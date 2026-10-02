@@ -10,13 +10,10 @@ Stack: Next.js (App Router), TypeScript, Tailwind CSS, shadcn/ui.
 
 ## Remaining human clicks
 
-This agent cannot finish GitHub or a durable Vercel project from here (`gh` logged out, Origin token not scoped to create a public GitHub repo, `vercel` CLI logged out).
+1. **Create repo** in Cursor — public, suggested name `twosuns` (or `twosuns.se`). GitHub still cannot be created from this agent.
+2. At the registrar for **twosuns.se**, add the A record Vercel printed (below). `twosuns.se` is already on the Vercel project; status is **Invalid Configuration** until DNS matches.
 
-1. **Create repo** in Cursor — public, suggested name `twosuns` (or `twosuns.se`).
-2. **Claim the Vercel deploy** — [claim this deployment](https://vercel.com/claim-deployment?code=2d64867d-2e25-43bf-820c-bcc0f49bfe5a) (anonymous URL expires in about an hour). After GitHub exists, **Add New → Project** and import the repo instead / as well.
-3. Vercel **Settings → Domains → Add** `twosuns.se`, then paste the **exact** records that card prints at the registrar.
-
-No draft PR until the GitHub repo exists.
+No draft PR until the GitHub repo exists. The temporary Vercel host is **Valid**.
 
 ## Run it locally
 
@@ -98,49 +95,27 @@ Official wordmark: `public/twosuns-wordmark.png`.
 
 ## Deploy on Vercel
 
-The Vercel CLI in this environment is **logged out**. No production project exists under Benjamin’s account, so this agent cannot attach `twosuns.se` or print project-specific DNS.
+Live site (Vercel status **Valid**):
 
-A claimable anonymous production build is live (expires about **one hour** after it was created):
+[https://temporary-nimble-koto-dbvpvq6.vercel.app](https://temporary-nimble-koto-dbvpvq6.vercel.app)
 
-- Site: [https://temporary-nimble-koto-dbvpvq6.vercel.app](https://temporary-nimble-koto-dbvpvq6.vercel.app)
-- Claim: [https://vercel.com/claim-deployment?code=2d64867d-2e25-43bf-820c-bcc0f49bfe5a](https://vercel.com/claim-deployment?code=2d64867d-2e25-43bf-820c-bcc0f49bfe5a)
+`twosuns.se` is added on that project. Vercel status for the domain is **Invalid Configuration** until the A record below is at the registrar.
 
-Durable path once the GitHub repo exists:
+There are **no environment variables** and no database. The contact form posts to `/api/contact` and acknowledges the letter. It does not send email until you later wire a mailer. Until then, people can still use `hello@twosuns.se`.
 
-1. Sign in at [vercel.com](https://vercel.com) (GitHub is fine), or run `vercel login`.
-2. **Add New… → Project** and import this repository (or claim the temporary URL above).
-3. Vercel should detect **Next.js**. Leave the defaults:
-   - Build command: `next build` (or `npm run build`)
-   - Output: Next.js (no extra config file is required)
-4. There are **no environment variables** and no database. Deploy.
-5. Each push to the default branch ships a new production build. Preview deployments appear on pull requests.
-
-The contact form posts to `/api/contact` and acknowledges the letter. It does not send email until you later wire a mailer. Until then, people can still use `hello@twosuns.se`.
+Once a GitHub repo exists, import it in Vercel so pushes rebuild production.
 
 ## Point twosuns.se at Vercel
 
-Vercel has **not** printed project-specific DNS for `twosuns.se`. An anonymous deploy cannot add a custom domain. After you claim the deployment (or import the GitHub repo):
+Vercel domain card for `twosuns.se` (use this, not the legacy anycast):
 
-1. In the Vercel project: **Settings → Domains → Add** `twosuns.se` (and `www.twosuns.se` if you want www).
-2. Copy the **exact** records from that domain card. Paste them at the registrar that owns **twosuns.se**. This agent cannot change the registrar.
-
-Until the card exists, Vercel’s documented general-purpose shapes (replace with the card if it differs — newer projects often get a different anycast IP and a project-specific CNAME) are:
-
-| Host | Type | Value |
+| Type | Name | Value |
 | --- | --- | --- |
-| `@` / `twosuns.se` | **A** | `76.76.21.21` |
-| `www` | **CNAME** | `cname.vercel-dns-0.com` |
+| **A** | `@` | **`216.198.79.1`** |
 
-If the domain card asks for nameservers instead:
+Legacy `76.76.21.21` / `cname.vercel-dns.com` still work, but use the new IP.
 
-| Type | Value |
-| --- | --- |
-| NS | `ns1.vercel-dns.com` |
-| NS | `ns2.vercel-dns.com` |
-
-Do not paste API tokens, Vercel passwords, or GitHub tokens into DNS. Wait for the domain to show **Valid** in Vercel. HTTPS is issued automatically once DNS is correct.
-
-If the domain currently points somewhere else, change it only when you are ready for this site to be what loads at twosuns.se.
+This agent cannot change the registrar. Do not paste API tokens into DNS. When the record matches, Vercel should flip from **Invalid Configuration** to **Valid** and issue HTTPS.
 
 ## What’s on the page
 
