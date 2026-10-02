@@ -1,5 +1,6 @@
 import { DualRule } from "@/components/dual-sun"
-import { FilmPosterCard, FilmPosterGrid } from "@/components/film-poster-card"
+import { FilmPosterCarousel } from "@/components/film-poster-carousel"
+import { FilmPosterCard } from "@/components/film-poster-card"
 import { slateFilms } from "@/lib/films"
 
 export function FilmCatalog() {
@@ -27,13 +28,19 @@ export function FilmCatalog() {
           When a short has left the house, it sits here.
         </p>
       ) : (
-        <FilmPosterGrid>
-          {visible.map((film) => (
-            <li key={film.slug}>
-              <FilmPosterCard film={film} note={film.logline} />
-            </li>
-          ))}
-        </FilmPosterGrid>
+        <>
+          <FilmPosterCarousel
+            label="Shorts"
+            films={visible.map((film) => ({ film, note: film.logline }))}
+          />
+          <ul className="mt-12 hidden grid-cols-3 gap-x-10 gap-y-12 lg:grid">
+            {visible.map((film) => (
+              <li key={film.slug}>
+                <FilmPosterCard film={film} note={film.logline} />
+              </li>
+            ))}
+          </ul>
+        </>
       )}
     </section>
   )

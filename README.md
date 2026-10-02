@@ -128,7 +128,7 @@ Do not paste API tokens into DNS. When the record matches, Vercel should flip fr
 
 - **Hero** — wordmark over the showreel, Sound, Showreel
 - **Upcoming** — the feature BONDE, production May 2027 (`/#work`)
-- **The slate** — shorts newest to oldest: BONDE, SKÅL, No Answer (`/#work`)
+- **The slate** — shorts newest to oldest: BONDE, SKÅL, No Answer (`/#work`). Desktop shows three posters in a row. On smaller screens the shorts are a swipe carousel. Upcoming still stacks.
 - **News** — now / coming up / notes (`/#news`); individual posts at `/news/<slug>`
 - **About** — two founders, Stockholm (`/#about`)
 - **Merch** — hats and tees lookbook (`/merch`)

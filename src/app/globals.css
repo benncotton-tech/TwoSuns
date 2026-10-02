@@ -139,6 +139,16 @@
   top: 1rem;
 }
 
+.slate-carousel {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.slate-carousel::-webkit-scrollbar {
+  display: none;
+}
+
 .film-grain {
   pointer-events: none;
   position: fixed;
