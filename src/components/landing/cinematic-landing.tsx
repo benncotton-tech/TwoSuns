@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react"
 import { createPortal } from "react-dom"
 import Image from "next/image"
 import Link from "next/link"
-import Player from "@vimeo/player"
 import { Volume2Icon, VolumeXIcon, XIcon } from "lucide-react"
 import { DeskBurnIn } from "@/components/landing/desk-burn-in"
 import { Wordmark } from "@/components/wordmark"
@@ -16,25 +15,59 @@ import {
 } from "@/lib/reel"
 import { cn } from "@/lib/utils"
 
+type VimeoPlayer = {
+  ready: () => Promise<void>
+  play: () => Promise<void>
+  pause: () => Promise<void>
+  setMuted: (muted: boolean) => Promise<void>
+  setVolume: (volume: number) => Promise<void>
+  destroy: () => Promise<void>
+}
+
+declare global {
+  interface Window {
+    __twosunsOnSound?: (soundOn: boolean) => void
+    __twosunsSoundBound?: boolean
+  }
+}
+
 export function CinematicLanding() {
   const reduceMotion = usePrefersReducedMotion()
   const [muted, setMuted] = useState(true)
   const [watching, setWatching] = useState(false)
   const iframeRef = useRef<HTMLIFrameElement | null>(null)
-  const playerRef = useRef<Player | null>(null)
+  const playerRef = useRef<VimeoPlayer | null>(null)
+
+  useEffect(() => {
+    window.__twosunsOnSound = (soundOn: boolean) => {
+      setMuted(!soundOn)
+    }
+    return () => {
+      delete window.__twosunsOnSound
+    }
+  }, [])
 
   useEffect(() => {
     if (reduceMotion) return
     const iframe = iframeRef.current
     if (!iframe) return
-    const player = new Player(iframe)
-    playerRef.current = player
-    player.ready().then(() => {
-      player.setMuted(true).catch(() => undefined)
-      player.play().catch(() => undefined)
+    let player: VimeoPlayer | null = null
+    let cancelled = false
+
+    void import("@vimeo/player").then(({ default: Player }) => {
+      if (cancelled || !iframeRef.current) return
+      player = new Player(iframeRef.current) as unknown as VimeoPlayer
+      playerRef.current = player
+      player.ready().then(() => {
+        if (cancelled) return
+        player?.setMuted(true).catch(() => undefined)
+        player?.play().catch(() => undefined)
+      })
     })
+
     return () => {
-      player.destroy()
+      cancelled = true
+      player?.destroy().catch(() => undefined)
       playerRef.current = null
     }
   }, [reduceMotion])
@@ -62,17 +95,6 @@ export function CinematicLanding() {
     }
   }, [watching])
 
-  const toggleSound = () => {
-    const next = !muted
-    setMuted(next)
-    const player = playerRef.current
-    if (!player) return
-    void player
-      .setMuted(next)
-      .then(() => (next ? undefined : player.setVolume(1)))
-      .catch(() => undefined)
-  }
-
   return (
     <section className="relative h-[100dvh] min-h-[100dvh] overflow-hidden bg-ink">
       {reduceMotion ? (
@@ -90,6 +112,7 @@ export function CinematicLanding() {
         <div className="vimeo-cover">
           <iframe
             ref={iframeRef}
+            data-landing-reel="true"
             src={backgroundPlayerSrc}
             title={reel.title}
             allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
@@ -113,7 +136,7 @@ export function CinematicLanding() {
         <div className="mx-auto flex max-w-6xl flex-col gap-3 border-t border-cream/10 pt-3 sm:flex-row sm:items-end sm:justify-between">
           <button
             type="button"
-            onClick={toggleSound}
+            data-sound-toggle="true"
             aria-pressed={!muted}
             aria-label={muted ? "Unmute showreel" : "Mute showreel"}
             className={cn(
@@ -125,7 +148,7 @@ export function CinematicLanding() {
             ) : (
               <Volume2Icon className="size-3.5" />
             )}
-            {muted ? "Sound" : "Mute"}
+            <span data-sound-label>{muted ? "Sound" : "Mute"}</span>
           </button>
 
           <button
@@ -146,6 +169,31 @@ export function CinematicLanding() {
             document.body
           )
         : null}
+
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `(function(){
+  if (window.__twosunsSoundBound) return;
+  window.__twosunsSoundBound = true;
+  document.addEventListener("click", function(event) {
+    var target = event.target;
+    if (!target || !target.closest) return;
+    var btn = target.closest("[data-sound-toggle]");
+    if (!btn) return;
+    var iframe = document.querySelector("[data-landing-reel]");
+    if (!iframe || !iframe.contentWindow) return;
+    var soundOn = btn.getAttribute("aria-pressed") !== "true";
+    btn.setAttribute("aria-pressed", soundOn ? "true" : "false");
+    btn.setAttribute("aria-label", soundOn ? "Mute showreel" : "Unmute showreel");
+    var label = btn.querySelector("[data-sound-label]");
+    if (label) label.textContent = soundOn ? "Mute" : "Sound";
+    iframe.contentWindow.postMessage({ method: "setMuted", value: !soundOn }, "*");
+    if (soundOn) iframe.contentWindow.postMessage({ method: "setVolume", value: 1 }, "*");
+    if (typeof window.__twosunsOnSound === "function") window.__twosunsOnSound(soundOn);
+  });
+})();`,
+        }}
+      />
     </section>
   )
 }
