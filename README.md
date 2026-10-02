@@ -6,11 +6,11 @@ This is a Next.js site with **file-based content**. There is no CMS, no database
 
 The first screen is the official cream wordmark over the looping showreel. Scroll down for Upcoming, the Work slate, News, About, and Contact. The nav (Work / News / About / Contact) jumps to those sections. **Sound** unmutes the reel. **Showreel** opens the same cut with controls.
 
-Stack: Next.js (App Router), TypeScript, Tailwind CSS, shadcn/ui.
+Stack: Next.js (App Router), TypeScript, Tailwind CSS, shadcn/ui. Production deploys from this GitHub repo on Vercel (Git connected).
 
 ## Remaining human clicks
 
-1. In the **existing** Vercel project that already has `twosuns.se`, connect [https://github.com/benncotton-tech/TwoSuns](https://github.com/benncotton-tech/TwoSuns) (`main`), set **`SITE_PASSWORD`** (Production), and deploy. Do not Redeploy the old prebuilt anonymous URL.
+1. Watch Vercel **Deployments** for a source production build from `main`. `SITE_PASSWORD` is already set. Do not Redeploy the old prebuilt anonymous URL.
 2. Loopia Kundzon: set `@` A to `216.198.79.1` (steps below), then Vercel **Refresh**.
 3. Vercel → Add **`www.twosuns.se`** if needed, then **Refresh**.
 
