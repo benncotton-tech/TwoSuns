@@ -2,7 +2,7 @@
 
 Website for **TwoSuns**, a Swedish film production company based in Stockholm. Two founders — Billy (USA) and Benjamin (Australia) — both live here. The two suns are the two of them. Domain: [twosuns.se](https://twosuns.se).
 
-This is a Next.js site with **file-based content**. There is no CMS, no database, and no login. You edit TypeScript files, commit, and the site updates.
+This is a Next.js site with **file-based content**. There is no CMS, no database, and no user accounts. You edit TypeScript files, commit, and the site updates. An optional `SITE_PASSWORD` can gate the live site with HTTP Basic Auth.
 
 The first screen is the official cream wordmark over the looping showreel. Scroll down for Upcoming, the Work slate, News, About, and Contact. The nav (Work / News / About / Contact) jumps to those sections. **Sound** unmutes the reel. **Showreel** opens the same cut with controls.
 
@@ -12,6 +12,7 @@ Stack: Next.js (App Router), TypeScript, Tailwind CSS, shadcn/ui.
 
 1. **Create repo** in Cursor — public, suggested name `twosuns` (or `twosuns.se`). GitHub still cannot be created from this agent.
 2. Loopia Kundzon: set `@` A to `216.198.79.1` (steps below), then Vercel **Refresh**. `twosuns.se` is already on the project; status is **Invalid Configuration** until DNS matches.
+3. Vercel **Settings → Environment Variables → Production** → `SITE_PASSWORD` → **Redeploy**. Until that exists, the live site is open.
 
 No draft PR until the GitHub repo exists. The temporary Vercel host is **Valid**.
 
@@ -101,7 +102,9 @@ Live site (Vercel status **Valid**):
 
 `twosuns.se` is added on that project. Vercel status for the domain is **Invalid Configuration** until the A record below is at the registrar.
 
-There are **no environment variables** and no database. The contact form posts to `/api/contact` and acknowledges the letter. It does not send email until you later wire a mailer. Until then, people can still use `hello@twosuns.se`.
+There is no database. The only env var is optional **`SITE_PASSWORD`**: when it is set, the whole site (including `/` and the reel) asks for HTTP Basic Auth. Username can be anything (or `twosuns`); the password is that value. Leave it unset locally so preview stays open. On Vercel: **Settings → Environment Variables → Production** → `SITE_PASSWORD` → **Redeploy**. Do not put the password in git.
+
+The contact form posts to `/api/contact` and acknowledges the letter. It does not send email until you later wire a mailer. Until then, people can still use `hello@twosuns.se`.
 
 Once a GitHub repo exists, import it in Vercel so pushes rebuild production.
 
