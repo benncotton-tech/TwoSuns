@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { memo, useEffect, useRef, useState, type MouseEvent, type Ref } from "react"
 import { createPortal } from "react-dom"
 import Image from "next/image"
 import Link from "next/link"
@@ -11,11 +11,26 @@ import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion"
 import { reel } from "@/lib/reel"
 import { cn } from "@/lib/utils"
 
+declare global {
+  interface Window {
+    __twosunsOnSound?: (soundOn: boolean) => void
+    __twosunsSoundBound?: boolean
+    __twosunsSoundStamp?: number
+  }
+}
+
 export function CinematicLanding() {
   const reduceMotion = usePrefersReducedMotion()
   const [muted, setMuted] = useState(true)
   const [watching, setWatching] = useState(false)
   const videoRef = useRef<HTMLVideoElement | null>(null)
+
+  useEffect(() => {
+    window.__twosunsOnSound = (soundOn: boolean) => setMuted(!soundOn)
+    return () => {
+      delete window.__twosunsOnSound
+    }
+  }, [])
 
   useEffect(() => {
     const video = videoRef.current
@@ -42,9 +57,13 @@ export function CinematicLanding() {
     }
   }, [watching])
 
-  const toggleSound = () => {
+  const onSoundClick = (event: MouseEvent<HTMLButtonElement>) => {
     const video = videoRef.current
     if (!video) return
+    if (window.__twosunsSoundStamp === event.nativeEvent.timeStamp) {
+      setMuted(video.muted)
+      return
+    }
     const soundOn = video.muted
     video.muted = !soundOn
     video.volume = 1
@@ -68,18 +87,7 @@ export function CinematicLanding() {
             sizes="100vw"
           />
         ) : (
-          <video
-            ref={videoRef}
-            data-landing-reel="true"
-            src={reel.file}
-            poster={reel.poster}
-            autoPlay
-            playsInline
-            loop
-            muted={muted}
-            preload="auto"
-            className="h-full w-full object-cover"
-          />
+          <LandingReel videoRef={videoRef} />
         )}
       </div>
 
@@ -100,7 +108,7 @@ export function CinematicLanding() {
             data-sound-toggle="true"
             aria-pressed={!muted}
             aria-label={muted ? "Unmute showreel" : "Mute showreel"}
-            onClick={toggleSound}
+            onClick={onSoundClick}
             className={cn(
               "inline-flex h-11 min-w-24 cursor-pointer items-center gap-2 text-[0.65rem] uppercase tracking-[0.22em] text-silver hover:text-cream"
             )}
@@ -134,6 +142,27 @@ export function CinematicLanding() {
     </section>
   )
 }
+
+const LandingReel = memo(function LandingReel({
+  videoRef,
+}: {
+  videoRef: Ref<HTMLVideoElement | null>
+}) {
+  return (
+    <video
+      ref={videoRef}
+      data-landing-reel="true"
+      src={reel.file}
+      poster={reel.poster}
+      autoPlay
+      playsInline
+      loop
+      muted
+      preload="auto"
+      className="h-full w-full object-cover"
+    />
+  )
+})
 
 function ShowreelWatcher({ onClose }: { onClose: () => void }) {
   return (

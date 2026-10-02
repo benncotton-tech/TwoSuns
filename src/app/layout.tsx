@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { Bodoni_Moda, Geist, Geist_Mono } from "next/font/google"
+import Script from "next/script"
 import { SiteShell } from "@/components/site-shell"
 import { site } from "@/lib/site"
 import "./globals.css"
@@ -47,6 +48,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`dark ${geistSans.variable} ${geistMono.variable} ${bodoni.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-ink text-cream">
+        <Script src="/landing-sound.js" strategy="beforeInteractive" />
         <SiteShell>{children}</SiteShell>
       </body>
     </html>
