@@ -2,32 +2,45 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { createPortal } from "react-dom"
 import { MenuIcon, XIcon } from "lucide-react"
 import { Wordmark } from "@/components/wordmark"
 import { nav } from "@/lib/site"
 import { cn } from "@/lib/utils"
-import { useEffect, useId, useRef, useState, type MouseEvent } from "react"
+import { useEffect, useRef, useState, type MouseEvent } from "react"
+
+const MENU_ID = "twosuns-mobile-menu"
 
 export function SiteHeader({ home = false }: { home?: boolean }) {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [section, setSection] = useState("")
-  const menuId = useId()
-  const panelRef = useRef<HTMLDivElement>(null)
+  const panelRef = useRef<HTMLDialogElement>(null)
   const closeRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
-    if (!open) return
-    closeRef.current?.focus()
+    const panel = panelRef.current
+    if (open) {
+      try {
+        if (panel && !panel.open) panel.showModal()
+      } catch {
+        /* Safari can throw if the dialog is already in the top layer. */
+      }
+      closeRef.current?.focus()
+    } else {
+      try {
+        if (panel && panel.open) panel.close()
+      } catch {
+        /* ignore */
+      }
+    }
 
+    if (!open) return
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setOpen(false)
         return
       }
-      const panel = panelRef.current
       if (event.key !== "Tab" || !panel) return
       const focusable = [
         ...panel.querySelectorAll<HTMLElement>('a[href], button:not([disabled])'),
@@ -53,6 +66,19 @@ export function SiteHeader({ home = false }: { home?: boolean }) {
       document.documentElement.style.overflow = ""
     }
   }, [open])
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px)")
+    const onChange = () => {
+      if (mq.matches) setOpen(false)
+    }
+    if (typeof mq.addEventListener === "function") {
+      mq.addEventListener("change", onChange)
+      return () => mq.removeEventListener("change", onChange)
+    }
+    mq.addListener(onChange)
+    return () => mq.removeListener(onChange)
+  }, [])
 
   useEffect(() => {
     if (!home) return
@@ -174,13 +200,14 @@ export function SiteHeader({ home = false }: { home?: boolean }) {
 
           <button
             type="button"
+            data-menu-toggle="true"
             className={cn(
               "inline-flex size-11 items-center justify-center text-cream md:hidden",
               ghost && "pointer-events-auto ml-auto"
             )}
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
-            aria-controls={menuId}
+            aria-controls={MENU_ID}
             onClick={() => setOpen((value) => !value)}
           >
             {open ? <XIcon className="size-5" /> : <MenuIcon className="size-5" />}
@@ -188,65 +215,60 @@ export function SiteHeader({ home = false }: { home?: boolean }) {
         </div>
       </header>
 
-      {open
-        ? createPortal(
-            <div
-              ref={panelRef}
-              id={menuId}
-              role="dialog"
-              aria-modal="true"
-              aria-label="Menu"
-              className="mobile-menu flex flex-col md:hidden"
-            >
-              <div className="flex h-16 shrink-0 items-center justify-between px-4 sm:h-[4.25rem] sm:px-6">
-                <p className="font-heading text-lg text-cream">TwoSuns</p>
-                <button
-                  ref={closeRef}
-                  type="button"
-                  className="inline-flex size-11 items-center justify-center text-cream"
-                  aria-label="Close menu"
-                  onClick={closeMenu}
-                >
-                  <XIcon className="size-5" />
-                </button>
-              </div>
-              <nav
-                className="flex flex-1 flex-col justify-center gap-1 px-6 pb-[max(2rem,env(safe-area-inset-bottom))]"
-                aria-label="Mobile"
+      <dialog
+        ref={panelRef}
+        id={MENU_ID}
+        aria-label="Menu"
+        className="mobile-menu"
+        onClose={closeMenu}
+      >
+        <div className="flex h-16 shrink-0 items-center justify-between px-4 sm:h-[4.25rem] sm:px-6">
+          <p className="font-heading text-lg text-cream">TwoSuns</p>
+          <button
+            ref={closeRef}
+            type="button"
+            data-menu-close="true"
+            className="inline-flex size-11 items-center justify-center text-cream"
+            aria-label="Close menu"
+            onClick={closeMenu}
+          >
+            <XIcon className="size-5" />
+          </button>
+        </div>
+        <nav
+          className="flex flex-1 flex-col justify-center gap-1 px-6 pb-[max(2rem,env(safe-area-inset-bottom))]"
+          aria-label="Mobile"
+        >
+          <Link
+            href="/"
+            onClick={closeMenu}
+            aria-current={home && !section ? "page" : undefined}
+            className={cn(
+              "block min-h-14 py-4 font-heading text-3xl tracking-normal",
+              home && !section ? "text-gold" : "text-cream"
+            )}
+          >
+            Home
+          </Link>
+          {nav.map((item) => {
+            const active = isActive(item.id)
+            return (
+              <Link
+                key={item.id}
+                href={item.href}
+                onClick={(event) => goToSection(event, item.id)}
+                aria-current={active ? "page" : undefined}
+                className={cn(
+                  "block min-h-14 py-4 font-heading text-3xl tracking-normal",
+                  active ? "text-gold" : "text-cream"
+                )}
               >
-                <Link
-                  href="/"
-                  onClick={closeMenu}
-                  aria-current={home && !section ? "page" : undefined}
-                  className={cn(
-                    "block min-h-14 py-4 font-heading text-3xl tracking-normal",
-                    home && !section ? "text-gold" : "text-cream"
-                  )}
-                >
-                  Home
-                </Link>
-                {nav.map((item) => {
-                  const active = isActive(item.id)
-                  return (
-                    <Link
-                      key={item.id}
-                      href={item.href}
-                      onClick={(event) => goToSection(event, item.id)}
-                      aria-current={active ? "page" : undefined}
-                      className={cn(
-                        "block min-h-14 py-4 font-heading text-3xl tracking-normal",
-                        active ? "text-gold" : "text-cream"
-                      )}
-                    >
-                      {item.label}
-                    </Link>
-                  )
-                })}
-              </nav>
-            </div>,
-            document.body
-          )
-        : null}
+                {item.label}
+              </Link>
+            )
+          })}
+        </nav>
+      </dialog>
     </>
   )
 }

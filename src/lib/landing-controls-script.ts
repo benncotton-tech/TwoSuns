@@ -71,6 +71,35 @@ export const landingControlsScript = `(function () {
       var target = event.target;
       if (!target || !target.closest) return;
 
+      var menuBtn = target.closest("[data-menu-toggle]");
+      if (menuBtn) {
+        window.__twosunsMenuStamp = event.timeStamp;
+        var menu = document.getElementById("twosuns-mobile-menu");
+        if (menu && menu.showModal && !menu.open) {
+          try { menu.showModal(); } catch (e) {}
+        } else if (menu && menu.open && menu.close) {
+          try { menu.close(); } catch (e) {}
+        }
+        return;
+      }
+
+      var menuClose = target.closest("[data-menu-close]");
+      if (menuClose) {
+        var closing = document.getElementById("twosuns-mobile-menu");
+        if (closing && closing.open && closing.close) {
+          try { closing.close(); } catch (e) {}
+        }
+        return;
+      }
+
+      var menuLink = target.closest("#twosuns-mobile-menu a");
+      if (menuLink) {
+        var linked = document.getElementById("twosuns-mobile-menu");
+        if (linked && linked.open && linked.close) {
+          try { linked.close(); } catch (e) {}
+        }
+      }
+
       var soundBtn = target.closest("[data-sound-toggle]");
       if (soundBtn) {
         var video = landingVideo();
