@@ -22,9 +22,9 @@ Then open [http://127.0.0.1:4391](http://127.0.0.1:4391).
 
 ## Landing video (showreel)
 
-The home page plays Benjamin’s Vimeo cut (`Demoreel two suns_v3`) behind the official wordmark. Mute stays on until you ask for sound; click **Showreel** to watch it with controls.
+The home page plays Benjamin’s Vimeo cut (`Demoreel two suns_v3`) from `public/landing/reel.mp4` behind the wordmark. Mute stays on until you hit **Sound** — the file is local so that click can actually unmute. **Showreel** watches the same cut with controls.
 
-The embed is `https://vimeo.com/1232004117/19df93e39f`. If the picture is blank on a new domain, allow that domain under the video’s Vimeo embed settings.
+Source: `https://vimeo.com/1232004117/19df93e39f`.
 
 ## Dropping in real films
 

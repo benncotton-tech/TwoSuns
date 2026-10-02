@@ -8,21 +8,8 @@ import { Volume2Icon, VolumeXIcon, XIcon } from "lucide-react"
 import { DeskBurnIn } from "@/components/landing/desk-burn-in"
 import { Wordmark } from "@/components/wordmark"
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion"
-import {
-  backgroundPlayerSrc,
-  reel,
-  watchPlayerSrc,
-} from "@/lib/reel"
+import { reel } from "@/lib/reel"
 import { cn } from "@/lib/utils"
-
-type VimeoPlayer = {
-  ready: () => Promise<void>
-  play: () => Promise<void>
-  pause: () => Promise<void>
-  setMuted: (muted: boolean) => Promise<void>
-  setVolume: (volume: number) => Promise<void>
-  destroy: () => Promise<void>
-}
 
 declare global {
   interface Window {
@@ -35,51 +22,26 @@ export function CinematicLanding() {
   const reduceMotion = usePrefersReducedMotion()
   const [muted, setMuted] = useState(true)
   const [watching, setWatching] = useState(false)
-  const iframeRef = useRef<HTMLIFrameElement | null>(null)
-  const playerRef = useRef<VimeoPlayer | null>(null)
+  const videoRef = useRef<HTMLVideoElement | null>(null)
 
   useEffect(() => {
-    window.__twosunsOnSound = (soundOn: boolean) => {
-      setMuted(!soundOn)
-    }
+    window.__twosunsOnSound = (soundOn: boolean) => setMuted(!soundOn)
     return () => {
       delete window.__twosunsOnSound
     }
   }, [])
 
   useEffect(() => {
-    if (reduceMotion) return
-    const iframe = iframeRef.current
-    if (!iframe) return
-    let player: VimeoPlayer | null = null
-    let cancelled = false
-
-    void import("@vimeo/player").then(({ default: Player }) => {
-      if (cancelled || !iframeRef.current) return
-      player = new Player(iframeRef.current) as unknown as VimeoPlayer
-      playerRef.current = player
-      player.ready().then(() => {
-        if (cancelled) return
-        player?.setMuted(true).catch(() => undefined)
-        player?.play().catch(() => undefined)
-      })
-    })
-
-    return () => {
-      cancelled = true
-      player?.destroy().catch(() => undefined)
-      playerRef.current = null
+    const video = videoRef.current
+    if (!video) return
+    video.muted = muted
+    if (reduceMotion || watching) {
+      video.pause()
+      return
     }
-  }, [reduceMotion])
-
-  useEffect(() => {
-    const player = playerRef.current
-    if (!player) return
-    player.setMuted(muted).catch(() => undefined)
-    if (!muted) player.setVolume(1).catch(() => undefined)
-    if (watching) player.pause().catch(() => undefined)
-    else player.play().catch(() => undefined)
-  }, [muted, watching])
+    const play = video.play()
+    if (play) play.catch(() => undefined)
+  }, [muted, reduceMotion, watching])
 
   useEffect(() => {
     if (!watching) return
@@ -97,8 +59,8 @@ export function CinematicLanding() {
 
   return (
     <section className="relative h-[100dvh] min-h-[100dvh] overflow-hidden bg-ink">
-      {reduceMotion ? (
-        <div className="pointer-events-none absolute inset-0">
+      <div className="pointer-events-none absolute inset-0">
+        {reduceMotion ? (
           <Image
             src={reel.poster}
             alt=""
@@ -107,20 +69,21 @@ export function CinematicLanding() {
             className="object-cover"
             sizes="100vw"
           />
-        </div>
-      ) : (
-        <div className="vimeo-cover">
-          <iframe
-            ref={iframeRef}
+        ) : (
+          <video
+            ref={videoRef}
             data-landing-reel="true"
-            src={backgroundPlayerSrc}
-            title={reel.title}
-            allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
-            referrerPolicy="strict-origin-when-cross-origin"
-            allowFullScreen
+            src={reel.file}
+            poster={reel.poster}
+            autoPlay
+            playsInline
+            loop
+            muted
+            preload="auto"
+            className="h-full w-full object-cover"
           />
-        </div>
-      )}
+        )}
+      </div>
 
       <div className="pointer-events-none absolute inset-0 bg-ink/40" aria-hidden />
 
@@ -180,15 +143,19 @@ export function CinematicLanding() {
     if (!target || !target.closest) return;
     var btn = target.closest("[data-sound-toggle]");
     if (!btn) return;
-    var iframe = document.querySelector("[data-landing-reel]");
-    if (!iframe || !iframe.contentWindow) return;
-    var soundOn = btn.getAttribute("aria-pressed") !== "true";
+    var video = document.querySelector("[data-landing-reel]");
+    if (!video) return;
+    var soundOn = video.muted;
+    video.muted = !soundOn;
+    video.volume = 1;
+    if (soundOn) {
+      var play = video.play();
+      if (play && play.catch) play.catch(function(){});
+    }
     btn.setAttribute("aria-pressed", soundOn ? "true" : "false");
     btn.setAttribute("aria-label", soundOn ? "Mute showreel" : "Unmute showreel");
     var label = btn.querySelector("[data-sound-label]");
     if (label) label.textContent = soundOn ? "Mute" : "Sound";
-    iframe.contentWindow.postMessage({ method: "setMuted", value: !soundOn }, "*");
-    if (soundOn) iframe.contentWindow.postMessage({ method: "setVolume", value: 1 }, "*");
     if (typeof window.__twosunsOnSound === "function") window.__twosunsOnSound(soundOn);
   });
 })();`,
@@ -222,13 +189,13 @@ function ShowreelWatcher({ onClose }: { onClose: () => void }) {
           <XIcon className="size-5" />
         </button>
         <div className="aspect-video bg-black">
-          <iframe
-            src={watchPlayerSrc}
-            title={reel.title}
-            className="h-full w-full"
-            allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
-            referrerPolicy="strict-origin-when-cross-origin"
-            allowFullScreen
+          <video
+            src={reel.file}
+            poster={reel.poster}
+            autoPlay
+            controls
+            playsInline
+            className="h-full w-full object-cover"
           />
         </div>
         <div className="px-5 py-5">
