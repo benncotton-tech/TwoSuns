@@ -4,7 +4,22 @@ export default function WorkLoading() {
       <div className="h-3 w-24 animate-pulse bg-gold/30" />
       <div className="mt-6 h-12 w-72 max-w-full animate-pulse bg-cream/10" />
       <div className="mt-6 h-20 max-w-xl animate-pulse bg-cream/5" />
-      <div className="mt-14 space-y-0 divide-y divide-cream/10 border-y border-cream/10">
+
+      <div className="mt-16">
+        <div className="h-3 w-28 animate-pulse bg-gold/30" />
+        <div className="mt-4 h-8 w-64 max-w-full animate-pulse bg-cream/10" />
+        <div className="mt-10 grid grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-8">
+          {Array.from({ length: 4 }).map((_, index) => (
+            <div key={index}>
+              <div className="aspect-[3/4] animate-pulse bg-cream/5" />
+              <div className="mt-3 h-3 w-20 animate-pulse bg-gold/20" />
+              <div className="mt-2 h-6 w-32 animate-pulse bg-cream/10" />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="mt-24 space-y-0 divide-y divide-cream/10 border-y border-cream/10">
         {Array.from({ length: 5 }).map((_, index) => (
           <div key={index} className="grid gap-6 py-8 md:grid-cols-[7rem_1fr_10rem]">
             <div className="h-4 w-8 animate-pulse bg-gold/20" />

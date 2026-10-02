@@ -35,24 +35,7 @@ export function FilmCatalog() {
       </div>
 
       {visible.length === 0 ? (
-        <div className="mt-16 border border-cream/15 px-6 py-16 text-center">
-          <p className="text-[0.65rem] uppercase tracking-[0.28em] text-gold">
-            Empty lane
-          </p>
-          <h2 className="mt-4 font-heading text-3xl text-cream">
-            We do not make commercials.
-          </h2>
-          <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-silver">
-            TwoSuns keeps a short slate of features, documentaries, and shorts.
-            If you have a picture — not a product — write to us.
-          </p>
-          <Link
-            href="/contact"
-            className="mt-8 inline-flex h-11 items-center bg-gold px-6 text-[0.7rem] uppercase tracking-[0.28em] text-ink hover:bg-gold/85"
-          >
-            Start a conversation
-          </Link>
-        </div>
+        <EmptyLane lane={lane} />
       ) : (
         <ol className="mt-12 divide-y divide-cream/10 border-y border-cream/10">
           {visible.map((film, index) => (
@@ -92,6 +75,45 @@ export function FilmCatalog() {
           ))}
         </ol>
       )}
+    </div>
+  )
+}
+
+function EmptyLane({ lane }: { lane: FilmLane }) {
+  const copy =
+    lane === "Commercial"
+      ? {
+          title: "We do not make commercials.",
+          body: "TwoSuns keeps a short slate of features, documentaries, and shorts. If you have a picture — not a product — write to us.",
+          action: "Start a conversation",
+        }
+      : lane === "Upcoming"
+        ? {
+            title: "Nothing upcoming.",
+            body: "When a picture is coming, it sits on this slate — not on the news board. If you have one, write to Stockholm.",
+            action: "Write to the house",
+          }
+        : {
+            title: "This lane is empty.",
+            body: "Nothing on this part of the slate. Look at another lane, or write to Stockholm.",
+            action: "Write to the house",
+          }
+
+  return (
+    <div className="mt-16 border border-cream/15 px-6 py-16 text-center">
+      <p className="text-[0.65rem] uppercase tracking-[0.28em] text-gold">
+        Empty lane
+      </p>
+      <h2 className="mt-4 font-heading text-3xl text-cream">{copy.title}</h2>
+      <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-silver">
+        {copy.body}
+      </p>
+      <Link
+        href="/contact"
+        className="mt-8 inline-flex h-11 items-center bg-gold px-6 text-[0.7rem] uppercase tracking-[0.28em] text-ink hover:bg-gold/85"
+      >
+        {copy.action}
+      </Link>
     </div>
   )
 }

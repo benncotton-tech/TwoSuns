@@ -42,10 +42,23 @@ Placeholder reels are graded 8-second loops. They are not the finished pictures.
 ## What’s on the site
 
 - **Home** — large wordmark over the showreel, mute, click-to-watch
-- **Work** — the full slate
+- **Work** — the full slate, with upcoming pictures on the page
 - **News** — now, coming up, and notes from the house
 - **About** — two founders, Stockholm
 - **Contact** — a letter to Stockholm (no email backend)
+
+## Upcoming on Work
+
+Upcoming is a section on Work, not its own page. Mark a picture in `src/lib/films.ts`:
+
+```ts
+upcoming: {
+  order: 1, // lower comes first
+  note: "One line of status. Not a news post.",
+},
+```
+
+News → Coming up stays house notes. Work → Upcoming is the pictures.
 
 ## Posting news
 

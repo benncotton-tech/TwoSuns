@@ -25,6 +25,11 @@ export type Film = {
    */
   reel?: string
   featured?: boolean
+  /** Set when the picture belongs in Work → Upcoming, not on the news board. */
+  upcoming?: {
+    order: number
+    note: string
+  }
 }
 
 export const films: Film[] = [
@@ -54,6 +59,10 @@ export const films: Film[] = [
     location: "Western Australia",
     featured: true,
     poster: "/films/the-dry-line/poster.jpg",
+    upcoming: {
+      order: 1,
+      note: "In the cut from Stockholm. First screening when we have a date we will keep.",
+    },
     logline:
       "A surveyor is hired to map a river that no longer reaches the sea. The client wants a line on a document. The land wants the line erased.",
     synopsis:
@@ -69,6 +78,10 @@ export const films: Film[] = [
     location: "Los Angeles / Stockholm",
     featured: true,
     poster: "/films/split-horizon/poster.jpg",
+    upcoming: {
+      order: 2,
+      note: "Principal photography. New days in Los Angeles; the picture is produced from Stockholm.",
+    },
     logline:
       "Two sisters — one in Los Angeles, one in Stockholm — inherit an unfinished film their father shot on both coasts in 1998. Neither wants the footage. Both start cutting.",
     synopsis:
@@ -128,6 +141,10 @@ export const films: Film[] = [
     runtime: "TBC",
     location: "Nullarbor, Australia",
     poster: "/films/two-hours-east/poster.jpg",
+    upcoming: {
+      order: 3,
+      note: "Script. A Nullarbor road picture. It does not shoot until it can survive silence.",
+    },
     logline:
       "A driver is paid to take a sealed case across the Nullarbor and not ask what is in it. She asks.",
     synopsis:
@@ -142,6 +159,10 @@ export const films: Film[] = [
     runtime: "TBC",
     location: "Norrland, Sweden",
     poster: "/films/the-second-sun/poster.jpg",
+    upcoming: {
+      order: 4,
+      note: "In development from Stockholm. The title we almost kept as a company name. Now a film.",
+    },
     logline:
       "A cinematographer who can no longer shoot in daylight follows a crew into a Nordic winter. Working title of the company, once. Now a picture.",
     synopsis:
@@ -162,6 +183,7 @@ export const filmLanes = [
   { id: "Feature", label: "Features" },
   { id: "Documentary", label: "Documentaries" },
   { id: "Short", label: "Shorts" },
+  { id: "Upcoming", label: "Upcoming" },
   { id: "Development", label: "Development" },
   { id: "Commercial", label: "Commercials" },
 ] as const
@@ -180,6 +202,7 @@ export function showreelFilms() {
 
 export function filterFilms(lane: FilmLane) {
   if (lane === "all") return films
+  if (lane === "Upcoming") return upcomingFilms()
   if (lane === "Development") {
     return films.filter((film) => film.status === "In development")
   }
@@ -189,6 +212,14 @@ export function filterFilms(lane: FilmLane) {
 
 export function featuredFilms() {
   return films.filter((film) => film.featured)
+}
+
+export type UpcomingFilm = Film & { upcoming: NonNullable<Film["upcoming"]> }
+
+export function upcomingFilms(): UpcomingFilm[] {
+  return films
+    .filter((film): film is UpcomingFilm => Boolean(film.upcoming))
+    .sort((a, b) => a.upcoming.order - b.upcoming.order)
 }
 
 export function nextFilm(slug: string) {
