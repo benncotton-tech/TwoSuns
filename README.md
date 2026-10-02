@@ -96,9 +96,13 @@ Official wordmark: `public/twosuns-wordmark.png`.
 
 ## Deploy on Vercel
 
-Live site (Vercel status **Valid**):
+Live site from a **source** anonymous deploy (no `--prebuilt`; includes the password gate). Expires about an hour after it was created unless claimed:
 
-[https://temporary-nimble-koto-dbvpvq6.vercel.app](https://temporary-nimble-koto-dbvpvq6.vercel.app)
+[https://temporary-speedy-frost-foigbjp.vercel.app](https://temporary-speedy-frost-foigbjp.vercel.app)
+
+Claim: [https://vercel.com/claim-deployment?code=f73b0e4d-0c34-41c4-9940-4f137834a069](https://vercel.com/claim-deployment?code=f73b0e4d-0c34-41c4-9940-4f137834a069)
+
+The earlier prebuilt URL cannot be Redeployed. This agent is still logged out of Vercel, so this is a new anonymous project — not a `--prod` deploy onto the old one. After claim: **Settings → Environment Variables → Production** → `SITE_PASSWORD` → **Redeploy**. Until that env exists, the site stays open.
 
 `twosuns.se` is added on that project. Vercel status for the domain is **Invalid Configuration** until the A record below is at the registrar.
 
