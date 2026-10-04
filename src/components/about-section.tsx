@@ -15,9 +15,10 @@ export function AboutSection() {
           <p>
             TwoSuns is a Swedish production company based in Stockholm. The name
             is not three countries and it is not a merger. It is two people:
-            Billy, from the United States, and Benjamin, from Australia. Both
-            live here. The overlapping circles in the mark are them — two people,
-            not two stars.
+            Billy, from the United States, who writes and directs, and Benjamin,
+            from Australia, who produces and shoots. Both live here. The
+            overlapping circles in the mark are them — two people, not two
+            stars.
           </p>
           <p>
             There is no Los Angeles office and no Melbourne office. Stockholm is
@@ -43,7 +44,13 @@ export function AboutSection() {
               </p>
               <h3 className="mt-2 font-heading text-4xl text-cream">{person.name}</h3>
               <p className="mt-2 text-sm text-gold">{person.role}</p>
-              <p className="mt-5 text-sm leading-relaxed text-silver">{person.copy}</p>
+              <div className="mt-5 space-y-4">
+                {person.copy.map((paragraph) => (
+                  <p key={paragraph} className="text-sm leading-relaxed text-silver">
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
             </article>
           ))}
         </div>

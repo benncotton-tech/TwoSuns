@@ -20,15 +20,21 @@ export const founders = [
     id: "billy",
     name: "Billy",
     from: "United States",
-    role: "Founder · lives in Stockholm",
-    copy: "Came from the United States. Lives in Stockholm. One of the two people the company is named for — not an office in another city. Billy stays with a picture until the cut is honest.",
+    role: "Founder · Director, screenplay",
+    copy: [
+      "Came from Detroit. Lives in Stockholm — the house, not a year abroad. He writes the picture and he directs it. The shorts on the slate are his from the first page through the cut.",
+      "He came for a life here, and the films followed. A documentary eye sits under the fiction: people as they are, not as a pitch wants them. He stays with a story until it will sit still in a room. There is no American office. The work can travel. He does not.",
+    ],
   },
   {
     id: "benjamin",
     name: "Benjamin",
     from: "Australia",
-    role: "Founder · lives in Stockholm",
-    copy: "Came from Australia. Lives in Stockholm. The other person the company is named for. There is no Melbourne desk. The Australian in the story is him, working from here. Benjamin keeps the days that only work if someone will wait.",
+    role: "Founder · Producer, cinematography",
+    copy: [
+      "Came from Australia. Lives in Stockholm. He produces and he shoots — the same hands on the days and on the lens. There is no Melbourne desk. The Australian in the house is him.",
+      "He will take a picture from the first day through the grade. Lighting, the schedule, the finish: one job. On SKÅL he produced and shot. On BONDE he produced so the picture could be made. The slate stays short because he will not split himself across a crowd of jobs.",
+    ],
   },
 ] as const
 
