@@ -5,7 +5,7 @@ export const site = {
   email: "hello@twosuns.se",
   tagline: "A Swedish production company, based in Stockholm.",
   description:
-    "TwoSuns is a Swedish film production company based in Stockholm. Two founders — Billy, from the United States, and Benjamin, from Australia — both live here. Features, documentaries, and shorts. A short slate, taken seriously.",
+    "TwoSuns is a Swedish film production company in Stockholm. Billy writes and directs. Benjamin produces and shoots. A short slate, and BONDE the feature, taken seriously.",
 } as const
 
 export const house = {
@@ -21,9 +21,10 @@ export const founders = [
     name: "Billy",
     from: "United States",
     role: "Founder · Director, screenplay",
+    craft: "Director, screenplay",
     copy: [
-      "Came from Detroit. Lives in Stockholm — the house, not a year abroad. He writes the picture and he directs it. The shorts on the slate are his from the first page through the cut.",
-      "He came for a life here, and the films followed. A documentary eye sits under the fiction: people as they are, not as a pitch wants them. He stays with a story until it will sit still in a room. There is no American office. The work can travel. He does not.",
+      "He writes the picture and he directs it. The shorts on the slate — BONDE, SKÅL, No Answer — are his from the first page through the cut. BONDE the feature is next: production in May 2027.",
+      "A documentary eye sits under the fiction: people as they are, not as a pitch wants them. He stays with a story until it will sit still in a room.",
     ],
   },
   {
@@ -31,9 +32,10 @@ export const founders = [
     name: "Benjamin",
     from: "Australia",
     role: "Founder · Producer, cinematography",
+    craft: "Producer, cinematography",
     copy: [
-      "Came from Australia. Lives in Stockholm. He produces and he shoots — the same hands on the days and on the lens. There is no Melbourne desk. The Australian in the house is him.",
-      "He will take a picture from the first day through the grade. Lighting, the schedule, the finish: one job. On SKÅL he produced and shot. On BONDE he produced so the picture could be made. The slate stays short because he will not split himself across a crowd of jobs.",
+      "He produces and he shoots — the same hands on the days and on the lens. On SKÅL he produced and shot. On the short BONDE he produced so the picture could be made. The feature is the same house, the same job, a longer cut.",
+      "He will take a picture from the first day through the grade. Lighting, the schedule, the finish: one job. The slate stays short because he will not split himself across a crowd of jobs.",
     ],
   },
 ] as const

@@ -24,7 +24,7 @@ export function SiteFooter() {
             {founders.map((person) => (
               <li key={person.id}>
                 {person.name}
-                <span className="text-silver"> · from {person.from}</span>
+                <span className="text-silver"> · {person.craft}</span>
               </li>
             ))}
           </ul>

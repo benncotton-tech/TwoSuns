@@ -13,18 +13,15 @@ export function AboutSection() {
       <div className="mx-auto w-full max-w-6xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
         <PageIntro heading="h2" eyebrow="About" title="Two suns. One city.">
           <p>
-            TwoSuns is a Swedish production company based in Stockholm. The name
-            is not three countries and it is not a merger. It is two people:
-            Billy, from the United States, who writes and directs, and Benjamin,
-            from Australia, who produces and shoots. Both live here. The
-            overlapping circles in the mark are them — two people, not two
-            stars.
+            TwoSuns is a Swedish production company in Stockholm. Billy writes
+            and directs. Benjamin produces and shoots. The shorts on the slate
+            are the work. BONDE the feature goes into production in May 2027.
+            The overlapping circles in the mark are the two of them — two
+            people, not two stars.
           </p>
           <p>
-            There is no Los Angeles office and no Melbourne office. Stockholm is
-            home. Australia and the United States are where the founders come
-            from, not extra desks. Pictures can be shot elsewhere. The company
-            does not move.
+            A short slate, taken seriously. Features, documentaries, and shorts.
+            Pictures are made where they need to be. The house is Stockholm.
           </p>
         </PageIntro>
 
@@ -39,10 +36,7 @@ export function AboutSection() {
         <div className="mt-20 grid gap-12 lg:grid-cols-2">
           {founders.map((person) => (
             <article key={person.id} className="border-t border-gold/40 pt-6">
-              <p className="text-[0.65rem] uppercase tracking-[0.28em] text-silver">
-                From {person.from}
-              </p>
-              <h3 className="mt-2 font-heading text-4xl text-cream">{person.name}</h3>
+              <h3 className="font-heading text-4xl text-cream">{person.name}</h3>
               <p className="mt-2 text-sm text-gold">{person.role}</p>
               <div className="mt-5 space-y-4">
                 {person.copy.map((paragraph) => (
@@ -66,7 +60,7 @@ export function AboutSection() {
             <Step
               n="02"
               title="We go where the picture is"
-              copy="A Swedish winter or an Australian highway can belong to the same company without opening a second office. We travel for the work. We come home to Stockholm."
+              copy="A winter on Gotland or a night in Stockholm can belong to the same slate. We travel for the work. We come home to the house."
             />
             <Step
               n="03"
