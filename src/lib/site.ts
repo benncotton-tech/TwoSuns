@@ -5,7 +5,7 @@ export const site = {
   email: "hello@twosuns.se",
   tagline: "A Swedish production company, based in Stockholm.",
   description:
-    "TwoSuns is a Swedish film production company in Stockholm. Billy writes and directs. Benjamin produces and shoots. A short slate, and BONDE the feature, taken seriously.",
+    "TwoSuns is a Swedish film production company in Stockholm. Billy is from Detroit. Benjamin is from Newcastle, Australia. Both live here.",
 } as const
 
 export const house = {
@@ -19,23 +19,21 @@ export const founders = [
   {
     id: "billy",
     name: "Billy",
-    from: "United States",
+    from: "Detroit, Michigan",
     role: "Founder · Director, screenplay",
     craft: "Director, screenplay",
     copy: [
-      "He writes the picture and he directs it. The shorts on the slate — BONDE, SKÅL, No Answer — are his from the first page through the cut. BONDE the feature is next: production in May 2027.",
-      "A documentary eye sits under the fiction: people as they are, not as a pitch wants them. He stays with a story until it will sit still in a room.",
+      "Billy is from Detroit, Michigan. Film took him early — a first camera at thirteen, then work on the East Coast — and love brought him to Sweden in 2011. Stockholm has been home since 2020. He writes and directs from here.",
     ],
   },
   {
     id: "benjamin",
     name: "Benjamin",
-    from: "Australia",
+    from: "Newcastle, Australia",
     role: "Founder · Producer, cinematography",
     craft: "Producer, cinematography",
     copy: [
-      "He produces and he shoots — the same hands on the days and on the lens. On SKÅL he produced and shot. On the short BONDE he produced so the picture could be made. The feature is the same house, the same job, a longer cut.",
-      "He will take a picture from the first day through the grade. Lighting, the schedule, the finish: one job. The slate stays short because he will not split himself across a crowd of jobs.",
+      "Benjamin is from Newcastle, Australia. He has lived in Sweden since 2011. Stockholm is home. He produces and he shoots.",
     ],
   },
 ] as const

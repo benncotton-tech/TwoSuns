@@ -13,15 +13,13 @@ export function AboutSection() {
       <div className="mx-auto w-full max-w-6xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
         <PageIntro heading="h2" eyebrow="About" title="Two suns. One city.">
           <p>
-            TwoSuns is a Swedish production company in Stockholm. Billy writes
-            and directs. Benjamin produces and shoots. The shorts on the slate
-            are the work. BONDE the feature goes into production in May 2027.
-            The overlapping circles in the mark are the two of them — two
+            TwoSuns is a Swedish production company in Stockholm. The name is
+            two people. The overlapping circles in the mark are them — two
             people, not two stars.
           </p>
           <p>
-            A short slate, taken seriously. Features, documentaries, and shorts.
-            Pictures are made where they need to be. The house is Stockholm.
+            The house is Stockholm. That is where they live, and that is where
+            the work is based.
           </p>
         </PageIntro>
 
@@ -36,7 +34,10 @@ export function AboutSection() {
         <div className="mt-20 grid gap-12 lg:grid-cols-2">
           {founders.map((person) => (
             <article key={person.id} className="border-t border-gold/40 pt-6">
-              <h3 className="font-heading text-4xl text-cream">{person.name}</h3>
+              <p className="text-[0.65rem] uppercase tracking-[0.28em] text-silver">
+                From {person.from}
+              </p>
+              <h3 className="mt-2 font-heading text-4xl text-cream">{person.name}</h3>
               <p className="mt-2 text-sm text-gold">{person.role}</p>
               <div className="mt-5 space-y-4">
                 {person.copy.map((paragraph) => (
