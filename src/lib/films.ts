@@ -61,7 +61,7 @@ export const films: Film[] = [
     year: "2020",
     format: "Short",
     status: "Released",
-    runtime: "TBC",
+    runtime: "9 min",
     location: "United States",
     poster: "/films/no-answer/poster.jpg",
     logline:

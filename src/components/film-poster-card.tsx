@@ -26,6 +26,7 @@ export function FilmPosterCard({
       </h3>
       <p className="mt-2 text-[0.65rem] uppercase tracking-[0.16em] text-silver sm:text-xs sm:tracking-[0.18em]">
         {film.format} · {film.year}
+        {film.runtime !== "TBC" ? ` · ${film.runtime}` : ""}
       </p>
       <p className="mt-3 text-sm leading-relaxed text-cream/75 sm:text-base">
         {note}
