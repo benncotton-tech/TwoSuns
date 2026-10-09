@@ -6,7 +6,7 @@ Repo: [github.com/benncotton-tech/TwoSuns](https://github.com/benncotton-tech/Tw
 
 This is a Next.js site with **file-based content**. There is no CMS, no database, and no user accounts. You edit TypeScript files, commit, and the site updates. Production deploys from `main` on Vercel.
 
-The live site stays behind **`SITE_PASSWORD`** (HTTP Basic Auth) until Benjamin opens it. While that env var is set, the site sends `noindex` so search engines do not list the gated house.
+The live site stays behind **`SITE_PASSWORD`** until Benjamin opens it. Visitors see an under-construction page — not a browser login prompt. A quiet form on that page unlocks the house with the same password (httpOnly cookie). While the env var is set, the site sends `noindex`.
 
 The first screen is the official cream wordmark over the looping showreel. Scroll down for Upcoming, the Work slate, News, About, and Contact. The nav (Work / News / About / Contact / Merch) jumps to those sections, except Merch which is its own lookbook. **Sound** unmutes the reel. **Showreel** opens the same cut with controls.
 
@@ -15,7 +15,7 @@ Stack: Next.js (App Router), TypeScript, Tailwind CSS, shadcn/ui.
 ## Remaining human clicks
 
 1. Loopia Kundzon: set `@` A to `216.198.79.1` if Vercel still shows **Invalid Configuration**, then **Refresh** the domain.
-2. Keep **`SITE_PASSWORD`** on Vercel Production until the house is ready to go public. Username can be anything (or `twosuns`); the password is that value.
+2. Keep **`SITE_PASSWORD`** on Vercel Production until the house is ready to go public. Public visitors see the construction page. Unlock with that password on the quiet form.
 3. Do not Redeploy an old anonymous / prebuilt Vercel URL. Production is this GitHub repo on `main`.
 
 ## Run it locally
@@ -29,7 +29,7 @@ npm install
 npm run dev
 ```
 
-Open [http://127.0.0.1:4391](http://127.0.0.1:4391). Leave `SITE_PASSWORD` unset locally so preview stays open.
+Open [http://127.0.0.1:4391](http://127.0.0.1:4391). Leave `SITE_PASSWORD` unset locally so the full site stays open. If the env is set, you get the construction page and unlock with that password.
 
 | Script | What it does |
 | --- | --- |
@@ -103,7 +103,7 @@ Official wordmark: `public/twosuns-wordmark.png`. Favicon and Open Graph (`publi
 
 ## Deploy on Vercel
 
-GitHub `main` → Vercel production. There is no database. The only env var is optional **`SITE_PASSWORD`**: when it is set, the whole site (including `/` and the reel) asks for HTTP Basic Auth, and pages are `noindex`. Leave it unset locally. On Vercel: **Settings → Environment Variables → Production** → `SITE_PASSWORD` → **Redeploy**. Do not put the password in git.
+GitHub `main` → Vercel production. There is no database. The only env var is optional **`SITE_PASSWORD`**: when it is set, visitors see the under-construction page and the rest of the house (including the reel) stays private. Unlock with that password on the construction form. Pages are `noindex`. Leave it unset locally. On Vercel: **Settings → Environment Variables → Production** → `SITE_PASSWORD` → **Redeploy**. Do not put the password in git.
 
 The contact form posts to `/api/contact` and acknowledges the letter. It does not send email until you later wire a mailer. Until then, people can still use `hello@twosuns.se`.
 
