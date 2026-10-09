@@ -7,6 +7,11 @@ import { SiteHeader } from "@/components/site-header"
 export function SiteShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const home = pathname === "/"
+  const construction = pathname === "/construction"
+
+  if (construction) {
+    return <>{children}</>
+  }
 
   return (
     <div
