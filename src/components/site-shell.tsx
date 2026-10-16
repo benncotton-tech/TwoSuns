@@ -8,8 +8,9 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const home = pathname === "/"
   const construction = pathname === "/construction"
+  const liveAir = pathname === "/live-air" || pathname.startsWith("/live-air/")
 
-  if (construction) {
+  if (construction || liveAir) {
     return <>{children}</>
   }
 
