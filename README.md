@@ -40,12 +40,6 @@ Open [http://127.0.0.1:4391](http://127.0.0.1:4391). Leave `SITE_PASSWORD` unset
 
 Anyone with access to the GitHub repo can clone it, edit, and push. That is how Benjamin and collaborators both work on the house.
 
-## Live Air companion
-
-On-set tool for the **PD Movie Live Air 4 Smart** motor: [`/live-air`](http://127.0.0.1:4391/live-air).
-
-The motor only stores **five** lens AF maps (colour channels). This app keeps an **unlimited** lens library on the phone, treats those five slots as a hot cache, and walks you through activate (travel cal) or full LiDAR AF calibration with saved mark distances. Export/import JSON to sync crew devices. Direct Bluetooth write of lens maps is not publicly documented for `PD-BTMP-SPM` yet — the wizard drives the one-button hardware until PD Movie opens RS485/BLE transfer.
-
 ## How to edit the site
 
 Content lives in TypeScript, not a CMS. After you change a file, the dev server hot-reloads. For the live site, commit and push to `main` — Vercel rebuilds.
