@@ -90,7 +90,7 @@ export const films: Film[] = [
     runtime: "TBC",
     location: "Gotland, Sweden",
     featured: true,
-    poster: "/films/bonde/poster.jpg",
+    poster: "/films/bonde/short-poster.jpg",
     stills: [
       "/films/bonde/still-01.jpg",
       "/films/bonde/still-02.jpg",
