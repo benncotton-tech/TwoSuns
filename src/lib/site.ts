@@ -34,6 +34,7 @@ export const founders = [
     craft: "Producer, cinematography",
     copy: [
       "Benjamin is from Newcastle, Australia. He has lived in Sweden since 2011. Stockholm is home. He produces and he shoots.",
+      "He came up as a cameraman and editor in this city, then took on whole pictures — producing them, lighting them, operating, staying through the grade. Music videos for Tove Styrke and Victor Leksell. Commercial days for Swish, Spotify, ABB. On a TwoSuns film he is usually both producer and cinematographer.",
     ],
   },
 ] as const
