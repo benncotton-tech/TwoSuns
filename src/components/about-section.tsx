@@ -11,15 +11,14 @@ export function AboutSection() {
       aria-label="About"
     >
       <div className="mx-auto w-full max-w-6xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
-        <PageIntro heading="h2" eyebrow="About" title="Two suns. One city.">
+        <PageIntro
+          heading="h2"
+          eyebrow="About"
+          title="Swedish films for a global audience."
+        >
           <p>
-            TwoSuns is a Swedish production company in Stockholm. The name is
-            two people. The overlapping circles in the mark are them — two
-            people, not two stars.
-          </p>
-          <p>
-            The house is Stockholm. That is where they live, and that is where
-            the work is based.
+            TwoSuns is a Swedish production company based in Stockholm. We
+            produce Swedish films for a global audience.
           </p>
         </PageIntro>
 

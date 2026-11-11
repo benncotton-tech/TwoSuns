@@ -3,9 +3,9 @@ export const site = {
   domain: "twosuns.se",
   url: "https://twosuns.se",
   email: "hello@twosuns.se",
-  tagline: "A Swedish production company, based in Stockholm.",
+  tagline: "Swedish films for a global audience.",
   description:
-    "TwoSuns is a Swedish film production company in Stockholm. Billy is from Detroit. Benjamin is from Newcastle, Australia. Both live here.",
+    "TwoSuns is a Swedish production company based in Stockholm. We produce Swedish films for a global audience.",
 } as const
 
 export const house = {
