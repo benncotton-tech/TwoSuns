@@ -48,40 +48,7 @@ export function AboutSection() {
             </article>
           ))}
         </div>
-
-        <div className="mt-24 max-w-3xl">
-          <h3 className="font-heading text-4xl text-cream">How a picture moves.</h3>
-          <ol className="mt-10 space-y-8">
-            <Step
-              n="01"
-              title="One of us champions it"
-              copy="A film enters because Billy or Benjamin will put their name on the first page. If neither will, it does not join the slate."
-            />
-            <Step
-              n="02"
-              title="We go where the picture is"
-              copy="A winter on Gotland or a night in Stockholm can belong to the same slate. We travel for the work. We come home to the house."
-            />
-            <Step
-              n="03"
-              title="The slate stays short"
-              copy="We turn down commissioned commercials and most branded work. Capacity is a creative choice. The slate stays short on purpose."
-            />
-          </ol>
-        </div>
       </div>
     </section>
-  )
-}
-
-function Step({ n, title, copy }: { n: string; title: string; copy: string }) {
-  return (
-    <li className="grid gap-3 sm:grid-cols-[4rem_1fr]">
-      <span className="font-mono text-xs text-gold">{n}</span>
-      <div>
-        <h4 className="font-heading text-2xl text-cream">{title}</h4>
-        <p className="mt-2 text-sm leading-relaxed text-silver">{copy}</p>
-      </div>
-    </li>
   )
 }
