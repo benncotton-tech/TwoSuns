@@ -5,6 +5,15 @@ const nextConfig: NextConfig = {
     unoptimized: true,
     qualities: [75, 100],
   },
+  async redirects() {
+    return [
+      {
+        source: "/construction",
+        destination: "/",
+        permanent: true,
+      },
+    ]
+  },
   async rewrites() {
     return [
       {
