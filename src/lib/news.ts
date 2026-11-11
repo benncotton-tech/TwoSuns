@@ -8,6 +8,8 @@ export type NewsPost = {
   dek: string
   body: string[]
   film?: string
+  /** Optional board/detail still. Drop the file under public/ then set the path. */
+  image?: string
 }
 
 export const newsLanes = [
@@ -30,6 +32,19 @@ export const newsKindLabel: Record<NewsKind, string> = {
  * (newest first). `date` is ISO (YYYY-MM-DD). Optional `film` is a work slug.
  */
 export const posts: NewsPost[] = [
+  {
+    slug: "bonde-austin-film-festival-2026",
+    title: "BONDE world premieres at Austin Film Festival.",
+    date: "2026-11-01",
+    kind: "news",
+    film: "bonde",
+    // Laurel poster: drop at public/films/bonde/laurel-poster.jpg, then set image below.
+    // image: "/films/bonde/laurel-poster.jpg",
+    dek: "The short. Official selection — Shorts Program 7: Courageous Hearts.",
+    body: [
+      "BONDE had its world premiere at the 33rd Austin Film Festival (29 October–5 November 2026). It screened 1 November and 3 November at Galaxy Theatre, Austin, in Shorts Program 7: Courageous Hearts. Billy Daniel Chester wrote and directed. TwoSuns produced.",
+    ],
+  },
   {
     slug: "bonde-feature-may-2027",
     title: "BONDE, the feature, goes into production in May 2027.",

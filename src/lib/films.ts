@@ -87,7 +87,7 @@ export const films: Film[] = [
     year: "2026",
     format: "Short",
     status: "Festival circuit",
-    runtime: "TBC",
+    runtime: "15 min",
     location: "Gotland, Sweden",
     featured: true,
     poster: "/films/bonde/short-poster.jpg",

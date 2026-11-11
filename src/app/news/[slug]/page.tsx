@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { DualRule } from "@/components/dual-sun"
@@ -54,6 +55,18 @@ export default async function NewsPostPage({ params }: Props) {
       </h1>
       <p className="mt-6 max-w-2xl text-lg leading-relaxed text-silver">{post.dek}</p>
       <DualRule className="mt-10" />
+      {post.image ? (
+        <div className="relative mt-10 aspect-[2/3] w-full max-w-md overflow-hidden border border-cream/15 bg-black">
+          <Image
+            src={post.image}
+            alt=""
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 28rem"
+            quality={100}
+          />
+        </div>
+      ) : null}
       <div className="mt-10 max-w-2xl space-y-5 text-base leading-relaxed text-cream/85">
         {post.body.map((paragraph) => (
           <p key={paragraph}>{paragraph}</p>
