@@ -10,6 +10,8 @@ export type NewsPost = {
   film?: string
   /** Optional board/detail still. Drop the file under public/ then set the path. */
   image?: string
+  /** Optional Vimeo trailer id — embedded on the post page. */
+  trailerVimeoId?: string
 }
 
 export const newsLanes = [
@@ -40,6 +42,7 @@ export const posts: NewsPost[] = [
     film: "bonde",
     // Laurel poster: drop at public/films/bonde/laurel-poster.jpg, then set image below.
     // image: "/films/bonde/laurel-poster.jpg",
+    trailerVimeoId: "1237629432",
     dek: "The short. Official selection — Shorts Program 7: Courageous Hearts.",
     body: [
       "BONDE had its world premiere at the 33rd Austin Film Festival (29 October–5 November 2026). It screened 1 November and 3 November at Galaxy Theatre, Austin, in Shorts Program 7: Courageous Hearts. Billy Daniel Chester wrote and directed. TwoSuns produced.",

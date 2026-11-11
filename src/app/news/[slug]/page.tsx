@@ -55,6 +55,17 @@ export default async function NewsPostPage({ params }: Props) {
       </h1>
       <p className="mt-6 max-w-2xl text-lg leading-relaxed text-silver">{post.dek}</p>
       <DualRule className="mt-10" />
+      {post.trailerVimeoId ? (
+        <div className="mt-10 aspect-video w-full max-w-3xl overflow-hidden border border-cream/15 bg-black">
+          <iframe
+            src={`https://player.vimeo.com/video/${post.trailerVimeoId}?title=0&byline=0&portrait=0`}
+            title="BONDE — official trailer"
+            className="h-full w-full"
+            allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
+            allowFullScreen
+          />
+        </div>
+      ) : null}
       {post.image ? (
         <div className="relative mt-10 aspect-[2/3] w-full max-w-md overflow-hidden border border-cream/15 bg-black">
           <Image
