@@ -22,6 +22,8 @@ export type Film = {
   stills?: string[]
   /** Optional cut: public/films/<slug>/reel.mp4 */
   reel?: string
+  /** Optional Vimeo trailer id for the detail page embed. */
+  trailerVimeoId?: string
   featured?: boolean
   /** Set when the picture belongs in Work → Upcoming, not on the news board. */
   upcoming?: {
@@ -91,6 +93,7 @@ export const films: Film[] = [
     location: "Gotland, Sweden",
     featured: true,
     poster: "/films/bonde/short-poster.jpg",
+    trailerVimeoId: "1237629432",
     stills: [
       "/films/bonde/still-01.jpg",
       "/films/bonde/still-02.jpg",

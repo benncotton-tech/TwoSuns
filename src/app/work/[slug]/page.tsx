@@ -66,6 +66,17 @@ export default async function FilmPage({ params }: Props) {
           ) : null}
         </div>
         <div className="space-y-4">
+          {film.trailerVimeoId ? (
+            <div className="aspect-video w-full overflow-hidden border border-cream/15 bg-black">
+              <iframe
+                src={`https://player.vimeo.com/video/${film.trailerVimeoId}?title=0&byline=0&portrait=0`}
+                title={`${film.title} — official trailer`}
+                className="h-full w-full"
+                allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
+                allowFullScreen
+              />
+            </div>
+          ) : null}
           {film.reel ? (
             <SafeVideo
               src={film.reel}
