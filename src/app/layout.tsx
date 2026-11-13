@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next"
 import { Bodoni_Moda, Geist, Geist_Mono } from "next/font/google"
+import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import { SiteShell } from "@/components/site-shell"
 import { robotsMetadata } from "@/lib/indexing"
 import { landingControlsScript } from "@/lib/landing-controls-script"
@@ -78,6 +80,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col bg-ink text-cream">
         <script dangerouslySetInnerHTML={{ __html: landingControlsScript }} />
         <SiteShell>{children}</SiteShell>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
